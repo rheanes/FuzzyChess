@@ -1,88 +1,91 @@
 # -*- coding: utf-8 -*-
 
 
-#make sure pygame is downloaded
+# make sure pygame is downloaded
 
 
 import os
 import pygame
 import time
 import sys
+
 board = [[' ' for i in range(8)] for i in range(8)]
 
-#creates a chess piece class that shows:
-#team, attackable, and color
+
+# creates a chess piece class that shows:
+# team, attackable, and color
 class Piece:
-  def __init__(self, team, type, image, color, attackable=False):
-    self.team = team
-    self.type = type
-    self.attackable = attackable
-    self.image = image
-    self.color = color
+    def __init__(self, team, type, image, color, attackable=False):
+        self.team = team
+        self.type = type
+        self.attackable = attackable
+        self.image = image
+        self.color = color
+
 
 """Create instances of pieces.
 Only the original instances of pieces is required. 
 We will chaneg the colors of pieces upon delegation.
 """
 
-#kings
-#blue king
-bk = Piece('b', 'k', '/Images/blue_king.png', 'b')
-#red king
-rk = Piece('r', 'k', '/Images/red_king.png', 'r')
+# kings
+# blue king
+bk = Piece('b', 'k', './Images/blue_king.png', 'b')
+# red king
+rk = Piece('r', 'k', './Images/red_king.png', 'r')
 
-#queens
-#blue queen
-bq = Piece('b', 'q', '/Images/blue_queen.png', 'b')
-#red queen
-rq = Piece('r', 'q', '/Images/red_queen.png', 'r')
+# queens
+# blue queen
+bq = Piece('b', 'q', './Images/blue_queen.png', 'b')
+# red queen
+rq = Piece('r', 'q', './Images/red_queen.png', 'r')
 
-#rooks
-#blue team rooks
-#blue rook
-br = Piece('b', 'r', '/Images/blue_rook.png', 'b')
-#red rook
-rr = Piece('r', 'r', '/Images/red_rook.png', 'r')
+# rooks
+# blue team rooks
+# blue rook
+br = Piece('b', 'r', './Images/blue_rook.png', 'b')
+# red rook
+rr = Piece('r', 'r', './Images/red_rook.png', 'r')
 
-#bishops
-#blue team bishops
-#green bishop
-gb = Piece('b', 'k', '/Images/green_bishop.png', 'b')
-#purple bishop
-pb = Piece('b', 'k', '/Images/purple_bishop.png', 'p')
-#red team bishops
-#yellow bishop
-yb = Piece('r', 'k', '/Images/yellow_bishop.png', 'y')
-#orange bishop
-ob = Piece('r', 'k', '/Images/orange_bishop.png', 'o')
+# bishops
+# blue team bishops
+# green bishop
+gb = Piece('b', 'k', './Images/green_bishop.png', 'b')
+# purple bishop
+pb = Piece('b', 'k', './Images/purple_bishop.png', 'p')
+# red team bishops
+# yellow bishop
+yb = Piece('r', 'k', './Images/yellow_bishop.png', 'y')
+# orange bishop
+ob = Piece('r', 'k', './Images/orange_bishop.png', 'o')
 
-#knights
-#blue team knights
-#green knight
-gn = Piece('b', 'n', '/Images/green_knight.png', 'b')
-#purple knight
-pn = Piece('b', 'n', '/Images/purple_knight.png', 'p')
-#red team knights
-#yellow knight
-yn = Piece('r', 'n', '/Images/yellow_knight.png', 'y')
-#orange knight
-on = Piece('r', 'n', '/Images/orange_knight.png', 'o')
+# knights
+# blue team knights
+# green knight
+gn = Piece('b', 'n', './Images/green_knight.png', 'b')
+# purple knight
+pn = Piece('b', 'n', './Images/purple_knight.png', 'p')
+# red team knights
+# yellow knight
+yn = Piece('r', 'n', './Images/yellow_knight.png', 'y')
+# orange knight
+on = Piece('r', 'n', './Images/orange_knight.png', 'o')
 
-#pawns
-#blue team pawns
-#blue pawn
-bp = Piece('b', 'p', '/Images/blue_pawn.png', 'b')
-#green pawn
-gp = Piece('b', 'p', '/Images/green_pawn.png', 'g')
-#purple pawn
-pp = Piece('b', 'p', '/Images/purple_pawn.png', 'p')
-#red team pawns
-#red pawn
-rp = Piece('r', 'p', '/Images/red_pawn.png', 'r')
-#yellow pawn
-yp = Piece('r', 'p', '/Images/yellow_pawn.png', 'y')
-#orange pawn
-op = Piece('r', 'p', '/Images/orange_pawn.png', 'o')
+# pawns
+# blue team pawns
+# blue pawn
+bp = Piece('b', 'p', './Images/blue_pawn.png', 'b')
+# green pawn
+gp = Piece('b', 'p', './Images/green_pawn.png', 'g')
+# purple pawn
+pp = Piece('b', 'p', './Images/purple_pawn.png', 'p')
+# red team pawns
+# red pawn
+rp = Piece('r', 'p', './Images/red_pawn.png', 'r')
+# yellow pawn
+yp = Piece('r', 'p', './Images/yellow_pawn.png', 'y')
+# orange pawn
+op = Piece('r', 'p', './Images/orange_pawn.png', 'o')
 
 starting_order = {(0, 0): pygame.image.load(rr.image),
                   (1, 0): pygame.image.load(on.image),
@@ -125,84 +128,95 @@ starting_order = {(0, 0): pygame.image.load(rr.image),
                   (4, 7): pygame.image.load(bk.image),
                   (5, 7): pygame.image.load(pb.image),
                   (6, 7): pygame.image.load(pn.image),
-                  (7, 7): pygame.image.load(br.image),}
+                  (7, 7): pygame.image.load(br.image), }
 
-#creates the board 
+
+# creates the board
 def create_board(board):
-    board[0] = [Piece('r', 'r', '/Images/red_rook.png', 'r'), Piece('r', 'n', '/Images/orange_knight.png', 'o'), Piece('r', 'b', '/Images/orange_bishop.png', 'o'), \
-               Piece('r', 'q', '/Images/red_queen.png', 'r'), Piece('r', 'k', '/Images/red_king.png', 'r'), Piece('r', 'b', '/Images/yellow_bishop.png', 'y'), \
-               Piece('r', 'n', '/Images/yellow_knight.png', 'y'), Piece('r', 'r', '/Images/red_rook.png', 'r')]
+    board[0] = [Piece('r', 'r', './Images/red_rook.png', 'r'), Piece('r', 'n', './Images/orange_knight.png', 'o'),
+                Piece('r', 'b', './Images/orange_bishop.png', 'o'),
+                Piece('r', 'q', './Images/red_queen.png', 'r'), Piece('r', 'k', './Images/red_king.png', 'r'),
+                Piece('r', 'b', './Images/yellow_bishop.png', 'y'),
+                Piece('r', 'n', './Images/yellow_knight.png', 'y'), Piece('r', 'r', './Images/red_rook.png', 'r')]
 
-    board[7] = [Piece('b', 'r', '/Images/blue_rook.png', 'b'), Piece('b', 'n', '/Images/green_knight.png', 'g'), Piece('b', 'b', '/Images/green_bishop.png', 'g'), \
-               Piece('b', 'q', '/Images/blue_queen.png', 'b'), Piece('b', 'k', '/Images/blue_king.png', 'b'), Piece('b', 'b', '/Images/purple_bishop.png', 'p'), \
-               Piece('b', 'n', '/Images/purple_knight.png', 'p'), Piece('b', 'r', '/Images/blue_rook.png', 'b')]
+    board[7] = [Piece('b', 'r', './Images/blue_rook.png', 'b'), Piece('b', 'n', './Images/green_knight.png', 'g'),
+                Piece('b', 'b', './Images/green_bishop.png', 'g'),
+                Piece('b', 'q', './Images/blue_queen.png', 'b'), Piece('b', 'k', './Images/blue_king.png', 'b'),
+                Piece('b', 'b', './Images/purple_bishop.png', 'p'),
+                Piece('b', 'n', './Images/purple_knight.png', 'p'), Piece('b', 'r', './Images/blue_rook.png', 'b')]
 
     for i in range(8):
-      if i < 3:
-        board[1][i] = Piece('r', 'p', 'orange_pawn.png', 'o')
-        board[6][i] = Piece('b', 'p', 'green_pawn.png', 'g')
-      if i > 3 and i < 5:
-        board[1][i] = Piece('r', 'p', 'red_pawn.png', 'r')
-        board[6][i] = Piece('b', 'p', 'blue_pawn.png', 'b')
-      else: 
-        board[1][i] = Piece('r', 'p', 'yellow_pawn.png', 'y')
-        board[6][i] = Piece('b', 'p', 'purple_pawn.png', 'p')
+        if i < 3:
+            board[1][i] = Piece('r', 'p', 'orange_pawn.png', 'o')
+            board[6][i] = Piece('b', 'p', 'green_pawn.png', 'g')
+        if i > 3 and i < 5:
+            board[1][i] = Piece('r', 'p', 'red_pawn.png', 'r')
+            board[6][i] = Piece('b', 'p', 'blue_pawn.png', 'b')
+        else:
+            board[1][i] = Piece('r', 'p', 'yellow_pawn.png', 'y')
+            board[6][i] = Piece('b', 'p', 'purple_pawn.png', 'p')
     return board
 
-#returns input if it is within the boundries on the board
+
+# returns input if it is within the boundries on the board
 def on_board(position):
-  if position[0] > -1 and position[1] > -1 and position[0] < 8 and position[-1] < 8:
-    return true
-
-def readable_cords(board):
-  output = ''
-  for i in board:
-    for j in i:
-      try:
-        output+= j.team + j.type + ', '
-      except:
-        output += j + ', '
-      output += '\n'
-    return output
-
-#reset captures and killable pieces
-def deselect():
-  for row in range(len(board)):
-    for column in range(len(board[0])):
-      if board[row][column] == 'x ':
-        board[row][column] = ' '
-      else:
-        try:
-          board[row][column].killable = False
-        except:
-          pass
-    return readable_cords(board)
-
-#highlight possible moves
-def highlight(board):
-  highlighted = []
-  for i in range(len(board)):
-    for j in range(len(board[0])):
-      if board[i][j] == 'x ':
-        highlighted.append((i,j))
-      else:
-        try:
-          if board[i][j].killable:
-            highlighted.append((i,j))
-        except:
-            pass
-    return highlighted
-
-def check_team(moves, index):
-  row, col = index
-  if moves%2 == 0:
-    if board[row][col].team == 'b':
-      return True
-    else:
-      if board[row][col].team == 'r':
+    if position[0] > -1 and position[1] > -1 and position[0] < 8 and position[-1] < 8:
         return True
 
-#take a piece and it's index to determine where the piece can move using functions that are defined for each piece. 
+
+def readable_cords(board):
+    output = ''
+    for i in board:
+        for j in i:
+            try:
+                output += j.team + j.type + ', '
+            except:
+                output += j + ', '
+            output += '\n'
+        return output
+
+
+# reset captures and killable pieces
+def deselect():
+    for row in range(len(board)):
+        for column in range(len(board[0])):
+            if board[row][column] == 'x ':
+                board[row][column] = ' '
+            else:
+                try:
+                    board[row][column].killable = False
+                except:
+                    pass
+        return readable_cords(board)
+
+
+# highlight possible moves
+def highlight(board):
+    highlighted = []
+    for i in range(len(board)):
+        for j in range(len(board[0])):
+            if board[i][j] == 'x ':
+                highlighted.append((i, j))
+            else:
+                try:
+                    if board[i][j].killable:
+                        highlighted.append((i, j))
+                except:
+                    pass
+        return highlighted
+
+
+def check_team(moves, index):
+    row, col = index
+    if moves % 2 == 0:
+        if board[row][col].team == 'b':
+            return True
+        else:
+            if board[row][col].team == 'r':
+                return True
+
+
+# take a piece and it's index to determine where the piece can move using functions that are defined for each piece.
 def select_moves(piece, index, moves):
     if check_team(moves, index):
         if piece.type == 'p':
@@ -226,8 +240,9 @@ def select_moves(piece, index, moves):
         if piece.type == 'kn':
             return highlight(knight_moves(index))
 
-#check pawn moves seperatly from other pieces. If space free then x to move. 
-#otherwise, the piece in front of it is targetable. 
+
+# check pawn moves seperatly from other pieces. If space free then x to move.
+# otherwise, the piece in front of it is targetable.
 def pawn_moves_r(index):
     if index[0] == 1:
         if board[index[0] + 2][index[1]] == '  ' and board[index[0] + 1][index[1]] == '  ':
@@ -246,6 +261,7 @@ def pawn_moves_r(index):
                 if board[positions[0]][positions[1]] == '  ':
                     board[positions[0]][positions[1]] = 'x '
     return board
+
 
 def pawn_moves_b(index):
     if index[0] == 6:
@@ -266,7 +282,8 @@ def pawn_moves_b(index):
                     board[positions[0]][positions[1]] = 'x '
     return board
 
-#piece moves
+
+# piece moves
 ## This just checks a 3x3 tile surrounding the king. Empty spots get an "x" and pieces of the opposite team become killable.
 def king_moves(index):
     for y in range(3):
@@ -338,10 +355,11 @@ def knight_moves(index):
                             board[index[0] + i][index[1] + j].killable = True
     return board
 
-#CREATE A 800 by 800 Pixel window to play the game on. 
-#os.environ["SDL_VIDEODRIVER"] = "dummy"
+
+# CREATE A 800 by 800 Pixel window to play the game on.
+# os.environ["SDL_VIDEODRIVER"] = "dummy"
 WIDTH = 800
-WIN = pygame.display.set_mode((WIDTH,WIDTH))
+WIN = pygame.display.set_mode((WIDTH, WIDTH))
 pygame.display.set_caption("Chess")
 WHITE = (255, 255, 255)
 GREY = (128, 128, 128)
@@ -384,9 +402,11 @@ def make_grid(rows, width):
         for j in range(rows):
             node = Node(j, i, gap)
             grid[i].append(node)
-            if (i+j)%2 ==1:
+            if (i + j) % 2 == 1:
                 grid[i][j].colour = GREY
     return grid
+
+
 """
 This is creating the nodes thats are on the board(so the chess tiles)
 I've put them into a 2d array which is identical to the dimesions of the chessboard
@@ -439,11 +459,13 @@ def Do_Move(OriginalPos, FinalPosition, WIN):
 def remove_highlight(grid):
     for i in range(len(grid)):
         for j in range(len(grid[0])):
-            if (i+j)%2 == 0:
+            if (i + j) % 2 == 0:
                 grid[i][j].colour = WHITE
             else:
                 grid[i][j].colour = GREY
     return grid
+
+
 """this takes in 2 co-ordinate parameters which you can get as the position of the piece and then the position of the node it is moving to
 you can get those co-ordinates using my old function for swap"""
 
@@ -453,10 +475,10 @@ create_board(board)
 def main(WIN, WIDTH):
     moves = 0
     selected = False
-    piece_to_move=[]
+    piece_to_move = []
     grid = make_grid(8, WIDTH)
     while True:
-        pygame.time.delay(50) ##stops cpu dying
+        pygame.time.delay(50)  ##stops cpu dying
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -469,28 +491,28 @@ def main(WIN, WIDTH):
                 y, x = Find_Node(pos, WIDTH)
                 if selected == False:
                     try:
-                        possible = select_moves((board[x][y]), (x,y), moves)
+                        possible = select_moves((board[x][y]), (x, y), moves)
                         for positions in possible:
                             row, col = positions
                             grid[row][col].colour = BLUE
-                        piece_to_move = x,y
+                        piece_to_move = x, y
                         selected = True
                     except:
                         piece_to_move = []
                         print('Can\'t select')
-                    #print(piece_to_move)
+                    # print(piece_to_move)
 
                 else:
                     try:
                         if board[x][y].killable == True:
-                            row, col = piece_to_move ## coords of original piece
+                            row, col = piece_to_move  ## coords of original piece
                             board[x][y] = board[row][col]
                             board[row][col] = '  '
                             deselect()
                             remove_highlight(grid)
                             Do_Move((col, row), (y, x), WIN)
                             moves += 1
-                            print(convert_to_readable(board))
+                            print(readable_cords(board))
                         else:
                             deselect()
                             remove_highlight(grid)
@@ -505,7 +527,7 @@ def main(WIN, WIDTH):
                             remove_highlight(grid)
                             Do_Move((col, row), (y, x), WIN)
                             moves += 1
-                            print(convert_to_readable(board))
+                            print(readable_cords(board))
                         else:
                             deselect()
                             remove_highlight(grid)
@@ -517,5 +539,3 @@ def main(WIN, WIDTH):
 
 
 main(WIN, WIDTH)
-
-
