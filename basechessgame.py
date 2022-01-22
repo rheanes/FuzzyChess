@@ -27,62 +27,62 @@ We will chaneg the colors of pieces upon delegation.
 
 #kings
 #blue king
-bk = Piece('b', 'k', '/content/gdrive/MyDrive/ChessAI/Images/blue_king.png', 'b')
+bk = Piece('b', 'k', '/Images/blue_king.png', 'b')
 #red king
-rk = Piece('r', 'k', '/content/gdrive/MyDrive/ChessAI/Images/red_king.png', 'r')
+rk = Piece('r', 'k', '/Images/red_king.png', 'r')
 
 #queens
 #blue queen
-bq = Piece('b', 'q', '/content/gdrive/MyDrive/ChessAI/Images/blue_queen.png', 'b')
+bq = Piece('b', 'q', '/Images/blue_queen.png', 'b')
 #red queen
-rq = Piece('r', 'q', '/content/gdrive/MyDrive/ChessAI/Images/red_queen.png', 'r')
+rq = Piece('r', 'q', '/Images/red_queen.png', 'r')
 
 #rooks
 #blue team rooks
 #blue rook
-br = Piece('b', 'r', '/content/gdrive/MyDrive/ChessAI/Images/blue_rook.png', 'b')
+br = Piece('b', 'r', '/Images/blue_rook.png', 'b')
 #red rook
-rr = Piece('r', 'r', '/content/gdrive/MyDrive/ChessAI/Images/red_rook.png', 'r')
+rr = Piece('r', 'r', '/Images/red_rook.png', 'r')
 
 #bishops
 #blue team bishops
 #green bishop
-gb = Piece('b', 'k', '/content/gdrive/MyDrive/ChessAI/Images/green_bishop.png', 'b')
+gb = Piece('b', 'k', '/Images/green_bishop.png', 'b')
 #purple bishop
-pb = Piece('b', 'k', '/content/gdrive/MyDrive/ChessAI/Images/purple_bishop.png', 'p')
+pb = Piece('b', 'k', '/Images/purple_bishop.png', 'p')
 #red team bishops
 #yellow bishop
-yb = Piece('r', 'k', '/content/gdrive/MyDrive/ChessAI/Images/yellow_bishop.png', 'y')
+yb = Piece('r', 'k', '/Images/yellow_bishop.png', 'y')
 #orange bishop
-ob = Piece('r', 'k', '/content/gdrive/MyDrive/ChessAI/Images/orange_bishop.png', 'o')
+ob = Piece('r', 'k', '/Images/orange_bishop.png', 'o')
 
 #knights
 #blue team knights
 #green knight
-gn = Piece('b', 'n', '/content/gdrive/MyDrive/ChessAI/Images/green_knight.png', 'b')
+gn = Piece('b', 'n', '/Images/green_knight.png', 'b')
 #purple knight
-pn = Piece('b', 'n', '/content/gdrive/MyDrive/ChessAI/Images/purple_knight.png', 'p')
+pn = Piece('b', 'n', '/Images/purple_knight.png', 'p')
 #red team knights
 #yellow knight
-yn = Piece('r', 'n', '/content/gdrive/MyDrive/ChessAI/Images/yellow_knight.png', 'y')
+yn = Piece('r', 'n', '/Images/yellow_knight.png', 'y')
 #orange knight
-on = Piece('r', 'n', '/content/gdrive/MyDrive/ChessAI/Images/orange_knight.png', 'o')
+on = Piece('r', 'n', '/Images/orange_knight.png', 'o')
 
 #pawns
 #blue team pawns
 #blue pawn
-bp = Piece('b', 'p', '/content/gdrive/MyDrive/ChessAI/Images/blue_pawn.png', 'b')
+bp = Piece('b', 'p', '/Images/blue_pawn.png', 'b')
 #green pawn
-gp = Piece('b', 'p', '/content/gdrive/MyDrive/ChessAI/Images/green_pawn.png', 'g')
+gp = Piece('b', 'p', '/Images/green_pawn.png', 'g')
 #purple pawn
-pp = Piece('b', 'p', '/content/gdrive/MyDrive/ChessAI/Images/purple_pawn.png', 'p')
+pp = Piece('b', 'p', '/Images/purple_pawn.png', 'p')
 #red team pawns
 #red pawn
-rp = Piece('r', 'p', '/content/gdrive/MyDrive/ChessAI/Images/red_pawn.png', 'r')
+rp = Piece('r', 'p', '/Images/red_pawn.png', 'r')
 #yellow pawn
-yp = Piece('r', 'p', '/content/gdrive/MyDrive/ChessAI/Images/yellow_pawn.png', 'y')
+yp = Piece('r', 'p', '/Images/yellow_pawn.png', 'y')
 #orange pawn
-op = Piece('r', 'p', '/content/gdrive/MyDrive/ChessAI/Images/orange_pawn.png', 'o')
+op = Piece('r', 'p', '/Images/orange_pawn.png', 'o')
 
 starting_order = {(0, 0): pygame.image.load(rr.image),
                   (1, 0): pygame.image.load(on.image),
@@ -129,13 +129,13 @@ starting_order = {(0, 0): pygame.image.load(rr.image),
 
 #creates the board 
 def create_board(board):
-    board[0] = [Piece('r', 'r', '/content/gdrive/MyDrive/ChessAI/Images/red_rook.png', 'r'), Piece('r', 'n', '/content/gdrive/MyDrive/ChessAI/Images/orange_knight.png', 'o'), Piece('r', 'b', '/content/gdrive/MyDrive/ChessAI/Images/orange_bishop.png', 'o'), \
-               Piece('r', 'q', '/content/gdrive/MyDrive/ChessAI/Images/red_queen.png', 'r'), Piece('r', 'k', '/content/gdrive/MyDrive/ChessAI/Images/red_king.png', 'r'), Piece('r', 'b', '/content/gdrive/MyDrive/ChessAI/Images/yellow_bishop.png', 'y'), \
-               Piece('r', 'n', '/content/gdrive/MyDrive/ChessAI/Images/yellow_knight.png', 'y'), Piece('r', 'r', '/content/gdrive/MyDrive/ChessAI/Images/red_rook.png', 'r')]
+    board[0] = [Piece('r', 'r', '/Images/red_rook.png', 'r'), Piece('r', 'n', '/Images/orange_knight.png', 'o'), Piece('r', 'b', '/Images/orange_bishop.png', 'o'), \
+               Piece('r', 'q', '/Images/red_queen.png', 'r'), Piece('r', 'k', '/Images/red_king.png', 'r'), Piece('r', 'b', '/Images/yellow_bishop.png', 'y'), \
+               Piece('r', 'n', '/Images/yellow_knight.png', 'y'), Piece('r', 'r', '/Images/red_rook.png', 'r')]
 
-    board[7] = [Piece('b', 'r', '/content/gdrive/MyDrive/ChessAI/Images/blue_rook.png', 'b'), Piece('b', 'n', '/content/gdrive/MyDrive/ChessAI/Images/green_knight.png', 'g'), Piece('b', 'b', '/content/gdrive/MyDrive/ChessAI/Images/green_bishop.png', 'g'), \
-               Piece('b', 'q', '/content/gdrive/MyDrive/ChessAI/Images/blue_queen.png', 'b'), Piece('b', 'k', '/content/gdrive/MyDrive/ChessAI/Images/blue_king.png', 'b'), Piece('b', 'b', '/content/gdrive/MyDrive/ChessAI/Images/purple_bishop.png', 'p'), \
-               Piece('b', 'n', '/content/gdrive/MyDrive/ChessAI/Images/purple_knight.png', 'p'), Piece('b', 'r', '/content/gdrive/MyDrive/ChessAI/Images/blue_rook.png', 'b')]
+    board[7] = [Piece('b', 'r', '/Images/blue_rook.png', 'b'), Piece('b', 'n', '/Images/green_knight.png', 'g'), Piece('b', 'b', '/Images/green_bishop.png', 'g'), \
+               Piece('b', 'q', '/Images/blue_queen.png', 'b'), Piece('b', 'k', '/Images/blue_king.png', 'b'), Piece('b', 'b', '/Images/purple_bishop.png', 'p'), \
+               Piece('b', 'n', '/Images/purple_knight.png', 'p'), Piece('b', 'r', '/Images/blue_rook.png', 'b')]
 
     for i in range(8):
       if i < 3:
@@ -339,7 +339,7 @@ def knight_moves(index):
     return board
 
 #CREATE A 800 by 800 Pixel window to play the game on. 
-os.environ["SDL_VIDEODRIVER"] = "dummy"
+#os.environ["SDL_VIDEODRIVER"] = "dummy"
 WIDTH = 800
 WIN = pygame.display.set_mode((WIDTH,WIDTH))
 pygame.display.set_caption("Chess")
