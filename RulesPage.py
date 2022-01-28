@@ -1,12 +1,12 @@
-import common
+import common as cm
 import sys
 import pygame
 
-common.init()
+cm.init()
 pygame.init()
 clock = pygame.time.Clock()
 
-screen = pygame.display.set_mode((WIDTH, WIDTH))
+screen = pygame.display.set_mode((cm.WIDTH, cm.WIDTH))
 pygame.display.set_caption('Midevil Fuzzy Logic Chess')
 
 def create_button(msg, x, y, width, height, hovercolor, defaultcolor):
@@ -18,16 +18,16 @@ def create_button(msg, x, y, width, height, hovercolor, defaultcolor):
             first_level()
     else:
         pygame.draw.rect(screen, defaultcolor, (x, y, width, height))
-    startbuttontext = smallfont.render(msg, True, blackish)
+    startbuttontext = cm.smallfont.render(msg, True, cm.blackish)
     screen.blit(startbuttontext, (int(890 + (width / 2)), int(y + (y / 2))))
 
 def start_menu():
-    startText = font.render('This is the text for the start menu', True, slategrey)
+    startText = cm.font.render('This is the text for the start menu', True, cm.slategrey)
 
     while True:
-        screen.fill((black))
-        screen.blit(startText, ((screen_width - startText.get_width()) /2, 0))
-        create_button('Button Text here', WIDTH - 130, 7, 125, 26, lightgrey, slategrey)
+        screen.fill((cm.BLACK))
+        screen.blit(startText, ((cm.WIDTH - startText.get_width()) /2, 0))
+        create_button('Button Text here', cm.WIDTH - 130, 7, 125, 26, cm.lightgrey, cm.slategrey)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -38,10 +38,10 @@ def start_menu():
         return True
 
 def First_Level():
-    startText = font.render('This is the text for something', True, slategrey)
+    startText = cm.font.render('This is the text for something', True, slategrey)
     while True:
-        screen.fill(BLACK)
-        screen.blit(startText, ((WIDTH - startText.get_width()) / 2 , 0))
+        screen.fill(cm.BLACK)
+        screen.blit(startText, ((cm.WIDTH - startText.get_width()) / 2 , 0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
