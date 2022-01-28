@@ -21,3 +21,41 @@ def create_button(msg, x, y, width, height, hovercolor, defaultcolor):
     startbuttontext = smallfont.render(msg, True, blackish)
     screen.blit(startbuttontext, (int(890 + (width / 2)), int(y + (y / 2))))
 
+def start_menu():
+    startText = font.render('This is the text for the start menu', True, slategrey)
+
+    while True:
+        screen.fill((black))
+        screen.blit(startText, ((screen_width - startText.get_width()) /2, 0))
+        create_button('Button Text here', WIDTH - 130, 7, 125, 26, lightgrey, slategrey)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        pygame.display.update()
+        clock.tick(15)
+        return True
+
+def First_Level():
+    startText = font.render('This is the text for something', True, slategrey)
+    while True:
+        screen.fill(BLACK)
+        screen.blit(startText, ((WIDTH - startText.get_width()) / 2 , 0))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        pygame.display.update()
+        clock.tick(15)
+
+while True:
+    start_menu()
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+    pygame.display.update()
+    clock.tick(15)
+
+
