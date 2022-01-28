@@ -265,7 +265,7 @@ def remove_possible_moves(board_state):
 
 if __name__ == '__main__':
     create_board()
-    setup_pieces()
+    moves = 0
     piece_selected = False
     piece_to_move = []
     board_state = create_board_state()
@@ -307,6 +307,7 @@ if __name__ == '__main__':
                             deselect()
                             remove_possible_moves(board_state)
                             Do_Move((col, row), (y, x))
+                            moves += 1
                             print(readable_cords())
                         else:
                             deselect()
@@ -321,6 +322,7 @@ if __name__ == '__main__':
                             deselect()
                             remove_possible_moves(board_state)
                             Do_Move((col, row), (y, x))
+                            moves += 1
                             print(readable_cords())
                         else:
                             deselect()
