@@ -1,5 +1,7 @@
 import pygame
 
+pygame.init()
+
 #screen dimensions
 WIDTH = 800  # screen width
 
@@ -15,6 +17,6 @@ lightgrey = (165, 175, 185)
 blackish = (10, 10, 10)
 
 #load images
-b_king = pygame.image.load('blue_king.png')
+
 
 

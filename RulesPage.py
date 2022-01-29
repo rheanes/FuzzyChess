@@ -2,7 +2,7 @@ import common as cm
 import sys
 import pygame
 
-cm.init()
+
 pygame.init()
 clock = pygame.time.Clock()
 
@@ -15,7 +15,7 @@ def create_button(msg, x, y, width, height, hovercolor, defaultcolor):
     if x + width > mouse[0] > x and y + height > mouse[1] > y:
         pygame.draw.rect(screen, hovercolor, (x, y, width, height))
         if click[0] == 1:
-            first_level()
+            firstlevel()
     else:
         pygame.draw.rect(screen, defaultcolor, (x, y, width, height))
     startbuttontext = cm.smallfont.render(msg, True, cm.blackish)
@@ -37,7 +37,7 @@ def start_menu():
         clock.tick(15)
         return True
 
-def First_Level():
+def firstlevel():
     startText = cm.font.render('This is the text for something', True, slategrey)
     while True:
         screen.fill(cm.BLACK)
