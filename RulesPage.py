@@ -9,45 +9,50 @@ clock = pygame.time.Clock()
 screen = pygame.display.set_mode((cm.WIDTH, cm.WIDTH))
 pygame.display.set_caption('Midevil Fuzzy Logic Chess')
 
-def create_button(msg, x, y, width, height, hovercolor, defaultcolor):
-    mouse = pygame.mouse.get_pos()
-    click = pygame.mouse.get_pressed(3)
-    if x + width > mouse[0] > x and y + height > mouse[1] > y:
-        pygame.draw.rect(screen, hovercolor, (x, y, width, height))
-        if click[0] == 1:
-            firstlevel()
-    else:
-        pygame.draw.rect(screen, defaultcolor, (x, y, width, height))
-    startbuttontext = cm.smallfont.render(msg, True, cm.blackish)
-    screen.blit(startbuttontext, (int(890 + (width / 2)), int(y + (y / 2))))
-
 def start_menu():
-    startText = cm.font.render('This is the text for the start menu', True, cm.slategrey)
-
+    startText = cm.font.render("This is the text for the start menu", True, cm.WHITE)
+    RulesPageText = cm.smallfont.render("Rules Page", True, cm.WHITE)
     while True:
         screen.fill((cm.BLACK))
         screen.blit(startText, ((cm.WIDTH - startText.get_width()) /2, 0))
-        create_button('Button Text here', cm.WIDTH - 130, 7, 125, 26, cm.lightgrey, cm.slategrey)
-
+        #button(left, top, width, height)
+        mouse = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if cm.WIDTH / 2 <= mouse[0] <= cm.WIDTH / 2 +140 and cm.WIDTH / 2 <= mouse[1] <= cm.WIDTH/2 +40:
+                    rulespage()
+        screen.fill(cm.blackish)
+        if cm.WIDTH / 2 <= mouse[0] <= cm.WIDTH / 2 +140 and cm.WIDTH / 2 <= mouse[1] <= cm.WIDTH/2 +40:
+            pygame.draw.rect(screen, cm.buttonhover, [cm.WIDTH/2, cm.WIDTH/2, 140, 40])
+        else:
+            pygame.draw.rect(screen, cm.buttoncolor, [cm.WIDTH/2, cm.WIDTH/2, 140, 40])
+        screen.blit(RulesPageText, (cm.WIDTH/2 +30, cm.WIDTH/2))
+
+
         pygame.display.update()
-        clock.tick(15)
+        clock.tick(cm.tickrate)
         return True
 
-def firstlevel():
-    startText = cm.font.render('This is the text for something', True, slategrey)
+def rulespage():
+    HeaderText = cm.font.render("RULES PAGE", True, cm.WHITE)
+    Tab1Text = cm.font.render("Objectives", True, cm.WHITE)
+    Tab2Text = cm.font.render("Rules", True, cm.WHITE)
+    Tab3Text = cm.font.render("Pieces", True, cm.WHITE)
     while True:
-        screen.fill(cm.BLACK)
-        screen.blit(startText, ((cm.WIDTH - startText.get_width()) / 2 , 0))
+        screen.fill(cm.blackish)
+        screen.blit(HeaderText, (cm.WIDTH / 2 , 0))
+        screen.blit(Tab1Text, (200, 100))
+        screen.blit(Tab2Text, (400, 100))
+        screen.blit(Tab3Text, (600, 100))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
         pygame.display.update()
-        clock.tick(15)
+        clock.tick(cm.tickrate)
 
 while True:
     start_menu()
@@ -56,6 +61,6 @@ while True:
             pygame.quit()
             sys.exit()
     pygame.display.update()
-    clock.tick(15)
+    clock.tick(cm.tickrate)
 
 
