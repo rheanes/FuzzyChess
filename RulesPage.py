@@ -2,39 +2,95 @@ import common as cm
 import sys
 import pygame
 
+from pydoc import text
+import pygame
+import pygame.freetype
+from pygame.locals import *
+from pygame.sprite import Sprite
+from pygame.rect import Rect
+import sys
 
 pygame.init()
-clock = pygame.time.Clock()
 
+
+def create_text_surface(text, font_size, txt_rgb, bg_rgb):
+    font = pygame.freetype.SysFont("Arial", font_size)
+    surface, _ = font.render(text=text, fgcolor=txt_rgb, bgcolor=bg_rgb)
+    return surface
+
+
+# class for non-interactable UI elements
+class Element(Sprite):
+    def __init__(self, img, pos):
+        super().__init__()
+        self.image = pygame.image.load(img)
+        self.rect = self.image.get_rect()
+        self.rect.center = pos
+
+    def draw(self, surface):
+        surface.blit(self.image, self.rect)
+
+
+# class for interactable elements that have text
+class button(Sprite):
+    def __init__(self, pos, text, font_size, txt_col, bg_col):
+        self.mouse_over = False
+
+        unselected_img = create_text_surface(text, font_size, txt_col, bg_col)
+        highlighted_img = create_text_surface(text, font_size * 1.3, txt_col, bg_col)
+
+        self.images = [unselected_img, highlighted_img]
+        self.rects = [unselected_img.get_rect(center=pos), highlighted_img.get_rect(center=pos)]
+
+        super().__init__()
+
+    @property
+    def img(self):
+        return self.images[1] if self.mouse_over else self.images[0]
+
+    @property
+    def rect(self):
+        return self.rects[1] if self.mouse_over else self.rects[0]
+
+    # selects different button images depending if the mouse is hovered over it
+    def moused_over(self, mouse_pos):
+        if self.rect.collidepoint(mouse_pos):
+            self.mouse_over = True
+        else:
+            self.mouse_over = False
+
+    def draw(self, surface):
+        surface.blit(self.img, self.rect)
+
+clock = pygame.time.Clock()
 screen = pygame.display.set_mode((cm.WIDTH, cm.WIDTH))
 pygame.display.set_caption('Midevil Fuzzy Logic Chess')
-
 def start_menu():
-    startText = cm.font.render("This is the text for the start menu", True, cm.WHITE)
-    RulesPageText = cm.smallfont.render("Rules Page", True, cm.WHITE)
+    b_knight = Element("./Images/black_knight.png", (300, 400))
+    pygame.transform.scale(b_knight.image, (400, 100))
+    play_button = button(pos=(600, 300), font_size=50, txt_col=cm.BLACK, bg_col=cm.LIGHT_GRAY, text="Play")
+    rules_button = button(pos=(600, 400), font_size=50, txt_col=cm.BLACK, bg_col=cm.BROWN, text="Rules")
+    quit_button = button(pos=(600, 500), font_size=50, txt_col=cm.BLACK, bg_col=cm.RED, text="Quit Game")
+
     while True:
-        mouse = pygame.mouse.get_pos()
-        screen.fill((cm.BLACK))
-        screen.blit(startText, ((cm.WIDTH - startText.get_width()) /2, 0))
-        #button(left, top, width, height)
+
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if cm.WIDTH / 2 <= mouse[0] <= cm.WIDTH / 2 +140 and cm.WIDTH / 2 <= mouse[1] <= cm.WIDTH/2 +40:
-                    rulespage()
-        screen.fill(cm.blackish)
-        if cm.WIDTH / 2 <= mouse[0] <= cm.WIDTH / 2 +140 and cm.WIDTH / 2 <= mouse[1] <= cm.WIDTH/2 +40:
-            pygame.draw.rect(screen, cm.buttonhover, [cm.WIDTH/2, cm.WIDTH/2, 140, 40])
-        else:
-            pygame.draw.rect(screen, cm.buttoncolor, [cm.WIDTH/2, cm.WIDTH/2, 140, 40])
-        screen.blit(RulesPageText, (cm.WIDTH/2 +30, cm.WIDTH/2))
-
+            if event.type == MOUSEBUTTONDOWN and rules_button.mouse_over(pygame.mouse.get_pos()):
+                rulespage()
+        screen.fill(cm.WHITE)
+        b_knight.draw(screen)
+        play_button.moused_over(pygame.mouse.get_pos())
+        play_button.draw(screen)
+        rules_button.moused_over(pygame.mouse.get_pos())
+        rules_button.draw(screen)
+        quit_button.moused_over(pygame.mouse.get_pos())
+        quit_button.draw(screen)
 
         pygame.display.update()
         clock.tick(cm.tickrate)
-        return True
 
 def rulespage():
     HeaderText = cm.font.render("RULES PAGE", True, cm.WHITE)
@@ -87,16 +143,16 @@ def rulespage():
                 pygame.draw.rect(screen, cm.buttoncolor, cm.ObjButtonLoc)
                 pygame.draw.rect(screen, cm.buttoncolor, cm.RuleButtonLoc)
                 pygame.draw.rect(screen, cm.buttoncolor, cm.PieceButtonLoc)
-        screen.blit(Tab1Text, (cm.WIDTH / 6, 100))
-        screen.blit(Tab2Text, (cm.WIDTH / 2, 100))
-        screen.blit(Tab3Text, (5 * cm.WIDTH / 6, 100))
+        screen.blit(Tab1Text, (cm.WIDTH / 6, cm.HEIGHT/8))
+        screen.blit(Tab2Text, (cm.WIDTH / 2, cm.HEIGHT/8))
+        screen.blit(Tab3Text, (5 * cm.WIDTH / 6, cm.HEIGHT/8))
 
 
         pygame.display.update()
         clock.tick(cm.tickrate)
 
 while True:
-    rulespage()
+    start_menu()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()

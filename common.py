@@ -22,6 +22,9 @@ WHITE = (255, 255, 255)
 buttonhover = (112, 128, 144)
 buttoncolor = (165, 175, 185)
 blackish = (10, 10, 10)
+RED = (255, 0, 0)
+BROWN = (222, 184, 135)
+LIGHT_GRAY = (211, 211, 211)
 
 #load images
 
