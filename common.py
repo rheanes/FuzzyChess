@@ -5,6 +5,12 @@ pygame.init()
 tickrate = 25
 #screen dimensions
 WIDTH = 800  # screen width
+HEIGHT = 800 # screen height
+
+#button locations
+ObjButtonLoc = [WIDTH / 6, HEIGHT / 8, 140, 40]
+RuleButtonLoc = [WIDTH / 2, HEIGHT / 8, 140, 40]
+PieceButtonLoc = [5*WIDTH / 6, HEIGHT / 8, 140, 40]
 
 #fonts
 font = pygame.font.SysFont("comicsansms", 30)
