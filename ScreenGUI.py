@@ -71,14 +71,13 @@ def start_menu():
     play_button = button(pos=(600, 300), font_size=50, txt_col=cm.BLACK, bg_col=cm.LIGHT_GRAY, text="Play")
     rules_button = button(pos=(600, 400), font_size=50, txt_col=cm.BLACK, bg_col=cm.BROWN, text="Rules")
     quit_button = button(pos=(600, 500), font_size=50, txt_col=cm.BLACK, bg_col=cm.RED, text="Quit Game")
-
     while True:
 
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-            elif event.type == MOUSEBUTTONDOWN and rules_button.mouse_over(pygame.mouse.get_pos()):
+            if event.type == MOUSEBUTTONDOWN and rules_button.mouse_over():
                 rulespage()
         screen.fill(cm.WHITE)
         b_knight.draw(screen)
@@ -152,7 +151,7 @@ def rulespage():
         clock.tick(cm.tickrate)
 
 while True:
-    start_menu()
+    rulespage()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
