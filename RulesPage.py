@@ -78,7 +78,7 @@ def start_menu():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == MOUSEBUTTONDOWN and rules_button.mouse_over(pygame.mouse.get_pos()):
+            elif event.type == MOUSEBUTTONDOWN and rules_button.mouse_over(pygame.mouse.get_pos()):
                 rulespage()
         screen.fill(cm.WHITE)
         b_knight.draw(screen)
