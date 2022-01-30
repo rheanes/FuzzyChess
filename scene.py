@@ -1,12 +1,16 @@
+import common as cm
+import ScreenGUI as sg
+import pygame
+import sys
 def rulespage(screen):
     HeaderText = cm.font.render("RULES PAGE", True, cm.WHITE)
-    Home_Button = button(pos=(cm.WIDTH - 10, cm.HEIGHT - 10), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Home_Button = sg.button(pos=(cm.WIDTH - 10, cm.HEIGHT - 10), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                          text="Objectives", action=GameState.Title)
-    Obj_Tab = button(pos=(cm.WIDTH/6, cm.HEIGHT/8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Obj_Tab = sg.button(pos=(cm.WIDTH/6, cm.HEIGHT/8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                      text="Objectives", action = GameState.Objectives)
-    Rule_Tab = button(pos=(cm.WIDTH/2, cm.HEIGHT/8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Rule_Tab = sg.button(pos=(cm.WIDTH/2, cm.HEIGHT/8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                       text="Rules", action = GameState.Rules)
-    Pieces_Tab = button(pos=(5*cm.WIDTH/6, cm.HEIGHT/8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Pieces_Tab = sg.button(pos=(5*cm.WIDTH/6, cm.HEIGHT/8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                         text="Pieces", action = GameState.Pieces)
     buttons = [Obj_Tab, Rule_Tab, Pieces_Tab]
 
@@ -22,7 +26,7 @@ def rulespage(screen):
         screen.fill(cm.WHITE)
 
         for tab in tabs:
-            ui_action = button.update(pygame.mouse.get_pos(), mouse_up)
+            ui_action = sg.button.update(pygame.mouse.get_pos(), mouse_up)
             if ui_action is not None:
                 return ui_action
             tab.draw(screen)
@@ -32,13 +36,13 @@ def rulespage(screen):
 
 def ObjectiveTab(screen):
     HeaderText = cm.font.render("RULES PAGE", True, cm.WHITE)
-    Home_Button = button(pos=(cm.WIDTH - 10, cm.HEIGHT - 10), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Home_Button = sg.button(pos=(cm.WIDTH - 10, cm.HEIGHT - 10), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                          text="Objectives", action=GameState.Title)
-    Obj_Tab = button(pos=(cm.WIDTH / 6, cm.HEIGHT / 8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Obj_Tab = sg.button(pos=(cm.WIDTH / 6, cm.HEIGHT / 8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                      text="Objectives", action=GameState.Objectives)
-    Rule_Tab = button(pos=(cm.WIDTH / 2, cm.HEIGHT / 8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Rule_Tab = sg.button(pos=(cm.WIDTH / 2, cm.HEIGHT / 8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                       text="Rules", action=GameState.Rules)
-    Pieces_Tab = button(pos=(5 * cm.WIDTH / 6, cm.HEIGHT / 8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Pieces_Tab = sg.button(pos=(5 * cm.WIDTH / 6, cm.HEIGHT / 8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                         text="Pieces", action=GameState.Pieces)
     buttons = [Home_Button, Obj_Tab, Rule_Tab, Pieces_Tab]
     ObjectiveText = "This is the text for our objectives."
@@ -59,13 +63,13 @@ def ObjectiveTab(screen):
 
 def RulesTab(screen):
     HeaderText = cm.font.render("RULES PAGE", True, cm.WHITE)
-    Home_Button = button(pos=(cm.WIDTH - 10, cm.HEIGHT - 10), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Home_Button = sg.button(pos=(cm.WIDTH - 10, cm.HEIGHT - 10), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                          text="Objectives", action=GameState.Title)
-    Obj_Tab = button(pos=(cm.WIDTH / 6, cm.HEIGHT / 8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Obj_Tab = sg.button(pos=(cm.WIDTH / 6, cm.HEIGHT / 8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                      text="Objectives", action=GameState.Objectives)
-    Rule_Tab = button(pos=(cm.WIDTH / 2, cm.HEIGHT / 8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Rule_Tab = sg.button(pos=(cm.WIDTH / 2, cm.HEIGHT / 8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                       text="Rules", action=GameState.Rules)
-    Pieces_Tab = button(pos=(5 * cm.WIDTH / 6, cm.HEIGHT / 8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Pieces_Tab = sg.button(pos=(5 * cm.WIDTH / 6, cm.HEIGHT / 8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                         text="Pieces", action=GameState.Pieces)
     buttons = [Obj_Tab, Rule_Tab, Pieces_Tab]
     RulesText = "This is the text for the rules"
@@ -85,35 +89,35 @@ def RulesTab(screen):
         pygame.display.flip()
 def PiecesTab():
     HeaderText = cm.font.render("RULES PAGE", True, cm.WHITE)
-    Home_Button = button(pos=(cm.WIDTH - 10, cm.HEIGHT - 10), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Home_Button = sg.button(pos=(cm.WIDTH - 10, cm.HEIGHT - 10), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                          text="Objectives", action=GameState.Title)
-    Obj_Tab = button(pos=(cm.WIDTH / 6, cm.HEIGHT / 8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Obj_Tab = sg.button(pos=(cm.WIDTH / 6, cm.HEIGHT / 8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                      text="Objectives", action=GameState.Objectives)
-    Rule_Tab = button(pos=(cm.WIDTH / 2, cm.HEIGHT / 8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Rule_Tab = sg.button(pos=(cm.WIDTH / 2, cm.HEIGHT / 8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                       text="Rules", action=GameState.Rules)
-    Pieces_Tab = button(pos=(5 * cm.WIDTH / 6, cm.HEIGHT / 8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Pieces_Tab = sg.button(pos=(5 * cm.WIDTH / 6, cm.HEIGHT / 8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                         text="Pieces", action=GameState.Pieces)
-    Pawn_Button = button(pos=(cm.WIDTH/6, cm.HEIGHT/2), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Pawn_Button = sg.button(pos=(cm.WIDTH/6, cm.HEIGHT/2), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                          text="Pawn", action = GameState.Pawn_Des)
-    Rook_Button = button(pos=( cm.WIDTH/2, cm.HEIGHT/2), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Rook_Button = sg.button(pos=( cm.WIDTH/2, cm.HEIGHT/2), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                      text="Rook", action=GameState.Rook_Des)
-    Knight_Button = button(pos=(5 * cm.WIDTH / 6, cm.HEIGHT/2), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Knight_Button = sg.button(pos=(5 * cm.WIDTH / 6, cm.HEIGHT/2), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                      text="Knight", action=GameState.Knight_Des)
-    Queen_Button = button(pos=(cm.WIDTH / 6, 2*cm.HEIGHT/3), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Queen_Button = sg.button(pos=(cm.WIDTH / 6, 2*cm.HEIGHT/3), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                      text="Queen", action=GameState.Queen_Des)
-    Bishop_Button = button(pos=(cm.WIDTH / 2, 2*cm.HEIGHT/3), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Bishop_Button = sg.button(pos=(cm.WIDTH / 2, 2*cm.HEIGHT/3), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                      text="Bishop", action=GameState.Bishop_Des)
-    King_Button = button(pos=(5 * cm.WIDTH / 6, 2*cm.HEIGHT/3), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    King_Button = sg.button(pos=(5 * cm.WIDTH / 6, 2*cm.HEIGHT/3), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                      text="King", action=GameState.King_Des)
     buttons = [Obj_Tab, Rule_Tab, Pieces_Tab, Pawn_Button, Rook_Button, Knight_Button,
                Queen_Button, Bishop_Button, King_Button]
     #images and text for pieces
-    pawn = Element("./Images/blue_pawn.png", (Pawn_Button.pos[0] , Pawn_Button.pos[1]+ 20))
-    knight = Element("./Images/blue_knight.png", (Knight_Button.pos[0] , Knight_Button.pos[1]+ 20))
-    bishop = Element("./Images/blue_bishop.png", (Bishop_Button.pos[0] , Bishop_Button.pos[1]+ 20))
-    queen = Element("./Images/blue_queen.png", (Queen_Button.pos[0] , Queen_Button.pos[1]+ 20))
-    king = Element("./Images/blue_king.png", (King_Button.pos[0] , King_Button.pos[1]+ 20))
-    rook = Element("./Images/blue_rook.png", (Rook_Button.pos[0] , Rook_Button.pos[1]+ 20))
+    pawn = sg.Element("./Images/blue_pawn.png", (Pawn_Button.pos[0] , Pawn_Button.pos[1]+ 20))
+    knight = sg.Element("./Images/blue_knight.png", (Knight_Button.pos[0] , Knight_Button.pos[1]+ 20))
+    bishop = sg.Element("./Images/blue_bishop.png", (Bishop_Button.pos[0] , Bishop_Button.pos[1]+ 20))
+    queen = sg.Element("./Images/blue_queen.png", (Queen_Button.pos[0] , Queen_Button.pos[1]+ 20))
+    king = sg.Element("./Images/blue_king.png", (King_Button.pos[0] , King_Button.pos[1]+ 20))
+    rook = sg.Element("./Images/blue_rook.png", (Rook_Button.pos[0] , Rook_Button.pos[1]+ 20))
     images = [pawn, knight, bishop, queen, king, rook]
     while True:
         mouse_up = False

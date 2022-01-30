@@ -78,11 +78,13 @@ def start_menu():
     while True:
 
         for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == MOUSEBUTTONDOWN and rules_button.selected():
-                rulespage()
+            if event.type == MOUSEBUTTONDOWN:
+                if quit_button.selected:
+                    pygame.quit()
+                    sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if rules_button.selected:
+                    rulespage()
         screen.fill(cm.WHITE)
         b_knight.draw(screen)
         play_button.moused_over(pygame.mouse.get_pos())
