@@ -27,6 +27,10 @@ class Element(Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = pos
 
+    #scales image of element, factor is a tuple
+    def scale(self, factor):
+        return pygame.transform.scale(self.image, factor)
+
     def draw(self, surface):
         surface.blit(self.image, self.rect)
 
@@ -34,7 +38,7 @@ class Element(Sprite):
 # class for interactable elements that have text
 class button(Sprite):
     def __init__(self, pos, text, font_size, txt_col, bg_col):
-        self.mouse_over = False
+        self.selected = False
 
         unselected_img = create_text_surface(text, font_size, txt_col, bg_col)
         highlighted_img = create_text_surface(text, font_size * 1.3, txt_col, bg_col)
@@ -46,28 +50,28 @@ class button(Sprite):
 
     @property
     def img(self):
-        return self.images[1] if self.mouse_over else self.images[0]
+        return self.images[1] if self.selected else self.images[0]
 
     @property
     def rect(self):
-        return self.rects[1] if self.mouse_over else self.rects[0]
+        return self.rects[1] if self.selected else self.rects[0]
 
     # selects different button images depending if the mouse is hovered over it
     def moused_over(self, mouse_pos):
         if self.rect.collidepoint(mouse_pos):
-            self.mouse_over = True
+            self.selected = True
         else:
-            self.mouse_over = False
+            self.selected = False
 
     def draw(self, surface):
         surface.blit(self.img, self.rect)
 
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((cm.WIDTH, cm.WIDTH))
-pygame.display.set_caption('Midevil Fuzzy Logic Chess')
+pygame.display.set_caption('Medieval Fuzzy Logic Chess')
 def start_menu():
     b_knight = Element("./Images/black_knight.png", (300, 400))
-    pygame.transform.scale(b_knight.image, (400, 100))
+    b_knight.scale((cm.WIDTH / 2, cm.HEIGHT / 3))
     play_button = button(pos=(600, 300), font_size=50, txt_col=cm.BLACK, bg_col=cm.LIGHT_GRAY, text="Play")
     rules_button = button(pos=(600, 400), font_size=50, txt_col=cm.BLACK, bg_col=cm.BROWN, text="Rules")
     quit_button = button(pos=(600, 500), font_size=50, txt_col=cm.BLACK, bg_col=cm.RED, text="Quit Game")
@@ -77,7 +81,7 @@ def start_menu():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == MOUSEBUTTONDOWN and rules_button.mouse_over():
+            if event.type == MOUSEBUTTONDOWN and rules_button.selected():
                 rulespage()
         screen.fill(cm.WHITE)
         b_knight.draw(screen)
@@ -151,7 +155,7 @@ def rulespage():
         clock.tick(cm.tickrate)
 
 while True:
-    rulespage()
+    start_menu()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
