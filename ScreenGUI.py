@@ -75,8 +75,8 @@ def start_menu():
     play_button = button(pos=(600, 300), font_size=50, txt_col=cm.BLACK, bg_col=cm.LIGHT_GRAY, text="Play")
     rules_button = button(pos=(600, 400), font_size=50, txt_col=cm.BLACK, bg_col=cm.BROWN, text="Rules")
     quit_button = button(pos=(600, 500), font_size=50, txt_col=cm.BLACK, bg_col=cm.RED, text="Quit Game")
+    yeet = [play_button, rules_button, quit_button]
     while True:
-
         for event in pygame.event.get():
             if event.type == MOUSEBUTTONDOWN:
                 if quit_button.selected:
@@ -87,74 +87,130 @@ def start_menu():
                     rulespage()
         screen.fill(cm.WHITE)
         b_knight.draw(screen)
-        play_button.moused_over(pygame.mouse.get_pos())
-        play_button.draw(screen)
-        rules_button.moused_over(pygame.mouse.get_pos())
-        rules_button.draw(screen)
-        quit_button.moused_over(pygame.mouse.get_pos())
-        quit_button.draw(screen)
+
+        for yee in yeet:
+            yee.moused_over(pygame.mouse.get_pos())
+            yee.draw(screen)
 
         pygame.display.update()
         clock.tick(cm.tickrate)
 
 def rulespage():
-    HeaderText = cm.font.render("RULES PAGE", True, cm.WHITE)
-    Tab1Text = cm.font.render("Objectives", True, cm.WHITE)
-    Tab2Text = cm.font.render("Rules", True, cm.WHITE)
-    Tab3Text = cm.font.render("Pieces", True, cm.WHITE)
+    Home_Button = button(pos=(cm.WIDTH - 10, 10), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+                         text="Return to Homescreen")
+    Obj_Tab = button(pos=(cm.WIDTH/6, cm.HEIGHT/8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+                     text="Objectives")
+    Rule_Tab = button(pos=(cm.WIDTH/2, cm.HEIGHT/8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+                      text="Rules")
+    Pieces_Tab = button(pos=(5*cm.WIDTH/6, cm.HEIGHT/8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+                        text="Pieces")
+    tabs = [Home_Button, Obj_Tab, Rule_Tab, Pieces_Tab]
+    ObjectiveTab(tabs)
+
+
+
+def ObjectiveTab(tabs):
+    HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
+    ObjectiveText = cm.font.render("This is the text for our objectives.", True, cm.BLACK)
     while True:
-        #follow mouse
-        mouse = pygame.mouse.get_pos()
-        #first color the screen and add headers.
-        screen.fill(cm.blackish)
-        screen.blit(HeaderText, (cm.WIDTH / 2 , 0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                #if u click on objective tab, open objective tab
-                if cm.ObjButtonLoc[0] <= mouse[0] <= cm.ObjButtonLoc[0] + cm.ObjButtonLoc[2] and \
-                        cm.ObjButtonLoc[1] <= mouse[1] <= cm.ObjButtonLoc[1] + cm.ObjButtonLoc[3]:
-                    ObjectiveTab()
-                #if u click on RulesTab, open Rules Tab
-                if cm.RuleButtonLoc[0] <= mouse[0] <= cm.RuleButtonLoc[0] + cm.RuleButtonLoc[2] and \
-                        cm.RuleButtonLoc[1] <= mouse[1] <= cm.RuleButtonLoc[1] + cm.RuleButtonLoc[3]:
-                    RulesTab()
-                #If u click on Pieces Tab, Open Pieces Tab
-                if cm.PieceButtonLoc[0] <= mouse[0] <= cm.PieceButtonLoc[0] + cm.PieceButtonLoc[2] and \
-                        cm.PieceButtonLoc[1] <= mouse[1] <= cm.PieceButtonLoc[1] + cm.PieceButtonLoc[3]:
-                    PiecesTab()
-            #if u are hovering Objective Tab
-        if cm.ObjButtonLoc[0] <= mouse[0] <= cm.ObjButtonLoc[0] + cm.ObjButtonLoc[2] and\
-                cm.ObjButtonLoc[1] <= mouse[1] <= cm.ObjButtonLoc[1] + cm.ObjButtonLoc[3]:
-            pygame.draw.rect(screen, cm.buttonhover, cm.ObjButtonLoc)
-            pygame.draw.rect(screen, cm.buttoncolor, cm.RuleButtonLoc)
-            pygame.draw.rect(screen, cm.buttoncolor, cm.PieceButtonLoc)
-            # if u are hovering Rules Tab
-        elif cm.RuleButtonLoc[0] <= mouse[0] <= cm.RuleButtonLoc[0] + cm.RuleButtonLoc[2] and \
-                cm.RuleButtonLoc[1] <= mouse[1] <= cm.RuleButtonLoc[1] + cm.RuleButtonLoc[3]:
-            pygame.draw.rect(screen, cm.buttoncolor, cm.ObjButtonLoc)
-            pygame.draw.rect(screen, cm.buttonhover, cm.RuleButtonLoc)
-            pygame.draw.rect(screen, cm.buttoncolor, cm.PieceButtonLoc)
-            # if u are hovering Pieces Tab
-        elif cm.PieceButtonLoc[0] <= mouse[0] <= cm.PieceButtonLoc[0] + cm.PieceButtonLoc[2] and \
-                cm.PieceButtonLoc[1] <= mouse[1] <= cm.PieceButtonLoc[1] + cm.PieceButtonLoc[3]:
-            pygame.draw.rect(screen, cm.buttoncolor, cm.ObjButtonLoc)
-            pygame.draw.rect(screen, cm.buttoncolor, cm.RuleButtonLoc)
-            pygame.draw.rect(screen, cm.buttonhover, cm.PieceButtonLoc)
-            #if not hovering any, then just put buttons there.
-        else:
-                pygame.draw.rect(screen, cm.buttoncolor, cm.ObjButtonLoc)
-                pygame.draw.rect(screen, cm.buttoncolor, cm.RuleButtonLoc)
-                pygame.draw.rect(screen, cm.buttoncolor, cm.PieceButtonLoc)
-        screen.blit(Tab1Text, (cm.WIDTH / 6, cm.HEIGHT/8))
-        screen.blit(Tab2Text, (cm.WIDTH / 2, cm.HEIGHT/8))
-        screen.blit(Tab3Text, (5 * cm.WIDTH / 6, cm.HEIGHT/8))
+                if tabs[0].selected:
+                    start_menu()
+                if tabs[1].selected:
+                    ObjectiveTab(tabs)
+                if tabs[2].selected:
+                    RulesTab(tabs)
+                if tabs[3].selected:
+                    PiecesTab(tabs)
+        screen.fill(cm.WHITE)
+        screen.blit(HeaderText, (cm.WIDTH / 2, 0))
+        screen.blit(ObjectiveText, (cm.WIDTH/2, cm.HEIGHT/2))
+        for tab in tabs:
+            tab.draw(screen)
+            tab.moused_over(pygame.mouse.get_pos())
+        pygame.display.flip()
 
+def RulesTab(tabs):
+    HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
+    RulesText = cm.font.render("This is the text for the rules", True, cm.BLACK)
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if tabs[0].selected:
+                    start_menu()
+                if tabs[1].selected:
+                    ObjectiveTab(tabs)
+                if tabs[2].selected:
+                    RulesTab(tabs)
+                if tabs[3].selected:
+                    PiecesTab(tabs)
+            screen.fill(cm.WHITE)
+            screen.blit(HeaderText, (cm.WIDTH / 2, 0))
+            screen.blit(RulesText, (cm.WIDTH / 2, cm.HEIGHT / 2))
+            for tab in tabs:
+                tab.draw(screen)
+                tab.moused_over(pygame.mouse.get_pos())
+            pygame.display.flip()
+def PiecesTab(tabs):
+    positions = [(cm.WIDTH / 6, cm.HEIGHT / 2), (cm.WIDTH / 2, cm.HEIGHT / 2),
+                 (5 * cm.WIDTH / 6, cm.HEIGHT / 2), (cm.WIDTH / 6, 7 * cm.HEIGHT / 8),
+                 (cm.WIDTH / 2, 7 * cm.HEIGHT / 8), (5 * cm.WIDTH / 6, 7 * cm.HEIGHT / 8)]
+    HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
+    Pawn_Button = button(pos=(positions[0]), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+                         text="Pawn")
+    Rook_Button = button(pos=(positions[1]), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+                         text="Rook")
+    Knight_Button = button(pos=(positions[2]), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+                           text="Knight")
+    Queen_Button = button(pos=(positions[3]), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+                          text="Queen")
+    Bishop_Button = button(pos=(positions[4]), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+                           text="Bishop")
+    King_Button = button(pos=(positions[5]), font_size=50, txt_col=cm.BLACK,
+                         bg_col=cm.buttoncolor,
+                         text="King")
+    buttons = [Pawn_Button, Rook_Button, Knight_Button, Queen_Button, Bishop_Button, King_Button]
+    #images and text for pieces
+    pawn = Element("./Images/blue_pawn.png", (positions[0][0] , positions[0][1]-20))
+    rook = Element("./Images/blue_rook.png", (positions[1][0] , positions[1][1]-20))
+    knight = Element("./Images/blue_knight.png", (positions[2][0] , positions[2][1]-20))
+    queen = Element("./Images/blue_queen.png", (positions[3][0] , positions[3][1]-20))
+    bishop = Element("./Images/blue_bishop.png", (positions[4][0] , positions[4][1]-20))
+    king = Element("./Images/blue_king.png", (positions[5][0] , positions[5][1]-20))
+    images = [pawn, rook, knight, queen, bishop, king]
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if tabs[0].selected:
+                    start_menu()
+                if tabs[1].selected:
+                    ObjectiveTab(tabs)
+                if tabs[2].selected:
+                    RulesTab(tabs)
+                if tabs[3].selected:
+                    PiecesTab(tabs)
+            screen.fill(cm.WHITE)
+            screen.blit(HeaderText, (cm.WIDTH / 2, 0))
+            for tab in tabs:
+                tab.draw(screen)
+                tab.moused_over(pygame.mouse.get_pos())
+            for img in images:
+                img.draw(screen)
+            for b in buttons:
+                b.draw(screen)
+                b.moused_over(pygame.mouse.get_pos())
 
-        pygame.display.update()
-        clock.tick(cm.tickrate)
+            pygame.display.flip()
 
 while True:
     start_menu()
