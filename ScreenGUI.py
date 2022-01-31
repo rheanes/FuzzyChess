@@ -267,12 +267,12 @@ def rookPage(tabs):
                  (cm.WIDTH / 2, 3 / 8 * cm.HEIGHT),
                  (2 / 3 * cm.WIDTH, 3 / 8 * cm.HEIGHT), (5 / 6 * cm.WIDTH, 3 / 8 * cm.HEIGHT),
                  (cm.WIDTH, 3 / 8 * cm.HEIGHT)]
-    img1 = Element("./Images/blue_pawn.png", (positions[0][0], positions[0][1]))
-    img2 = Element("./Images/purple_pawn.png", (positions[1][0], positions[1][1]))
-    img3 = Element("./Images/green_pawn.png", (positions[2][0], positions[2][1]))
-    img4 = Element("./Images/red_pawn.png", (positions[3][0], positions[3][1]))
-    img5 = Element("./Images/orange_pawn.png", (positions[4][0], positions[4][1]))
-    img6 = Element("./Images/yellow_pawn.png", (positions[5][0], positions[5][1]))
+    img1 = Element("./Images/blue_rook.png", (positions[0][0], positions[0][1]))
+    img2 = Element("./Images/purple_rook.png", (positions[1][0], positions[1][1]))
+    img3 = Element("./Images/green_rook.png", (positions[2][0], positions[2][1]))
+    img4 = Element("./Images/red_rook.png", (positions[3][0], positions[3][1]))
+    img5 = Element("./Images/orange_rook.png", (positions[4][0], positions[4][1]))
+    img6 = Element("./Images/yellow_rook.png", (positions[5][0], positions[5][1]))
     imgs = [img1, img2, img3, img4, img5, img6]
     while True:
         for event in pygame.event.get():
@@ -305,12 +305,12 @@ def knightPage(tabs):
                  (cm.WIDTH / 2, 3 / 8 * cm.HEIGHT),
                  (2 / 3 * cm.WIDTH, 3 / 8 * cm.HEIGHT), (5 / 6 * cm.WIDTH, 3 / 8 * cm.HEIGHT),
                  (cm.WIDTH, 3 / 8 * cm.HEIGHT)]
-    img1 = Element("./Images/blue_pawn.png", (positions[0][0], positions[0][1]))
-    img2 = Element("./Images/purple_pawn.png", (positions[1][0], positions[1][1]))
-    img3 = Element("./Images/green_pawn.png", (positions[2][0], positions[2][1]))
-    img4 = Element("./Images/red_pawn.png", (positions[3][0], positions[3][1]))
-    img5 = Element("./Images/orange_pawn.png", (positions[4][0], positions[4][1]))
-    img6 = Element("./Images/yellow_pawn.png", (positions[5][0], positions[5][1]))
+    img1 = Element("./Images/blue_knight.png", (positions[0][0], positions[0][1]))
+    img2 = Element("./Images/purple_knight.png", (positions[1][0], positions[1][1]))
+    img3 = Element("./Images/green_knight.png", (positions[2][0], positions[2][1]))
+    img4 = Element("./Images/red_knight.png", (positions[3][0], positions[3][1]))
+    img5 = Element("./Images/orange_knight.png", (positions[4][0], positions[4][1]))
+    img6 = Element("./Images/yellow_knight.png", (positions[5][0], positions[5][1]))
     imgs = [img1, img2, img3, img4, img5, img6]
     while True:
         for event in pygame.event.get():
@@ -339,17 +339,10 @@ def knightPage(tabs):
 def queenPage(tabs):
     HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
     PieceDes = cm.font.render("Description of the piece Here.", True, cm.BLACK)
-    positions = [(cm.WIDTH / 6, 3 / 8 * cm.HEIGHT), (cm.WIDTH / 3, 3 / 8 * cm.HEIGHT),
-                 (cm.WIDTH / 2, 3 / 8 * cm.HEIGHT),
-                 (2 / 3 * cm.WIDTH, 3 / 8 * cm.HEIGHT), (5 / 6 * cm.WIDTH, 3 / 8 * cm.HEIGHT),
-                 (cm.WIDTH, 3 / 8 * cm.HEIGHT)]
-    img1 = Element("./Images/blue_pawn.png", (positions[0][0], positions[0][1]))
-    img2 = Element("./Images/purple_pawn.png", (positions[1][0], positions[1][1]))
-    img3 = Element("./Images/green_pawn.png", (positions[2][0], positions[2][1]))
-    img4 = Element("./Images/red_pawn.png", (positions[3][0], positions[3][1]))
-    img5 = Element("./Images/orange_pawn.png", (positions[4][0], positions[4][1]))
-    img6 = Element("./Images/yellow_pawn.png", (positions[5][0], positions[5][1]))
-    imgs = [img1, img2, img3, img4, img5, img6]
+    positions = [(cm.WIDTH/4, 3 / 8 * cm.HEIGHT), (cm.WIDTH * 3/4, 3 / 8 * cm.HEIGHT)]
+    img1 = Element("./Images/blue_queen.png", (positions[0][0], positions[0][1]))
+    img2 = Element("./Images/red_queen.png", (positions[1][0], positions[1][1]))
+    imgs = [img1, img2]
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -377,17 +370,13 @@ def queenPage(tabs):
 def bishopPage(tabs):
     HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
     PieceDes = cm.font.render("Description of the piece Here.", True, cm.BLACK)
-    positions = [(cm.WIDTH / 6, 3 / 8 * cm.HEIGHT), (cm.WIDTH / 3, 3 / 8 * cm.HEIGHT),
-                 (cm.WIDTH / 2, 3 / 8 * cm.HEIGHT),
-                 (2 / 3 * cm.WIDTH, 3 / 8 * cm.HEIGHT), (5 / 6 * cm.WIDTH, 3 / 8 * cm.HEIGHT),
-                 (cm.WIDTH, 3 / 8 * cm.HEIGHT)]
-    img1 = Element("./Images/blue_pawn.png", (positions[0][0], positions[0][1]))
-    img2 = Element("./Images/purple_pawn.png", (positions[1][0], positions[1][1]))
-    img3 = Element("./Images/green_pawn.png", (positions[2][0], positions[2][1]))
-    img4 = Element("./Images/red_pawn.png", (positions[3][0], positions[3][1]))
-    img5 = Element("./Images/orange_pawn.png", (positions[4][0], positions[4][1]))
-    img6 = Element("./Images/yellow_pawn.png", (positions[5][0], positions[5][1]))
-    imgs = [img1, img2, img3, img4, img5, img6]
+    positions = [(cm.WIDTH / 3, 3 / 8 * cm.HEIGHT), (cm.WIDTH / 2, 3 / 8 * cm.HEIGHT),
+                 (cm.WIDTH * 2/3, 3 / 8 * cm.HEIGHT), (5/6 * cm.WIDTH, 3 / 8 * cm.HEIGHT)]
+    img1 = Element("./Images/green_bishop.png", (positions[0][0], positions[0][1]))
+    img2 = Element("./Images/purple_bishop.png", (positions[1][0], positions[1][1]))
+    img3 = Element("./Images/orange_bishop.png", (positions[2][0], positions[2][1]))
+    img4 = Element("./Images/yellow_bishop.png", (positions[3][0], positions[3][1]))
+    imgs = [img1, img2, img3, img4]
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -415,17 +404,10 @@ def bishopPage(tabs):
 def kingPage(tabs):
     HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
     PieceDes = cm.font.render("Description of the piece Here.", True, cm.BLACK)
-    positions = [(cm.WIDTH / 6, 3 / 8 * cm.HEIGHT), (cm.WIDTH / 3, 3 / 8 * cm.HEIGHT),
-                 (cm.WIDTH / 2, 3 / 8 * cm.HEIGHT),
-                 (2 / 3 * cm.WIDTH, 3 / 8 * cm.HEIGHT), (5 / 6 * cm.WIDTH, 3 / 8 * cm.HEIGHT),
-                 (cm.WIDTH, 3 / 8 * cm.HEIGHT)]
-    img1 = Element("./Images/blue_pawn.png", (positions[0][0], positions[0][1]))
-    img2 = Element("./Images/purple_pawn.png", (positions[1][0], positions[1][1]))
-    img3 = Element("./Images/green_pawn.png", (positions[2][0], positions[2][1]))
-    img4 = Element("./Images/red_pawn.png", (positions[3][0], positions[3][1]))
-    img5 = Element("./Images/orange_pawn.png", (positions[4][0], positions[4][1]))
-    img6 = Element("./Images/yellow_pawn.png", (positions[5][0], positions[5][1]))
-    imgs = [img1, img2, img3, img4, img5, img6]
+    positions = [(cm.WIDTH / 4, 3 / 8 * cm.HEIGHT), (cm.WIDTH * 3 / 4, 3 / 8 * cm.HEIGHT)]
+    img1 = Element("./Images/blue_king.png", (positions[0][0], positions[0][1]))
+    img2 = Element("./Images/red_king.png", (positions[1][0], positions[1][1]))
+    imgs = [img1, img2]
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
