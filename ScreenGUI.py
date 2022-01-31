@@ -159,28 +159,31 @@ def RulesTab(tabs):
                 tab.moused_over(pygame.mouse.get_pos())
             pygame.display.flip()
 def PiecesTab(tabs):
+    positions = [(cm.WIDTH / 6, cm.HEIGHT / 2), (cm.WIDTH / 2, cm.HEIGHT / 2),
+                 (5 * cm.WIDTH / 6, cm.HEIGHT / 2), (cm.WIDTH / 6, 2 * cm.HEIGHT / 3),
+                 (cm.WIDTH / 2, 2 * cm.HEIGHT / 3), (5 * cm.WIDTH / 6, 2 * cm.HEIGHT / 3)]
     HeaderText = cm.font.render("RULES PAGE", True, cm.WHITE)
-    Pawn_Button = button(pos=(cm.WIDTH / 6, cm.HEIGHT / 2), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Pawn_Button = button(pos=(positions[0]), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                          text="Pawn")
-    Rook_Button = button(pos=(cm.WIDTH / 2, cm.HEIGHT / 2), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Rook_Button = button(pos=(positions[1]), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                          text="Rook")
-    Knight_Button = button(pos=(5 * cm.WIDTH / 6, cm.HEIGHT / 2), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Knight_Button = button(pos=(positions[2]), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                            text="Knight")
-    Queen_Button = button(pos=(cm.WIDTH / 6, 2 * cm.HEIGHT / 3), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Queen_Button = button(pos=(positions[3]), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                           text="Queen")
-    Bishop_Button = button(pos=(cm.WIDTH / 2, 2 * cm.HEIGHT / 3), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Bishop_Button = button(pos=(positions[4]), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                            text="Bishop")
-    King_Button = button(pos=(5 * cm.WIDTH / 6, 2 * cm.HEIGHT / 3), font_size=50, txt_col=cm.BLACK,
+    King_Button = button(pos=(positions[5]), font_size=50, txt_col=cm.BLACK,
                          bg_col=cm.buttoncolor,
                          text="King")
     buttons = [Pawn_Button, Rook_Button, Knight_Button, Queen_Button, Bishop_Button, King_Button]
     #images and text for pieces
-    pawn = Element("./Images/blue_pawn.png", (Pawn_Button.pos[0] , Pawn_Button.pos[1]+ 20))
-    knight = Element("./Images/blue_knight.png", (Knight_Button.pos[0] , Knight_Button.pos[1]+ 20))
-    bishop = Element("./Images/blue_bishop.png", (Bishop_Button.pos[0] , Bishop_Button.pos[1]+ 20))
-    queen = Element("./Images/blue_queen.png", (Queen_Button.pos[0] , Queen_Button.pos[1]+ 20))
-    king = Element("./Images/blue_king.png", (King_Button.pos[0] , King_Button.pos[1]+ 20))
-    rook = Element("./Images/blue_rook.png", (Rook_Button.pos[0] , Rook_Button.pos[1]+ 20))
+    pawn = Element("./Images/blue_pawn.png", (positions[0][0] , positions[0][1]))
+    knight = Element("./Images/blue_knight.png", (positions[0][0] , positions[0][1]))
+    bishop = Element("./Images/blue_bishop.png", (positions[0][0] , positions[0][1]))
+    queen = Element("./Images/blue_queen.png", (positions[0][0] , positions[0][1]))
+    king = Element("./Images/blue_king.png", (positions[0][0] , positions[0][1]))
+    rook = Element("./Images/blue_rook.png", (positions[0][0] , positions[0][1]))
     images = [pawn, knight, bishop, queen, king, rook]
     while True:
         screen.blit(HeaderText, (cm.WIDTH / 2, 0))
@@ -202,6 +205,11 @@ def PiecesTab(tabs):
             for tab in tabs:
                 tab.draw(screen)
                 tab.moused_over(pygame.mouse.get_pos())
+            for b in buttons:
+                b.draw(screen)
+                b.moused_over(pygame.mouse.get_pos())
+            for img in images:
+                img.draw(screen)
             pygame.display.flip()
 
 while True:
