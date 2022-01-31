@@ -199,6 +199,18 @@ def PiecesTab(tabs):
                     RulesTab(tabs)
                 if tabs[3].selected:
                     PiecesTab(tabs)
+                if buttons[0].selected:
+                    pawnPage(tabs)
+                if buttons[1].selected:
+                    rookPage(tabs)
+                if buttons[2].selected:
+                    knightPage(tabs)
+                if buttons[3].selected:
+                    queenPage(tabs)
+                if buttons[4].selected:
+                    bishopPage(tabs)
+                if buttons[5].selected:
+                    kingPage(tabs)
             screen.fill(cm.WHITE)
             screen.blit(HeaderText, (cm.WIDTH / 2, 0))
             for tab in tabs:
@@ -211,6 +223,233 @@ def PiecesTab(tabs):
                 b.moused_over(pygame.mouse.get_pos())
 
             pygame.display.flip()
+
+def pawnPage(tabs):
+    HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
+    PieceDes = cm.font.render("Description of the piece Here.", True, cm.BLACK)
+    positions = [(cm.WIDTH/6, 3/8*cm.HEIGHT), (cm.WIDTH/3, 3/8*cm.HEIGHT), (cm.WIDTH/2, 3/8*cm.HEIGHT),
+                 (2/3*cm.WIDTH, 3/8*cm.HEIGHT), (5/6*cm.WIDTH, 3/8*cm.HEIGHT), (cm.WIDTH, 3/8*cm.HEIGHT)]
+    img1 = Element("./Images/blue_pawn.png", (positions[0][0] , positions[0][1]))
+    img2 = Element("./Images/purple_pawn.png", (positions[1][0], positions[1][1]))
+    img3 = Element("./Images/green_pawn.png", (positions[2][0], positions[2][1]))
+    img4 = Element("./Images/red_pawn.png", (positions[3][0], positions[3][1]))
+    img5 = Element("./Images/orange_pawn.png", (positions[4][0], positions[4][1]))
+    img6 = Element("./Images/yellow_pawn.png", (positions[5][0], positions[5][1]))
+    imgs = [img1, img2, img3, img4, img5, img6]
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if tabs[0].selected:
+                    start_menu()
+                if tabs[1].selected:
+                    ObjectiveTab(tabs)
+                if tabs[2].selected:
+                    RulesTab(tabs)
+                if tabs[3].selected:
+                    PiecesTab(tabs)
+        screen.fill(cm.WHITE)
+        screen.blit(HeaderText, (cm.WIDTH / 2, 0))
+        for tab in tabs:
+            tab.draw(screen)
+            tab.moused_over(pygame.mouse.get_pos())
+        for img in imgs:
+            img.draw(screen)
+        screen.blit(PieceDes, (cm.WIDTH / 4, 5 / 8 * cm.HEIGHT))
+        pygame.display.flip()
+
+def rookPage(tabs):
+    HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
+    PieceDes = cm.font.render("Description of the piece Here.", True, cm.BLACK)
+    positions = [(cm.WIDTH / 6, 3 / 8 * cm.HEIGHT), (cm.WIDTH / 3, 3 / 8 * cm.HEIGHT),
+                 (cm.WIDTH / 2, 3 / 8 * cm.HEIGHT),
+                 (2 / 3 * cm.WIDTH, 3 / 8 * cm.HEIGHT), (5 / 6 * cm.WIDTH, 3 / 8 * cm.HEIGHT),
+                 (cm.WIDTH, 3 / 8 * cm.HEIGHT)]
+    img1 = Element("./Images/blue_pawn.png", (positions[0][0], positions[0][1]))
+    img2 = Element("./Images/purple_pawn.png", (positions[1][0], positions[1][1]))
+    img3 = Element("./Images/green_pawn.png", (positions[2][0], positions[2][1]))
+    img4 = Element("./Images/red_pawn.png", (positions[3][0], positions[3][1]))
+    img5 = Element("./Images/orange_pawn.png", (positions[4][0], positions[4][1]))
+    img6 = Element("./Images/yellow_pawn.png", (positions[5][0], positions[5][1]))
+    imgs = [img1, img2, img3, img4, img5, img6]
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if tabs[0].selected:
+                    start_menu()
+                if tabs[1].selected:
+                    ObjectiveTab(tabs)
+                if tabs[2].selected:
+                    RulesTab(tabs)
+                if tabs[3].selected:
+                    PiecesTab(tabs)
+        screen.fill(cm.WHITE)
+        screen.blit(HeaderText, (cm.WIDTH / 2, 0))
+        for tab in tabs:
+            tab.draw(screen)
+            tab.moused_over(pygame.mouse.get_pos())
+        for img in imgs:
+            img.draw(screen)
+        screen.blit(PieceDes, (cm.WIDTH / 4, 5 / 8 * cm.HEIGHT))
+        pygame.display.flip()
+
+def knightPage(tabs):
+    HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
+    PieceDes = cm.font.render("Description of the piece Here.", True, cm.BLACK)
+    positions = [(cm.WIDTH / 6, 3 / 8 * cm.HEIGHT), (cm.WIDTH / 3, 3 / 8 * cm.HEIGHT),
+                 (cm.WIDTH / 2, 3 / 8 * cm.HEIGHT),
+                 (2 / 3 * cm.WIDTH, 3 / 8 * cm.HEIGHT), (5 / 6 * cm.WIDTH, 3 / 8 * cm.HEIGHT),
+                 (cm.WIDTH, 3 / 8 * cm.HEIGHT)]
+    img1 = Element("./Images/blue_pawn.png", (positions[0][0], positions[0][1]))
+    img2 = Element("./Images/purple_pawn.png", (positions[1][0], positions[1][1]))
+    img3 = Element("./Images/green_pawn.png", (positions[2][0], positions[2][1]))
+    img4 = Element("./Images/red_pawn.png", (positions[3][0], positions[3][1]))
+    img5 = Element("./Images/orange_pawn.png", (positions[4][0], positions[4][1]))
+    img6 = Element("./Images/yellow_pawn.png", (positions[5][0], positions[5][1]))
+    imgs = [img1, img2, img3, img4, img5, img6]
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if tabs[0].selected:
+                    start_menu()
+                if tabs[1].selected:
+                    ObjectiveTab(tabs)
+                if tabs[2].selected:
+                    RulesTab(tabs)
+                if tabs[3].selected:
+                    PiecesTab(tabs)
+        screen.fill(cm.WHITE)
+        screen.blit(HeaderText, (cm.WIDTH / 2, 0))
+        for tab in tabs:
+            tab.draw(screen)
+            tab.moused_over(pygame.mouse.get_pos())
+        for img in imgs:
+            img.draw(screen)
+        screen.blit(PieceDes, (cm.WIDTH / 4, 5 / 8 * cm.HEIGHT))
+        pygame.display.flip()
+
+def queenPage(tabs):
+    HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
+    PieceDes = cm.font.render("Description of the piece Here.", True, cm.BLACK)
+    positions = [(cm.WIDTH / 6, 3 / 8 * cm.HEIGHT), (cm.WIDTH / 3, 3 / 8 * cm.HEIGHT),
+                 (cm.WIDTH / 2, 3 / 8 * cm.HEIGHT),
+                 (2 / 3 * cm.WIDTH, 3 / 8 * cm.HEIGHT), (5 / 6 * cm.WIDTH, 3 / 8 * cm.HEIGHT),
+                 (cm.WIDTH, 3 / 8 * cm.HEIGHT)]
+    img1 = Element("./Images/blue_pawn.png", (positions[0][0], positions[0][1]))
+    img2 = Element("./Images/purple_pawn.png", (positions[1][0], positions[1][1]))
+    img3 = Element("./Images/green_pawn.png", (positions[2][0], positions[2][1]))
+    img4 = Element("./Images/red_pawn.png", (positions[3][0], positions[3][1]))
+    img5 = Element("./Images/orange_pawn.png", (positions[4][0], positions[4][1]))
+    img6 = Element("./Images/yellow_pawn.png", (positions[5][0], positions[5][1]))
+    imgs = [img1, img2, img3, img4, img5, img6]
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if tabs[0].selected:
+                    start_menu()
+                if tabs[1].selected:
+                    ObjectiveTab(tabs)
+                if tabs[2].selected:
+                    RulesTab(tabs)
+                if tabs[3].selected:
+                    PiecesTab(tabs)
+        screen.fill(cm.WHITE)
+        screen.blit(HeaderText, (cm.WIDTH / 2, 0))
+        for tab in tabs:
+            tab.draw(screen)
+            tab.moused_over(pygame.mouse.get_pos())
+        for img in imgs:
+            img.draw(screen)
+        screen.blit(PieceDes, (cm.WIDTH / 4, 5 / 8 * cm.HEIGHT))
+        pygame.display.flip()
+
+def bishopPage(tabs):
+    HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
+    PieceDes = cm.font.render("Description of the piece Here.", True, cm.BLACK)
+    positions = [(cm.WIDTH / 6, 3 / 8 * cm.HEIGHT), (cm.WIDTH / 3, 3 / 8 * cm.HEIGHT),
+                 (cm.WIDTH / 2, 3 / 8 * cm.HEIGHT),
+                 (2 / 3 * cm.WIDTH, 3 / 8 * cm.HEIGHT), (5 / 6 * cm.WIDTH, 3 / 8 * cm.HEIGHT),
+                 (cm.WIDTH, 3 / 8 * cm.HEIGHT)]
+    img1 = Element("./Images/blue_pawn.png", (positions[0][0], positions[0][1]))
+    img2 = Element("./Images/purple_pawn.png", (positions[1][0], positions[1][1]))
+    img3 = Element("./Images/green_pawn.png", (positions[2][0], positions[2][1]))
+    img4 = Element("./Images/red_pawn.png", (positions[3][0], positions[3][1]))
+    img5 = Element("./Images/orange_pawn.png", (positions[4][0], positions[4][1]))
+    img6 = Element("./Images/yellow_pawn.png", (positions[5][0], positions[5][1]))
+    imgs = [img1, img2, img3, img4, img5, img6]
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if tabs[0].selected:
+                    start_menu()
+                if tabs[1].selected:
+                    ObjectiveTab(tabs)
+                if tabs[2].selected:
+                    RulesTab(tabs)
+                if tabs[3].selected:
+                    PiecesTab(tabs)
+        screen.fill(cm.WHITE)
+        screen.blit(HeaderText, (cm.WIDTH / 2, 0))
+        for tab in tabs:
+            tab.draw(screen)
+            tab.moused_over(pygame.mouse.get_pos())
+        for img in imgs:
+            img.draw(screen)
+        screen.blit(PieceDes, (cm.WIDTH / 4, 5 / 8 * cm.HEIGHT))
+        pygame.display.flip()
+
+def kingPage(tabs):
+    HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
+    PieceDes = cm.font.render("Description of the piece Here.", True, cm.BLACK)
+    positions = [(cm.WIDTH / 6, 3 / 8 * cm.HEIGHT), (cm.WIDTH / 3, 3 / 8 * cm.HEIGHT),
+                 (cm.WIDTH / 2, 3 / 8 * cm.HEIGHT),
+                 (2 / 3 * cm.WIDTH, 3 / 8 * cm.HEIGHT), (5 / 6 * cm.WIDTH, 3 / 8 * cm.HEIGHT),
+                 (cm.WIDTH, 3 / 8 * cm.HEIGHT)]
+    img1 = Element("./Images/blue_pawn.png", (positions[0][0], positions[0][1]))
+    img2 = Element("./Images/purple_pawn.png", (positions[1][0], positions[1][1]))
+    img3 = Element("./Images/green_pawn.png", (positions[2][0], positions[2][1]))
+    img4 = Element("./Images/red_pawn.png", (positions[3][0], positions[3][1]))
+    img5 = Element("./Images/orange_pawn.png", (positions[4][0], positions[4][1]))
+    img6 = Element("./Images/yellow_pawn.png", (positions[5][0], positions[5][1]))
+    imgs = [img1, img2, img3, img4, img5, img6]
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if tabs[0].selected:
+                    start_menu()
+                if tabs[1].selected:
+                    ObjectiveTab(tabs)
+                if tabs[2].selected:
+                    RulesTab(tabs)
+                if tabs[3].selected:
+                    PiecesTab(tabs)
+        screen.fill(cm.WHITE)
+        screen.blit(HeaderText, (cm.WIDTH / 2, 0))
+        for tab in tabs:
+            tab.draw(screen)
+            tab.moused_over(pygame.mouse.get_pos())
+        for img in imgs:
+            img.draw(screen)
+        screen.blit(PieceDes, (cm.WIDTH / 4, 5/8*cm.HEIGHT))
+        pygame.display.flip()
+
 
 while True:
     start_menu()
