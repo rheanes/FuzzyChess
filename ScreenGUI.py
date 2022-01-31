@@ -178,12 +178,12 @@ def PiecesTab(tabs):
                          text="King")
     buttons = [Pawn_Button, Rook_Button, Knight_Button, Queen_Button, Bishop_Button, King_Button]
     #images and text for pieces
-    pawn = Element("./Images/blue_pawn.png", (positions[0][0] , positions[0][1]))
-    knight = Element("./Images/blue_knight.png", (positions[0][0] , positions[0][1]))
-    bishop = Element("./Images/blue_bishop.png", (positions[0][0] , positions[0][1]))
-    queen = Element("./Images/blue_queen.png", (positions[0][0] , positions[0][1]))
-    king = Element("./Images/blue_king.png", (positions[0][0] , positions[0][1]))
-    rook = Element("./Images/blue_rook.png", (positions[0][0] , positions[0][1]))
+    pawn = Element("./Images/blue_pawn.png", (positions[0][0] , positions[0][1]-20))
+    knight = Element("./Images/blue_knight.png", (positions[1][0] , positions[1][1]-20))
+    bishop = Element("./Images/blue_bishop.png", (positions[2][0] , positions[2][1]-20))
+    queen = Element("./Images/blue_queen.png", (positions[3][0] , positions[3][1]-20))
+    king = Element("./Images/blue_king.png", (positions[4][0] , positions[4][1]-20))
+    rook = Element("./Images/blue_rook.png", (positions[5][0] , positions[5][1]-20))
     images = [pawn, knight, bishop, queen, king, rook]
     while True:
         screen.blit(HeaderText, (cm.WIDTH / 2, 0))
