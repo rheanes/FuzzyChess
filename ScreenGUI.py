@@ -96,7 +96,7 @@ def start_menu():
         clock.tick(cm.tickrate)
 
 def rulespage():
-    Home_Button = button(pos=(cm.WIDTH - 10, 10), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+    Home_Button = button(pos=(cm.WIDTH / 2, 0.2 * cm.HEIGHT), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                          text="Return to Homescreen")
     Obj_Tab = button(pos=(cm.WIDTH/6, cm.HEIGHT/8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                      text="Objectives")
