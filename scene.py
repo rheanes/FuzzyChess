@@ -2,36 +2,6 @@ import common as cm
 import ScreenGUI as sg
 import pygame
 import sys
-def rulespage(screen):
-    HeaderText = cm.font.render("RULES PAGE", True, cm.WHITE)
-    Home_Button = sg.button(pos=(cm.WIDTH - 10, cm.HEIGHT - 10), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
-                         text="Objectives", action=GameState.Title)
-    Obj_Tab = sg.button(pos=(cm.WIDTH/6, cm.HEIGHT/8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
-                     text="Objectives", action = GameState.Objectives)
-    Rule_Tab = sg.button(pos=(cm.WIDTH/2, cm.HEIGHT/8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
-                      text="Rules", action = GameState.Rules)
-    Pieces_Tab = sg.button(pos=(5*cm.WIDTH/6, cm.HEIGHT/8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
-                        text="Pieces", action = GameState.Pieces)
-    buttons = [Obj_Tab, Rule_Tab, Pieces_Tab]
-
-    while True:
-        screen.fill(cm.blackish)
-        screen.blit(HeaderText, (cm.WIDTH / 2 , 0))
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                mouse_up = True
-        screen.fill(cm.WHITE)
-
-        for tab in tabs:
-            ui_action = sg.button.update(pygame.mouse.get_pos(), mouse_up)
-            if ui_action is not None:
-                return ui_action
-            tab.draw(screen)
-
-        pygame.display.flip()
 
 
 def ObjectiveTab(screen):
