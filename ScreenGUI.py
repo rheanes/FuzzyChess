@@ -12,12 +12,10 @@ import sys
 
 pygame.init()
 
-
 def create_text_surface(text, font_size, txt_rgb, bg_rgb):
     font = pygame.freetype.SysFont("Arial", font_size)
     surface, _ = font.render(text=text, fgcolor=txt_rgb, bgcolor=bg_rgb)
     return surface
-
 
 # class for non-interactable UI elements
 class Element(Sprite):
@@ -33,7 +31,6 @@ class Element(Sprite):
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
-
 
 # class for interactable elements that have text
 class button(Sprite):
@@ -75,9 +72,12 @@ def start_menu():
     play_button = button(pos=(600, 300), font_size=50, txt_col=cm.BLACK, bg_col=cm.LIGHT_GRAY, text="Play")
     rules_button = button(pos=(600, 400), font_size=50, txt_col=cm.BLACK, bg_col=cm.BROWN, text="Rules")
     quit_button = button(pos=(600, 500), font_size=50, txt_col=cm.BLACK, bg_col=cm.RED, text="Quit Game")
-    yeet = [play_button, rules_button, quit_button]
+    buttons = [play_button, rules_button, quit_button]
     while True:
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
             if event.type == MOUSEBUTTONDOWN:
                 if quit_button.selected:
                     pygame.quit()
@@ -87,10 +87,9 @@ def start_menu():
                     rulespage()
         screen.fill(cm.WHITE)
         b_knight.draw(screen)
-
-        for yee in yeet:
-            yee.moused_over(pygame.mouse.get_pos())
-            yee.draw(screen)
+        for b in buttons:
+            b.moused_over(pygame.mouse.get_pos())
+            b.draw(screen)
 
         pygame.display.update()
         clock.tick(cm.tickrate)
@@ -106,8 +105,6 @@ def rulespage():
                         text="Pieces")
     tabs = [Home_Button, Obj_Tab, Rule_Tab, Pieces_Tab]
     ObjectiveTab(tabs)
-
-
 
 def ObjectiveTab(tabs):
     HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
@@ -158,6 +155,7 @@ def RulesTab(tabs):
                 tab.draw(screen)
                 tab.moused_over(pygame.mouse.get_pos())
             pygame.display.flip()
+
 def PiecesTab(tabs):
     positions = [(cm.WIDTH / 6, cm.HEIGHT / 2), (cm.WIDTH / 2, cm.HEIGHT / 2),
                  (5 * cm.WIDTH / 6, cm.HEIGHT / 2), (cm.WIDTH / 6, 7 * cm.HEIGHT / 8),
@@ -432,7 +430,6 @@ def kingPage(tabs):
         screen.blit(PieceDes, (cm.WIDTH / 4, 5/8*cm.HEIGHT))
         pygame.display.flip()
 
-
 while True:
     start_menu()
     for event in pygame.event.get():
@@ -441,5 +438,3 @@ while True:
             sys.exit()
     pygame.display.update()
     clock.tick(cm.tickrate)
-
-
