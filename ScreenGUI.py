@@ -18,6 +18,16 @@ def create_text_surface(text, font_size, txt_rgb, bg_rgb):
     surface, _ = font.render(text=text, fgcolor=txt_rgb, bgcolor=bg_rgb)
     return surface
 
+#turns text into list of seperate strings for multiline elements
+def create_multiline_text(text, font):
+    pos_x = cm.WIDTH * 0.1
+    pos_y = cm.HEIGHT * 0.35
+    pos = pos_x, pos_y
+    out = []
+    for t in text:
+        out.append(font.render(t, True, cm.BLACK))
+    return out, pos
+
 
 # class for non-interactable UI elements
 class Element(Sprite):
@@ -28,8 +38,8 @@ class Element(Sprite):
         self.rect.center = pos
 
     #scales image of element, factor is a tuple
-    def scale(self, factor):
-        return pygame.transform.scale(self.image, factor)
+    def scale(self, x_factor, y_factor):
+        return pygame.transform.scale(self.image, (x_factor,y_factor))
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
@@ -71,7 +81,8 @@ screen = pygame.display.set_mode((cm.WIDTH, cm.WIDTH))
 pygame.display.set_caption('Medieval Fuzzy Logic Chess')
 def start_menu():
     b_knight = Element("./Images/black_knight.png", (300, 400))
-    b_knight.scale((cm.WIDTH / 2, cm.HEIGHT / 3))
+    b_knight.scale(400, 400)
+    
     play_button = button(pos=(600, 300), font_size=50, txt_col=cm.BLACK, bg_col=cm.LIGHT_GRAY, text="Play")
     rules_button = button(pos=(600, 400), font_size=50, txt_col=cm.BLACK, bg_col=cm.BROWN, text="Rules")
     quit_button = button(pos=(600, 500), font_size=50, txt_col=cm.BLACK, bg_col=cm.RED, text="Quit Game")
@@ -110,8 +121,12 @@ def rulespage():
 
 
 def ObjectiveTab(tabs):
-    HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
-    ObjectiveText = cm.font.render("This is the text for our objectives.", True, cm.BLACK)
+    HeaderText = cm.font.render("Objectives", True, cm.BLACK)
+    ObjectiveText = ["Much like normal chess, the goal of fuzzy logic ",
+                     "chess is to capture the enemy's king. However, ",
+                     "there are no checks or checkmates and capturing",
+                     "the king is like capturing any other piece."]
+    text_label, text_pos = create_multiline_text(ObjectiveText, cm.font)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -127,8 +142,10 @@ def ObjectiveTab(tabs):
                 if tabs[3].selected:
                     PiecesTab(tabs)
         screen.fill(cm.WHITE)
-        screen.blit(HeaderText, (cm.WIDTH / 2, 0))
-        screen.blit(ObjectiveText, (cm.WIDTH/2, cm.HEIGHT/2))
+        screen.blit(HeaderText, (cm.WIDTH * 0.40, cm.HEIGHT / 4))
+        #loops through text list and blits each line to the screen
+        for line in range(len(text_label)):
+            screen.blit(text_label[line], (text_pos[0], text_pos[1] + (line * 30)+ (5 * line)))
         for tab in tabs:
             tab.draw(screen)
             tab.moused_over(pygame.mouse.get_pos())
