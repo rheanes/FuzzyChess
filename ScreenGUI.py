@@ -20,7 +20,7 @@ def create_text_surface(text, font_size, txt_rgb, bg_rgb):
 
 #turns text into list of seperate strings for multiline elements
 def create_multiline_text(text, font):
-    pos_x = cm.WIDTH * 0.1
+    pos_x = cm.WIDTH * 0.05
     pos_y = cm.HEIGHT * 0.35
     pos = pos_x, pos_y
     out = []
@@ -153,7 +153,22 @@ def ObjectiveTab(tabs):
 
 def RulesTab(tabs):
     HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
-    RulesText = cm.font.render("This is the text for the rules", True, cm.BLACK)
+    RulesText = ["FuzzyChess is played on a chessboard with standard chess pieces, but the rules are ",
+    "different. The pieces are split into three different corps led by the king and two bishops.",
+    "Each player can make up to three actions per turn, one with each corps. In this version of",
+    "chess, attacking and moving are separate actions so a single piece cannot both move and ",
+    "attack, with the only exceptions being the knights. When a piece tries to capture another,", 
+    "a die must be rolled to determine if the capture is a success. If successful, the capturing ",
+    "piece moves to the square of the captured piece. If failed, the capturing piece remains in ",
+    "its original position.", " ", 
+    "The three corps are the left, right, and center corps. The left three pawns, the left knight",
+    ",and the left bishop make up the left corps; the right three pawns, the right knight, and ",
+    "the right bishop make up the right corps; the king, the queen, the two middle pawns, and ",
+    "the rooks make up the center corps. As mentioned before, the king and two bishops are the",
+    "commanders of these corps. The commanders can either issue commands to their troops or ", 
+    "make an action themselves, but if a command is issued to a troop, the commander may",
+    "also move one square in any direction.  "]
+    text_label, text_pos = create_multiline_text(RulesText, cm.rulesfont)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -169,12 +184,14 @@ def RulesTab(tabs):
                 if tabs[3].selected:
                     PiecesTab(tabs)
             screen.fill(cm.WHITE)
-            screen.blit(HeaderText, (cm.WIDTH / 2, 0))
-            screen.blit(RulesText, (cm.WIDTH / 2, cm.HEIGHT / 2))
+            screen.blit(HeaderText, (cm.WIDTH * 0.4, cm.HEIGHT / 4))
+            for line in range(len(text_label)):
+                screen.blit(text_label[line], (text_pos[0], text_pos[1] + (line * 18) + (10 * line)))
             for tab in tabs:
                 tab.draw(screen)
                 tab.moused_over(pygame.mouse.get_pos())
             pygame.display.flip()
+
 def PiecesTab(tabs):
     positions = [(cm.WIDTH / 6, cm.HEIGHT / 2), (cm.WIDTH / 2, cm.HEIGHT / 2),
                  (5 * cm.WIDTH / 6, cm.HEIGHT / 2), (cm.WIDTH / 6, 7 * cm.HEIGHT / 8),
