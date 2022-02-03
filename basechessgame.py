@@ -6,8 +6,6 @@
 import pygame
 import sys
 
-# from board import *
-from common import *
 from pieces import *
 from board import *
 
