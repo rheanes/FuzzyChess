@@ -39,7 +39,7 @@ class Element(Sprite):
 
     #scales image of element, factor is a tuple
     def scale(self, x_factor, y_factor):
-        return pygame.transform.scale(self.image, (x_factor,y_factor))
+        pygame.transform.scale(self.image, (x_factor,y_factor))
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
@@ -80,12 +80,12 @@ clock = pygame.time.Clock()
 screen = pygame.display.set_mode((cm.WIDTH, cm.WIDTH))
 pygame.display.set_caption('Medieval Fuzzy Logic Chess')
 def start_menu():
-    b_knight = Element("./Images/black_knight.png", (300, 400))
+    b_knight = Element("./Images/black_knight.png", (cm.WIDTH * 0.375, cm.HEIGHT * 0.5))
     b_knight.scale(400, 400)
     
-    play_button = button(pos=(600, 300), font_size=50, txt_col=cm.BLACK, bg_col=cm.LIGHT_GRAY, text="Play")
-    rules_button = button(pos=(600, 400), font_size=50, txt_col=cm.BLACK, bg_col=cm.BROWN, text="Rules")
-    quit_button = button(pos=(600, 500), font_size=50, txt_col=cm.BLACK, bg_col=cm.RED, text="Quit Game")
+    play_button = button(pos=(cm.WIDTH * 0.75, cm.HEIGHT * 0.375), font_size=50, txt_col=cm.BLACK, bg_col=cm.LIGHT_GRAY, text="Play")
+    rules_button = button(pos=(cm.WIDTH * 0.75, cm.HEIGHT * 0.5), font_size=50, txt_col=cm.BLACK, bg_col=cm.BROWN, text="Rules")
+    quit_button = button(pos=(cm.WIDTH * 0.75, cm.HEIGHT * 0.625), font_size=50, txt_col=cm.BLACK, bg_col=cm.RED, text="Quit Game")
     yeet = [play_button, rules_button, quit_button]
     while True:
         for event in pygame.event.get():
