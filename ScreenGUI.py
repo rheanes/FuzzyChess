@@ -3,6 +3,7 @@ import sys
 import pygame
 
 from pydoc import text
+from basechessgame import playgame
 import pygame
 import pygame.freetype
 from pygame.locals import *
@@ -96,6 +97,9 @@ def start_menu():
             if event.type == MOUSEBUTTONDOWN:
                 if rules_button.selected:
                     rulespage()
+            if event.type == MOUSEBUTTONDOWN:
+                if play_button.selected:
+                    playgame()
         screen.fill(cm.WHITE)
         b_knight.draw(screen)
 
