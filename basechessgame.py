@@ -1,5 +1,6 @@
 import sys
 
+from common import *
 from board import *
 from pieces import *
 
@@ -14,50 +15,6 @@ clock = pygame.time.Clock()
 
 
 def update_display():
-    """
-    starting_order = {(0, 0): pygame.image.load(rr.image),
-                      (1, 0): pygame.image.load(on.image),
-                      (2, 0): pygame.image.load(ob.image),
-                      (3, 0): pygame.image.load(rq.image),
-                      (4, 0): pygame.image.load(rk.image),
-                      (5, 0): pygame.image.load(yb.image),
-                      (6, 0): pygame.image.load(yn.image),
-                      (7, 0): pygame.image.load(rr.image),
-                      (0, 1): pygame.image.load(op.image),
-                      (1, 1): pygame.image.load(op.image),
-                      (2, 1): pygame.image.load(op.image),
-                      (3, 1): pygame.image.load(rp.image),
-                      (4, 1): pygame.image.load(rp.image),
-                      (5, 1): pygame.image.load(yp.image),
-                      (6, 1): pygame.image.load(yp.image),
-                      (7, 1): pygame.image.load(yp.image),
-
-                      (0, 2): None, (1, 2): None, (2, 2): None, (3, 2): None,
-                      (4, 2): None, (5, 2): None, (6, 2): None, (7, 2): None,
-                      (0, 3): None, (1, 3): None, (2, 3): None, (3, 3): None,
-                      (4, 3): None, (5, 3): None, (6, 3): None, (7, 3): None,
-                      (0, 4): None, (1, 4): None, (2, 4): None, (3, 4): None,
-                      (4, 4): None, (5, 4): None, (6, 4): None, (7, 4): None,
-                      (0, 5): None, (1, 5): None, (2, 5): None, (3, 5): None,
-                      (4, 5): None, (5, 5): None, (6, 5): None, (7, 5): None,
-
-                      (0, 6): pygame.image.load(gp.image),
-                      (1, 6): pygame.image.load(gp.image),
-                      (2, 6): pygame.image.load(gp.image),
-                      (3, 6): pygame.image.load(bp.image),
-                      (4, 6): pygame.image.load(bp.image),
-                      (5, 6): pygame.image.load(pp.image),
-                      (6, 6): pygame.image.load(pp.image),
-                      (7, 6): pygame.image.load(pp.image),
-                      (0, 7): pygame.image.load(br.image),
-                      (1, 7): pygame.image.load(gn.image),
-                      (2, 7): pygame.image.load(gb.image),
-                      (3, 7): pygame.image.load(bq.image),
-                      (4, 7): pygame.image.load(bk.image),
-                      (5, 7): pygame.image.load(pb.image),
-                      (6, 7): pygame.image.load(pn.image),
-                      (7, 7): pygame.image.load(br.image)}
-    """
     """ Draw board squares """
     for row in board:
         for square in row:
@@ -139,8 +96,10 @@ def move_piece(curr_pos: Square, new_pos: Square):
     board[curr_pos.row][curr_pos.col].piece = None
     print('pieced moved')
 
-
-if __name__ == '__main__':
+#Comment out def playgame(): and uncomment if __name__ = '__main__' if you want to run
+#basechessgame.py without ScreenGUI.py
+#if __name__ == '__main__':
+def playgame():
     create_board()
     # button_group = Group()
     current_square = None

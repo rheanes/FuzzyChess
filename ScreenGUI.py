@@ -3,6 +3,7 @@ import sys
 import pygame
 
 from pydoc import text
+from basechessgame import playgame
 import pygame
 import pygame.freetype
 from pygame.locals import *
@@ -39,7 +40,7 @@ class Element(Sprite):
 
     #scales image of element, factor is a tuple
     def scale(self, x_factor, y_factor):
-        return pygame.transform.scale(self.image, (x_factor,y_factor))
+        pygame.transform.scale(self.image, (x_factor,y_factor))
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
@@ -80,18 +81,15 @@ clock = pygame.time.Clock()
 screen = pygame.display.set_mode((cm.WIDTH, cm.WIDTH))
 pygame.display.set_caption('Medieval Fuzzy Logic Chess')
 def start_menu():
-    b_knight = Element("./Images/black_knight.png", (300, 400))
+    b_knight = Element("./Images/black_knight.png", (cm.WIDTH * 0.375, cm.HEIGHT * 0.5))
     b_knight.scale(400, 400)
-
-    play_button = button(pos=(600, 300), font_size=50, txt_col=cm.BLACK, bg_col=cm.LIGHT_GRAY, text="Play")
-    rules_button = button(pos=(600, 400), font_size=50, txt_col=cm.BLACK, bg_col=cm.BROWN, text="Rules")
-    quit_button = button(pos=(600, 500), font_size=50, txt_col=cm.BLACK, bg_col=cm.RED, text="Quit Game")
-    buttons = [play_button, rules_button, quit_button]
+    
+    play_button = button(pos=(cm.WIDTH * 0.75, cm.HEIGHT * 0.375), font_size=50, txt_col=cm.BLACK, bg_col=cm.LIGHT_GRAY, text="Play")
+    rules_button = button(pos=(cm.WIDTH * 0.75, cm.HEIGHT * 0.5), font_size=50, txt_col=cm.BLACK, bg_col=cm.BROWN, text="Rules")
+    quit_button = button(pos=(cm.WIDTH * 0.75, cm.HEIGHT * 0.625), font_size=50, txt_col=cm.BLACK, bg_col=cm.RED, text="Quit Game")
+    yeet = [play_button, rules_button, quit_button]
     while True:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
             if event.type == MOUSEBUTTONDOWN:
                 if quit_button.selected:
                     pygame.quit()
@@ -99,11 +97,15 @@ def start_menu():
             if event.type == MOUSEBUTTONDOWN:
                 if rules_button.selected:
                     rulespage()
+            if event.type == MOUSEBUTTONDOWN:
+                if play_button.selected:
+                    playgame()
         screen.fill(cm.WHITE)
         b_knight.draw(screen)
-        for b in buttons:
-            b.moused_over(pygame.mouse.get_pos())
-            b.draw(screen)
+
+        for yee in yeet:
+            yee.moused_over(pygame.mouse.get_pos())
+            yee.draw(screen)
 
         pygame.display.update()
         clock.tick(cm.tickrate)
@@ -159,15 +161,15 @@ def RulesTab(tabs):
     "different. The pieces are split into three different corps led by the king and two bishops.",
     "Each player can make up to three actions per turn, one with each corps. In this version of",
     "chess, attacking and moving are separate actions so a single piece cannot both move and ",
-    "attack, with the only exceptions being the knights. When a piece tries to capture another,",
+    "attack, with the only exceptions being the knights. When a piece tries to capture another,", 
     "a die must be rolled to determine if the capture is a success. If successful, the capturing ",
     "piece moves to the square of the captured piece. If failed, the capturing piece remains in ",
-    "its original position.", " ",
+    "its original position.", " ", 
     "The three corps are the left, right, and center corps. The left three pawns, the left knight",
     ",and the left bishop make up the left corps; the right three pawns, the right knight, and ",
     "the right bishop make up the right corps; the king, the queen, the two middle pawns, and ",
     "the rooks make up the center corps. As mentioned before, the king and two bishops are the",
-    "commanders of these corps. The commanders can either issue commands to their troops or ",
+    "commanders of these corps. The commanders can either issue commands to their troops or ", 
     "make an action themselves, but if a command is issued to a troop, the commander may",
     "also move one square in any direction.  "]
     text_label, text_pos = create_multiline_text(RulesText, cm.rulesfont)
@@ -186,12 +188,14 @@ def RulesTab(tabs):
                 if tabs[3].selected:
                     PiecesTab(tabs)
             screen.fill(cm.WHITE)
-            screen.blit(HeaderText, (cm.WIDTH / 2, 0))
-            screen.blit(RulesText, (cm.WIDTH / 2, cm.HEIGHT / 2))
+            screen.blit(HeaderText, (cm.WIDTH * 0.4, cm.HEIGHT / 4))
+            for line in range(len(text_label)):
+                screen.blit(text_label[line], (text_pos[0], text_pos[1] + (line * 18) + (10 * line)))
             for tab in tabs:
                 tab.draw(screen)
                 tab.moused_over(pygame.mouse.get_pos())
             pygame.display.flip()
+
 def PiecesTab(tabs):
     positions = [(cm.WIDTH / 6, cm.HEIGHT / 2), (cm.WIDTH / 2, cm.HEIGHT / 2),
                  (5 * cm.WIDTH / 6, cm.HEIGHT / 2), (cm.WIDTH / 6, 7 * cm.HEIGHT / 8),

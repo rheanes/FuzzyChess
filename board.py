@@ -20,35 +20,35 @@ board = [[Square(None) for _ in range(8)] for _ in range(8)]
 
 # creates the board
 def create_board():
-    board[0] = [Square(Piece(Team.RED, Type.ROOK, pygame.image.load('./images/red_rook.png'))),
-                Square(Piece(Team.ORANGE, Type.KNIGHT, pygame.image.load('./images/orange_knight.png'))),
-                Square(Piece(Team.ORANGE, Type.BISHOP, pygame.image.load('./images/orange_bishop.png'))),
-                Square(Piece(Team.RED, Type.QUEEN, pygame.image.load('./images/red_queen.png'))),
-                Square(Piece(Team.RED, Type.KING, pygame.image.load('./images/red_king.png'))),
-                Square(Piece(Team.YELLOW, Type.BISHOP, pygame.image.load('./images/yellow_bishop.png'))),
-                Square(Piece(Team.YELLOW, Type.KNIGHT, pygame.image.load('./images/yellow_knight.png'))),
-                Square(Piece(Team.RED, Type.ROOK, pygame.image.load('./images/red_rook.png')))]
+    board[0] = [Square(Piece(Team.RED, Type.ROOK, pygame.image.load('./Images/red_rook.png'))),
+                Square(Piece(Team.ORANGE, Type.KNIGHT, pygame.image.load('./Images/orange_knight.png'))),
+                Square(Piece(Team.ORANGE, Type.BISHOP, pygame.image.load('./Images/orange_bishop.png'))),
+                Square(Piece(Team.RED, Type.QUEEN, pygame.image.load('./Images/red_queen.png'))),
+                Square(Piece(Team.RED, Type.KING, pygame.image.load('./Images/red_king.png'))),
+                Square(Piece(Team.YELLOW, Type.BISHOP, pygame.image.load('./Images/yellow_bishop.png'))),
+                Square(Piece(Team.YELLOW, Type.KNIGHT, pygame.image.load('./Images/yellow_knight.png'))),
+                Square(Piece(Team.RED, Type.ROOK, pygame.image.load('./Images/red_rook.png')))]
 
-    board[7] = [Square(Piece(Team.BLUE, Type.ROOK, pygame.image.load('./images/blue_rook.png'))),
-                Square(Piece(Team.GREEN, Type.KNIGHT, pygame.image.load('./images/green_knight.png'))),
-                Square(Piece(Team.GREEN, Type.BISHOP, pygame.image.load('./images/green_bishop.png'))),
-                Square(Piece(Team.BLUE, Type.QUEEN, pygame.image.load('./images/blue_queen.png'))),
-                Square(Piece(Team.BLUE, Type.KING, pygame.image.load('./images/blue_king.png'))),
-                Square(Piece(Team.PURPLE, Type.BISHOP, pygame.image.load('./images/purple_bishop.png'))),
-                Square(Piece(Team.PURPLE, Type.KNIGHT, pygame.image.load('./images/purple_knight.png'))),
-                Square(Piece(Team.BLUE, Type.ROOK, pygame.image.load('./images/blue_rook.png')))]
+    board[7] = [Square(Piece(Team.BLUE, Type.ROOK, pygame.image.load('./Images/blue_rook.png'))),
+                Square(Piece(Team.GREEN, Type.KNIGHT, pygame.image.load('./Images/green_knight.png'))),
+                Square(Piece(Team.GREEN, Type.BISHOP, pygame.image.load('./Images/green_bishop.png'))),
+                Square(Piece(Team.BLUE, Type.QUEEN, pygame.image.load('./Images/blue_queen.png'))),
+                Square(Piece(Team.BLUE, Type.KING, pygame.image.load('./Images/blue_king.png'))),
+                Square(Piece(Team.PURPLE, Type.BISHOP, pygame.image.load('./Images/purple_bishop.png'))),
+                Square(Piece(Team.PURPLE, Type.KNIGHT, pygame.image.load('./Images/purple_knight.png'))),
+                Square(Piece(Team.BLUE, Type.ROOK, pygame.image.load('./Images/blue_rook.png')))]
 
     for col in range(8):
         if col < 3:
-            board[1][col] = Square(Piece(Team.ORANGE, Type.PAWN, pygame.image.load('./images/orange_pawn.png')))
-            board[6][col] = Square(Piece(Team.GREEN, Type.PAWN, pygame.image.load('./images/green_pawn.png')))
+            board[1][col] = Square(Piece(Team.ORANGE, Type.PAWN, pygame.image.load('./Images/orange_pawn.png')))
+            board[6][col] = Square(Piece(Team.GREEN, Type.PAWN, pygame.image.load('./Images/green_pawn.png')))
 
         if 3 < col < 5:
-            board[1][col] = Square(Piece(Team.RED, Type.PAWN, pygame.image.load('./images/red_pawn.png')))
-            board[6][col] = Square(Piece(Team.BLUE, Type.PAWN, pygame.image.load('./images/blue_pawn.png')))
+            board[1][col] = Square(Piece(Team.RED, Type.PAWN, pygame.image.load('./Images/red_pawn.png')))
+            board[6][col] = Square(Piece(Team.BLUE, Type.PAWN, pygame.image.load('./Images/blue_pawn.png')))
         else:
-            board[1][col] = Square(Piece(Team.YELLOW, Type.PAWN, pygame.image.load('./images/yellow_pawn.png')))
-            board[6][col] = Square(Piece(Team.PURPLE, Type.PAWN, pygame.image.load('./images/purple_pawn.png')))
+            board[1][col] = Square(Piece(Team.YELLOW, Type.PAWN, pygame.image.load('./Images/yellow_pawn.png')))
+            board[6][col] = Square(Piece(Team.PURPLE, Type.PAWN, pygame.image.load('./Images/purple_pawn.png')))
 
     for row in range(8):
         for col in range(8):
