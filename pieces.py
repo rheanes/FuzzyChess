@@ -5,9 +5,11 @@ import enum
 """
 
 class Team(enum.Enum):
+    # Player AI
     YELLOW = 0
     RED = 1
     ORANGE = 2
+    # Player Human
     PURPLE = 3
     BLUE = 4
     GREEN = 5
@@ -36,6 +38,15 @@ class Piece:
         self.type = type
         self.action = None
         self.image = image
+
+enemies = {
+    Team.BLUE : [Team.RED, Team.ORANGE, Team.YELLOW],
+    Team.GREEN : [Team.RED, Team.ORANGE, Team.YELLOW],
+    Team.PURPLE : [Team.RED, Team.ORANGE, Team.YELLOW],
+    Team.RED : [Team.BLUE, Team.GREEN, Team.PURPLE],
+    Team.ORANGE : [Team.BLUE, Team.GREEN, Team.PURPLE],
+    Team.YELLOW : [Team.BLUE, Team.GREEN, Team.PURPLE]
+}
 
 """
     Create instances of pieces.
