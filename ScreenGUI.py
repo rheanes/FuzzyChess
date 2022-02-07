@@ -20,9 +20,9 @@ def create_text_surface(text, font_size, txt_rgb, bg_rgb):
     return surface
 
 #turns text into list of seperate strings for multiline elements
-def create_multiline_text(text, font):
-    pos_x = cm.WIDTH * 0.05
-    pos_y = cm.HEIGHT * 0.35
+def create_multiline_text(text, font, x, y):
+    pos_x = x
+    pos_y = y
     pos = pos_x, pos_y
     out = []
     for t in text:
@@ -81,7 +81,7 @@ clock = pygame.time.Clock()
 screen = pygame.display.set_mode((cm.WIDTH, cm.WIDTH))
 pygame.display.set_caption('Medieval Fuzzy Logic Chess')
 def start_menu():
-    b_knight = Element("./Images/black_knight.png", (cm.WIDTH * 0.375, cm.HEIGHT * 0.5))
+    b_knight = Element("./Images/blue_knight.png", (cm.WIDTH * 0.375, cm.HEIGHT * 0.5))
     b_knight.scale(400, 400)
     
     play_button = button(pos=(cm.WIDTH * 0.75, cm.HEIGHT * 0.375), font_size=50, txt_col=cm.BLACK, bg_col=cm.LIGHT_GRAY, text="Play")
@@ -130,7 +130,7 @@ def ObjectiveTab(tabs):
                      "chess is to capture the enemy's king. However, ",
                      "there are no checks or checkmates and capturing",
                      "the king is like capturing any other piece."]
-    text_label, text_pos = create_multiline_text(ObjectiveText, cm.font)
+    text_label, text_pos = create_multiline_text(ObjectiveText, cm.font, cm.WIDTH * 0.05, cm.HEIGHT * 0.35)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -172,7 +172,7 @@ def RulesTab(tabs):
     "commanders of these corps. The commanders can either issue commands to their troops or ", 
     "make an action themselves, but if a command is issued to a troop, the commander may",
     "also move one square in any direction.  "]
-    text_label, text_pos = create_multiline_text(RulesText, cm.rulesfont)
+    text_label, text_pos = create_multiline_text(RulesText, cm.rulesfont,cm.WIDTH * 0.05 ,cm.HEIGHT * 0.35)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -200,7 +200,7 @@ def PiecesTab(tabs):
     positions = [(cm.WIDTH / 6, cm.HEIGHT / 2), (cm.WIDTH / 2, cm.HEIGHT / 2),
                  (5 * cm.WIDTH / 6, cm.HEIGHT / 2), (cm.WIDTH / 6, 7 * cm.HEIGHT / 8),
                  (cm.WIDTH / 2, 7 * cm.HEIGHT / 8), (5 * cm.WIDTH / 6, 7 * cm.HEIGHT / 8)]
-    HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
+    #HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
     Pawn_Button = button(pos=(positions[0]), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
                          text="Pawn")
     Rook_Button = button(pos=(positions[1]), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
@@ -250,7 +250,7 @@ def PiecesTab(tabs):
                 if buttons[5].selected:
                     kingPage(tabs)
             screen.fill(cm.WHITE)
-            screen.blit(HeaderText, (cm.WIDTH / 2, 0))
+            #screen.blit(HeaderText, (cm.WIDTH / 2, 0))
             for tab in tabs:
                 tab.draw(screen)
                 tab.moused_over(pygame.mouse.get_pos())
@@ -263,8 +263,14 @@ def PiecesTab(tabs):
             pygame.display.flip()
 
 def pawnPage(tabs):
-    HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
-    PieceDes = cm.font.render("Description of the piece Here.", True, cm.BLACK)
+    HeaderText = cm.font.render("The Pawn", True, cm.BLACK)
+    PieceDes = ["The basic infantry and usually considered cannon ",
+    "fodder, they can only move one square at a time", 
+    "and may only move forward or forward diagonally, ", 
+    "they can only attack in the same way they move, when",
+    "they reach the other side, they do not gain a",
+    "promotion like in traditional chess."]
+    text_label, text_pos = create_multiline_text(PieceDes, cm.font, cm.WIDTH * 0.05, cm.HEIGHT * 0.60)
     positions = [(cm.WIDTH/6, 3/8*cm.HEIGHT), (cm.WIDTH/3, 3/8*cm.HEIGHT), (cm.WIDTH/2, 3/8*cm.HEIGHT),
                  (2/3*cm.WIDTH, 3/8*cm.HEIGHT), (5/6*cm.WIDTH, 3/8*cm.HEIGHT), (cm.WIDTH, 3/8*cm.HEIGHT)]
     img1 = Element("./Images/blue_pawn.png", (positions[0][0] , positions[0][1]))
@@ -289,18 +295,26 @@ def pawnPage(tabs):
                 if tabs[3].selected:
                     PiecesTab(tabs)
         screen.fill(cm.WHITE)
-        screen.blit(HeaderText, (cm.WIDTH / 2, 0))
+        screen.blit(HeaderText, (cm.WIDTH * 0.4, cm.HEIGHT * 0.55))
         for tab in tabs:
             tab.draw(screen)
             tab.moused_over(pygame.mouse.get_pos())
         for img in imgs:
             img.draw(screen)
-        screen.blit(PieceDes, (cm.WIDTH / 4, 5 / 8 * cm.HEIGHT))
+        for line in range(len(text_label)):
+            screen.blit(text_label[line], (text_pos[0], text_pos[1] + (line * 18) + (10 * line)))
+        
         pygame.display.flip()
 
 def rookPage(tabs):
-    HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
-    PieceDes = cm.font.render("Description of the piece Here.", True, cm.BLACK)
+    HeaderText = cm.font.render("The Rook", True, cm.BLACK)
+    PieceDes = ["The archers, they provide long range support, they "
+    ,"can move up to two squares in any direction and do "
+    , "not have to move in a straight line, they can make an  "
+    , "attack in any direction up to three squares away,  "
+    , "they do this by shooting over any squares between "
+    , "them and their target  so only the target is hit."]
+    text_label, text_pos = create_multiline_text(PieceDes, cm.font, cm.WIDTH * 0.05, cm.HEIGHT * 0.60)
     positions = [(cm.WIDTH / 6, 3 / 8 * cm.HEIGHT), (cm.WIDTH / 3, 3 / 8 * cm.HEIGHT),
                  (cm.WIDTH / 2, 3 / 8 * cm.HEIGHT),
                  (2 / 3 * cm.WIDTH, 3 / 8 * cm.HEIGHT), (5 / 6 * cm.WIDTH, 3 / 8 * cm.HEIGHT),
@@ -327,18 +341,27 @@ def rookPage(tabs):
                 if tabs[3].selected:
                     PiecesTab(tabs)
         screen.fill(cm.WHITE)
-        screen.blit(HeaderText, (cm.WIDTH / 2, 0))
+        screen.blit(HeaderText, (cm.WIDTH * 0.4, cm.HEIGHT * 0.55))
         for tab in tabs:
             tab.draw(screen)
             tab.moused_over(pygame.mouse.get_pos())
         for img in imgs:
             img.draw(screen)
-        screen.blit(PieceDes, (cm.WIDTH / 4, 5 / 8 * cm.HEIGHT))
+        for line in range(len(text_label)):
+            screen.blit(text_label[line], (text_pos[0], text_pos[1] + (line * 18) + (10 * line)))
         pygame.display.flip()
 
 def knightPage(tabs):
-    HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
-    PieceDes = cm.font.render("Description of the piece Here.", True, cm.BLACK)
+    HeaderText = cm.font.render("The Knight", True, cm.BLACK)
+    PieceDes = ["The mounted attackers charging into battle, they can "
+    , "move up to four squares in any direction and do not "
+    , "have to move in a straight line, they can attack any  "
+    , "adjacent square, they also have the ability to move and "
+    ,"attack in the same turn, this counts as an ambush and "
+    ,"when capturing an enemy after moving they add one to  "
+    ,"the die roll (note: when the knight makes the attack, their "
+    ,"turn is over, you must move, then attack)."]
+    text_label, text_pos = create_multiline_text(PieceDes, cm.font, cm.WIDTH * 0.05, cm.HEIGHT * 0.60)
     positions = [(cm.WIDTH / 6, 3 / 8 * cm.HEIGHT), (cm.WIDTH / 3, 3 / 8 * cm.HEIGHT),
                  (cm.WIDTH / 2, 3 / 8 * cm.HEIGHT),
                  (2 / 3 * cm.WIDTH, 3 / 8 * cm.HEIGHT), (5 / 6 * cm.WIDTH, 3 / 8 * cm.HEIGHT),
@@ -365,18 +388,22 @@ def knightPage(tabs):
                 if tabs[3].selected:
                     PiecesTab(tabs)
         screen.fill(cm.WHITE)
-        screen.blit(HeaderText, (cm.WIDTH / 2, 0))
+        screen.blit(HeaderText, (cm.WIDTH * 0.4, cm.HEIGHT * 0.55))
         for tab in tabs:
             tab.draw(screen)
             tab.moused_over(pygame.mouse.get_pos())
         for img in imgs:
             img.draw(screen)
-        screen.blit(PieceDes, (cm.WIDTH / 4, 5 / 8 * cm.HEIGHT))
+        for line in range(len(text_label)):
+            screen.blit(text_label[line], (text_pos[0], text_pos[1] + (line * 18) + (10 * line)))
         pygame.display.flip()
 
 def queenPage(tabs):
-    HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
-    PieceDes = cm.font.render("Description of the piece Here.", True, cm.BLACK)
+    HeaderText = cm.font.render("The Queen", True, cm.BLACK)
+    PieceDes = ["The king’s right (or left) hand, she can move up to three "
+    , "squares in any direction and does not have to move in a "
+    ,"straight line, she can also attack any adjacent squares."]
+    text_label, text_pos = create_multiline_text(PieceDes, cm.font, cm.WIDTH * 0.05, cm.HEIGHT * 0.60)
     positions = [(cm.WIDTH/4, 3 / 8 * cm.HEIGHT), (cm.WIDTH * 3/4, 3 / 8 * cm.HEIGHT)]
     img1 = Element("./Images/blue_queen.png", (positions[0][0], positions[0][1]))
     img2 = Element("./Images/red_queen.png", (positions[1][0], positions[1][1]))
@@ -396,18 +423,25 @@ def queenPage(tabs):
                 if tabs[3].selected:
                     PiecesTab(tabs)
         screen.fill(cm.WHITE)
-        screen.blit(HeaderText, (cm.WIDTH / 2, 0))
+        screen.blit(HeaderText, (cm.WIDTH * 0.4, cm.HEIGHT * 0.55))
         for tab in tabs:
             tab.draw(screen)
             tab.moused_over(pygame.mouse.get_pos())
         for img in imgs:
             img.draw(screen)
-        screen.blit(PieceDes, (cm.WIDTH / 4, 5 / 8 * cm.HEIGHT))
+        for line in range(len(text_label)):
+            screen.blit(text_label[line], (text_pos[0], text_pos[1] + (line * 18) + (10 * line)))
         pygame.display.flip()
 
 def bishopPage(tabs):
-    HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
-    PieceDes = cm.font.render("Description of the piece Here.", True, cm.BLACK)
+    HeaderText = cm.font.render("The Bishop", True, cm.BLACK)
+    PieceDes = ["The king’s trusted advisors, if they are captured, then"
+    , "the pieces under their command fall to the king’s "
+    , "command and that corps’ action is lost for the remainder  "
+    , "of the game, they can move up to two squares  "
+    ,"in any direction and do not have to move in a straight "
+    ,"line, they can attack any adjacent square."]
+    text_label, text_pos = create_multiline_text(PieceDes, cm.font, cm.WIDTH * 0.05, cm.HEIGHT * 0.60)
     positions = [(cm.WIDTH / 3, 3 / 8 * cm.HEIGHT), (cm.WIDTH / 2, 3 / 8 * cm.HEIGHT),
                  (cm.WIDTH * 2/3, 3 / 8 * cm.HEIGHT), (5/6 * cm.WIDTH, 3 / 8 * cm.HEIGHT)]
     img1 = Element("./Images/green_bishop.png", (positions[0][0], positions[0][1]))
@@ -430,18 +464,26 @@ def bishopPage(tabs):
                 if tabs[3].selected:
                     PiecesTab(tabs)
         screen.fill(cm.WHITE)
-        screen.blit(HeaderText, (cm.WIDTH / 2, 0))
+        screen.blit(HeaderText, (cm.WIDTH * 0.4, cm.HEIGHT * 0.55))
         for tab in tabs:
             tab.draw(screen)
             tab.moused_over(pygame.mouse.get_pos())
         for img in imgs:
             img.draw(screen)
-        screen.blit(PieceDes, (cm.WIDTH / 4, 5 / 8 * cm.HEIGHT))
+        for line in range(len(text_label)):
+            screen.blit(text_label[line], (text_pos[0], text_pos[1] + (line * 18) + (10 * line)))
         pygame.display.flip()
 
 def kingPage(tabs):
-    HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
-    PieceDes = cm.font.render("Description of the piece Here.", True, cm.BLACK)
+    HeaderText = cm.font.render("The King", True, cm.BLACK)
+    PieceDes = ["if this piece is captured you lose, the leader of the army"
+    , "and commander of the center corps, can move up to "
+    , "three squares in any direction and does not have to  "
+    , "move in a straight line, can attack any adjacent square, "
+    ,"can delegate pieces in his corps to another corps or ",
+    "pull pieces from the other corps into his own (this counts as "
+    ,"this corps action)."]
+    text_label, text_pos = create_multiline_text(PieceDes, cm.font, cm.WIDTH * 0.05, cm.HEIGHT * 0.60)
     positions = [(cm.WIDTH / 4, 3 / 8 * cm.HEIGHT), (cm.WIDTH * 3 / 4, 3 / 8 * cm.HEIGHT)]
     img1 = Element("./Images/blue_king.png", (positions[0][0], positions[0][1]))
     img2 = Element("./Images/red_king.png", (positions[1][0], positions[1][1]))
@@ -461,13 +503,14 @@ def kingPage(tabs):
                 if tabs[3].selected:
                     PiecesTab(tabs)
         screen.fill(cm.WHITE)
-        screen.blit(HeaderText, (cm.WIDTH / 2, 0))
+        screen.blit(HeaderText, (cm.WIDTH * 0.4, cm.HEIGHT * 0.55))
         for tab in tabs:
             tab.draw(screen)
             tab.moused_over(pygame.mouse.get_pos())
         for img in imgs:
             img.draw(screen)
-        screen.blit(PieceDes, (cm.WIDTH / 4, 5/8*cm.HEIGHT))
+        for line in range(len(text_label)):
+            screen.blit(text_label[line], (text_pos[0], text_pos[1] + (line * 18) + (10 * line)))
         pygame.display.flip()
 
 

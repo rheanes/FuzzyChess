@@ -9,9 +9,9 @@ HEIGHT = 800 # screen height
 
 
 #fonts
-font = pygame.font.SysFont("comicsansms", 30)
-smallfont = pygame.font.SysFont("comicsansms", 30)
-rulesfont = pygame.font.SysFont("comicsansms", 18)
+font = pygame.font.SysFont("Arial", 30)
+smallfont = pygame.font.SysFont("Arial", 30)
+rulesfont = pygame.font.SysFont("Arial", 18)
 
 #colors
 BLACK = (0, 0, 0)

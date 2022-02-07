@@ -42,6 +42,7 @@ def update_display():
             pygame.draw.line(window, BLACK, (j * gap, 0), (j * gap, WIDTH))
     pygame.display.update()
     clock.tick(15)
+    #print('testing')
 
 
 def find_square_coordinates(position: tuple[int, int]):
