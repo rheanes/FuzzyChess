@@ -102,7 +102,7 @@ def move_piece(curr_pos: Square, new_pos: Square):
 #if __name__ == '__main__':
 def playgame():
     create_board()
-    # button_group = Group()
+    square_group = []
     current_square = None
     bottom_player_turn = True
     while True:
@@ -120,8 +120,11 @@ def playgame():
                 # conditions for selected_square
                 if current_square is None:  # have piece selected
                     # positions = potential_piece_moves(board[row][col], (row, col))
-                    current_square = chosen_square
-                    potential_piece_moves(board[row][col])
+                    if chosen_square.piece is None:
+                        pass
+                    else:
+                        current_square = chosen_square
+                        potential_piece_moves(board[row][col])
                     """
                     for position in positions:
                         row, col = position
