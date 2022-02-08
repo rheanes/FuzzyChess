@@ -55,12 +55,21 @@ def find_square_coordinates(position: tuple[int, int]):
 
 # highlight possible moves
 # add 'type: Action' for type of action
-def highlight_moves(positions: tuple[int, int]):
+def highlight_moves(positions: tuple[int, int], team: Team):
     for row, col in positions:
         if board[row][col].color == BLUE:
             pass
         else:
-            board[row][col].color = BLUE
+            if board[row][col].piece is None:
+                board[row][col].color = BLUE
+            elif board[row][col].piece is not None:
+                if board[row][col].piece.team in enemies[team]:
+                    board[row][col].color = RED
+                else:
+                    pass
+            else:
+                pass
+
             """
             if type is Action.MOVE:
                 board[row][col].color = BLUE
@@ -75,11 +84,11 @@ def potential_piece_moves(square: Square):
     piece = square.piece
     if piece.type == Type.PAWN:
         if piece.team == Team.YELLOW or (piece.team == Team.RED):
-            highlight_moves(pawn_moves_top((square.row, square.col)))
+            highlight_moves(pawn_moves_top((square.row, square.col)), square.piece.team)
         else:
-            highlight_moves(pawn_moves_bottom((square.row, square.col)))
+            highlight_moves(pawn_moves_bottom((square.row, square.col)), square.piece.team)
     if (piece.type == Type.KING) or (piece.type == Type.QUEEN):
-        highlight_moves(king_queen_moves((square.row, square.col)))
+        highlight_moves(king_queen_moves((square.row, square.col)), square.piece.team)
     """
     elif piece.type == Type.ROOK:
         highlight_moves(rook_moves((square.row, square.col)))
@@ -89,7 +98,7 @@ def potential_piece_moves(square: Square):
         highlight_moves(queen_moves((square.row, square.col)))
     """
     if piece.type == Type.KNIGHT:
-        highlight_moves(knight_moves((square.row, square.col)))
+        highlight_moves(knight_moves((square.row, square.col)), square.piece.team)
 
 
 def move_piece(curr_pos: Square, new_pos: Square):
@@ -102,7 +111,7 @@ def move_piece(curr_pos: Square, new_pos: Square):
 #if __name__ == '__main__':
 def playgame():
     create_board()
-    # button_group = Group()
+    square_group = []
     current_square = None
     bottom_player_turn = True
     while True:
@@ -120,8 +129,11 @@ def playgame():
                 # conditions for selected_square
                 if current_square is None:  # have piece selected
                     # positions = potential_piece_moves(board[row][col], (row, col))
-                    current_square = chosen_square
-                    potential_piece_moves(board[row][col])
+                    if chosen_square.piece is None:
+                        pass
+                    else:
+                        current_square = chosen_square
+                        potential_piece_moves(board[row][col])
                     """
                     for position in positions:
                         row, col = position
