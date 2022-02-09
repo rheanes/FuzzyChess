@@ -3,19 +3,20 @@ import sys
 from common import *
 from board import *
 from pieces import *
+import guielements as GUI
 
-DEFAULT_IMAGE_SIZE = (WIDTH / 8, WIDTH / 8)
-SQUARE_WIDTH = SQUARE_HEIGHT = WIDTH / 8
+DEFAULT_IMAGE_SIZE = (GAME_WIDTH / 8, GAME_WIDTH / 8)
+SQUARE_WIDTH = SQUARE_HEIGHT = GAME_WIDTH / 8
 clock = pygame.time.Clock()
 
 def update_display(screen):
     """ Draw board squares """
     for row in board:
         for square in row:
-            x_pos = square.col * (WIDTH // 8)
-            y_pos = square.row * (WIDTH // 8)
+            x_pos = square.col * (GAME_WIDTH // 8)
+            y_pos = square.row * (GAME_WIDTH // 8)
             # will draw squares with no piece
-            pygame.draw.rect(screen, square.color, (x_pos, y_pos, WIDTH, HEIGHT))
+            pygame.draw.rect(screen, square.color, (x_pos, y_pos, GAME_WIDTH, HEIGHT))
             # if square.color == BLUE:
             # print('square color:', square.color)
             # print('finished drawing highlighted rectangles')
@@ -29,18 +30,18 @@ def update_display(screen):
                 # screen.blit(pygame.transform.scale(starting_order[(square.row, square.col)], DEFAULT_IMAGE_SIZE), (square.x_pos, square.y_pos))
 
     """ Draw board lines """
-    gap = WIDTH // 8
+    gap = GAME_WIDTH // 8
     for i in range(8):
-        pygame.draw.line(screen, BLACK, (0, i * gap), (WIDTH, i * gap))
-        for j in range(8):
-            pygame.draw.line(screen, BLACK, (j * gap, 0), (j * gap, WIDTH))
+        pygame.draw.line(screen, BLACK, (0, i * gap), (GAME_WIDTH, i * gap))
+        for j in range(9):
+            pygame.draw.line(screen, BLACK, (j * gap, 0), (j * gap, GAME_WIDTH))
     pygame.display.update()
     clock.tick(15)
     #print('testing')
 
 
 def find_square_coordinates(position: tuple[int, int]):
-    interval = WIDTH / 8
+    interval = GAME_WIDTH / 8
     x, y = position
     row = y // interval
     col = x // interval
@@ -104,6 +105,9 @@ def move_piece(curr_pos: Square, new_pos: Square):
 #basechessgame.py without ScreenGUI.py
 #if __name__ == '__main__':
 def playgame(screen):
+    Home_Button = GUI.button(pos=(WIDTH-100, 100), font_size=50, txt_col=BLACK, bg_col=buttoncolor,
+                         text="Return to Homescreen")
+    buttons = [Home_Button]
     create_board()
     square_group = []
     current_square = None
@@ -114,7 +118,7 @@ def playgame(screen):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 row, col = find_square_coordinates(pos)
                 print('row ', row, ' col ', col)
@@ -149,7 +153,9 @@ def playgame(screen):
                             remove_highlights()
                             move_piece(current_square, chosen_square)
                     else:
-                        pass
+                        for b in buttons:
+                            b.draw(screen)
+                            b.moused_over(pygame.mouse.get_pos())
                 # else:
                 #    pass
 
