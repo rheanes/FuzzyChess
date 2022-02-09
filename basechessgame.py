@@ -6,22 +6,16 @@ from pieces import *
 
 DEFAULT_IMAGE_SIZE = (WIDTH / 8, WIDTH / 8)
 SQUARE_WIDTH = SQUARE_HEIGHT = WIDTH / 8
-
-# creates 800 by 800 Pixel window to play the game on
-window = pygame.display.set_mode((WIDTH, WIDTH))
-# Set caption for Window
-pygame.display.set_caption("Chess")
 clock = pygame.time.Clock()
 
-
-def update_display():
+def update_display(screen):
     """ Draw board squares """
     for row in board:
         for square in row:
             x_pos = square.col * (WIDTH // 8)
             y_pos = square.row * (WIDTH // 8)
             # will draw squares with no piece
-            pygame.draw.rect(window, square.color, (x_pos, y_pos, SQUARE_WIDTH, SQUARE_HEIGHT))
+            pygame.draw.rect(screen, square.color, (x_pos, y_pos, WIDTH, HEIGHT))
             # if square.color == BLUE:
             # print('square color:', square.color)
             # print('finished drawing highlighted rectangles')
@@ -31,15 +25,15 @@ def update_display():
             #    pass
             # if starting_order[(square.row, square.col)] is not None:
             if square.piece is not None:
-                window.blit(pygame.transform.scale(square.piece.image, DEFAULT_IMAGE_SIZE), (x_pos, y_pos))
-                # window.blit(pygame.transform.scale(starting_order[(square.row, square.col)], DEFAULT_IMAGE_SIZE), (square.x_pos, square.y_pos))
+                screen.blit(pygame.transform.scale(square.piece.image, DEFAULT_IMAGE_SIZE), (x_pos, y_pos))
+                # screen.blit(pygame.transform.scale(starting_order[(square.row, square.col)], DEFAULT_IMAGE_SIZE), (square.x_pos, square.y_pos))
 
     """ Draw board lines """
     gap = WIDTH // 8
     for i in range(8):
-        pygame.draw.line(window, BLACK, (0, i * gap), (WIDTH, i * gap))
+        pygame.draw.line(screen, BLACK, (0, i * gap), (WIDTH, i * gap))
         for j in range(8):
-            pygame.draw.line(window, BLACK, (j * gap, 0), (j * gap, WIDTH))
+            pygame.draw.line(screen, BLACK, (j * gap, 0), (j * gap, WIDTH))
     pygame.display.update()
     clock.tick(15)
     #print('testing')
@@ -109,7 +103,7 @@ def move_piece(curr_pos: Square, new_pos: Square):
 #Comment out def playgame(): and uncomment if __name__ = '__main__' if you want to run
 #basechessgame.py without ScreenGUI.py
 #if __name__ == '__main__':
-def playgame():
+def playgame(screen):
     create_board()
     square_group = []
     current_square = None
@@ -161,4 +155,4 @@ def playgame():
 
             else:
                 pass
-        update_display()
+        update_display(screen)
