@@ -105,7 +105,7 @@ def move_piece(curr_pos: Square, new_pos: Square):
 #basechessgame.py without ScreenGUI.py
 #if __name__ == '__main__':
 def playgame(screen):
-    Home_Button = GUI.button(pos=(WIDTH-100, 100), font_size=50, txt_col=BLACK, bg_col=buttoncolor,
+    Home_Button = GUI.button(pos=(WIDTH-100, 100), font_size=25, txt_col=BLACK, bg_col=buttoncolor,
                          text="Return to Homescreen")
     buttons = [Home_Button]
     create_board()
@@ -119,43 +119,52 @@ def playgame(screen):
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
+                #Adding button functionality for home button
+                if buttons[0].selected:
+                    return
                 pos = pygame.mouse.get_pos()
-                row, col = find_square_coordinates(pos)
-                print('row ', row, ' col ', col)
-                chosen_square = board[row][col]
+                #if you dont click on the game board
+                if pos[0] >= GAME_WIDTH:
+                    print("Clicked on right hand side of board")
+                    chosen_square = None
+                #if you do click on the game board
+                else:
+                    row, col = find_square_coordinates(pos)
+                    print('row ', row, ' col ', col)
+                    chosen_square = board[row][col]
 
                 # conditions for selected_square
-                if current_square is None:  # have piece selected
-                    # positions = potential_piece_moves(board[row][col], (row, col))
-                    if chosen_square.piece is None:
-                        pass
-                    else:
-                        current_square = chosen_square
-                        potential_piece_moves(board[row][col])
-                    """
-                    for position in positions:
-                        row, col = position
-                        board[row][col].color = BLUE
-                    """
-                else:  # a piece is already selected
-                    if chosen_square.piece is not None:
-                        remove_highlights()
-                        current_square = chosen_square
-                        potential_piece_moves(board[row][col])
-                    elif (board[row][col].color is WHITE) or (board[row][col].color is GREY):
-                        remove_highlights()
-                        current_square = None
-                    elif board[row][col].color is BLUE:
-                        if board[row][col].piece is not None:
-                            remove_highlights()
-                            move_piece(current_square, chosen_square)
+                    if current_square is None:  # have piece selected
+                        # positions = potential_piece_moves(board[row][col], (row, col))
+                        if chosen_square.piece is None:
+                            pass
                         else:
+                            current_square = chosen_square
+                            potential_piece_moves(board[row][col])
+                        """
+                        for position in positions:
+                            row, col = position
+                            board[row][col].color = BLUE
+                        """
+                    else:  # a piece is already selected
+                        if chosen_square.piece is not None:
                             remove_highlights()
-                            move_piece(current_square, chosen_square)
-                    else:
-                        for b in buttons:
-                            b.draw(screen)
-                            b.moused_over(pygame.mouse.get_pos())
+                            current_square = chosen_square
+                            potential_piece_moves(board[row][col])
+                        elif (board[row][col].color is WHITE) or (board[row][col].color is GREY):
+                            remove_highlights()
+                            current_square = None
+                        elif board[row][col].color is BLUE:
+                            if board[row][col].piece is not None:
+                                remove_highlights()
+                                move_piece(current_square, chosen_square)
+                            else:
+                                remove_highlights()
+                                move_piece(current_square, chosen_square)
+                        else:
+                            for b in buttons:
+                                b.draw(screen)
+                                b.moused_over(pygame.mouse.get_pos())
                 # else:
                 #    pass
 
