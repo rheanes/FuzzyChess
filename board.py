@@ -39,17 +39,18 @@ def create_board():
                 Square(Piece(Team.BLUE, Type.ROOK, pygame.image.load('./Images/blue_rook.png')))]
 
     for col in range(8):
-        if col < 3:
+        if col <= 2:
+            print("hi")
             board[1][col] = Square(Piece(Team.ORANGE, Type.PAWN, pygame.image.load('./Images/orange_pawn.png')))
             board[6][col] = Square(Piece(Team.GREEN, Type.PAWN, pygame.image.load('./Images/green_pawn.png')))
-
-        if 3 < col < 5:
+        if col == 3 or col == 4:
             board[1][col] = Square(Piece(Team.RED, Type.PAWN, pygame.image.load('./Images/red_pawn.png')))
             board[6][col] = Square(Piece(Team.BLUE, Type.PAWN, pygame.image.load('./Images/blue_pawn.png')))
-        else:
+        if col >= 5:
+            print(col)
             board[1][col] = Square(Piece(Team.YELLOW, Type.PAWN, pygame.image.load('./Images/yellow_pawn.png')))
             board[6][col] = Square(Piece(Team.PURPLE, Type.PAWN, pygame.image.load('./Images/purple_pawn.png')))
-
+#adding colors to squares
     for row in range(8):
         for col in range(8):
             if (row + col) % 2 == 1:
