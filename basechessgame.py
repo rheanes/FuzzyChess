@@ -28,15 +28,12 @@ def update_display(screen):
             if square.piece is not None:
                 screen.blit(pygame.transform.scale(square.piece.image, DEFAULT_IMAGE_SIZE), (x_pos, y_pos))
                 # screen.blit(pygame.transform.scale(starting_order[(square.row, square.col)], DEFAULT_IMAGE_SIZE), (square.x_pos, square.y_pos))
-
     """ Draw board lines """
     gap = GAME_WIDTH // 8
     for i in range(8):
         pygame.draw.line(screen, BLACK, (0, i * gap), (GAME_WIDTH, i * gap))
         for j in range(9):
             pygame.draw.line(screen, BLACK, (j * gap, 0), (j * gap, GAME_WIDTH))
-    pygame.display.update()
-    clock.tick(15)
     #print('testing')
 
 
@@ -120,8 +117,8 @@ def playgame(screen):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 #Adding button functionality for home button
-                if buttons[0].selected:
-                    return
+                if Home_Button.selected:
+                    return True
                 pos = pygame.mouse.get_pos()
                 #if you dont click on the game board
                 if pos[0] >= GAME_WIDTH:
@@ -162,12 +159,13 @@ def playgame(screen):
                                 remove_highlights()
                                 move_piece(current_square, chosen_square)
                         else:
-                            for b in buttons:
-                                b.draw(screen)
-                                b.moused_over(pygame.mouse.get_pos())
-                # else:
-                #    pass
-
+                            pass
             else:
                 pass
+
         update_display(screen)
+        for b in buttons:
+            b.draw(screen)
+            b.moused_over(pygame.mouse.get_pos())
+        pygame.display.flip()
+        clock.tick(15)
