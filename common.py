@@ -6,6 +6,7 @@ tickrate = 25
 #screen dimensions
 WIDTH = 1000  # screen width
 HEIGHT = 800 # screen height
+GAME_WIDTH = 800
 
 
 #fonts
