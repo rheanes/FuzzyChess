@@ -4,7 +4,7 @@ pygame.init()
 #tickrate
 tickrate = 25
 #screen dimensions
-WIDTH = 800  # screen width
+WIDTH = 1000  # screen width
 HEIGHT = 800 # screen height
 
 
