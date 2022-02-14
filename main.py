@@ -11,11 +11,11 @@ while True:
     b_knight.scale(400, 400)
 
     play_button = button(pos=(cm.WIDTH * 0.75, cm.HEIGHT * 0.375), font_size=50, txt_col=cm.BLACK, bg_col=cm.LIGHT_GRAY,
-                         text="Play")
+                         text="Play", bg_hover= cm.LIGHT_GRAY)
     rules_button = button(pos=(cm.WIDTH * 0.75, cm.HEIGHT * 0.5), font_size=50, txt_col=cm.BLACK, bg_col=cm.BROWN,
-                          text="Rules")
+                          text="Rules", bg_hover= cm.BROWN)
     quit_button = button(pos=(cm.WIDTH * 0.75, cm.HEIGHT * 0.625), font_size=50, txt_col=cm.BLACK, bg_col=cm.RED,
-                         text="Quit Game")
+                         text="Quit Game", bg_hover = cm.RED)
     yeet = [play_button, rules_button, quit_button]
     while True:
         for event in pygame.event.get():
@@ -29,7 +29,7 @@ while True:
             if event.type == MOUSEBUTTONDOWN:
                 if play_button.selected:
                     playgame(screen)
-        screen.fill(cm.WHITE)
+        screen.fill(cm.BACKGROUND)
         b_knight.draw(screen)
 
         for yee in yeet:
