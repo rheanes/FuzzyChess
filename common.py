@@ -10,7 +10,7 @@ GAME_WIDTH = 800
 
 
 #fonts
-font = pygame.font.SysFont("Arial", 30)
+font = "Arial"
 smallfont = pygame.font.SysFont("Arial", 30)
 rulesfont = pygame.font.SysFont("Arial", 18)
 
