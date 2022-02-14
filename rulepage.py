@@ -28,11 +28,11 @@ def ObjectiveTab(screen, tabs):
                 if tabs[0].selected:
                     return
                 if tabs[1].selected:
-                    ObjectiveTab(tabs)
+                    ObjectiveTab(screen, tabs)
                 if tabs[2].selected:
-                    RulesTab(tabs)
+                    RulesTab(screen, tabs)
                 if tabs[3].selected:
-                    PiecesTab(tabs)
+                    PiecesTab(screen, tabs)
         screen.fill(cm.WHITE)
         screen.blit(HeaderText, (cm.WIDTH * 0.40, cm.HEIGHT / 4))
         # loops through text list and blits each line to the screen
@@ -44,7 +44,7 @@ def ObjectiveTab(screen, tabs):
         pygame.display.flip()
 
 
-def RulesTab(tabs):
+def RulesTab(screen, tabs):
     HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
     RulesText = ["FuzzyChess is played on a chessboard with standard chess pieces, but the rules are ",
                  "different. The pieces are split into three different corps led by the king and two bishops.",
@@ -69,13 +69,13 @@ def RulesTab(tabs):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if tabs[0].selected:
-                    start_menu()
+                    return
                 if tabs[1].selected:
-                    ObjectiveTab(tabs)
+                    ObjectiveTab(screen, tabs)
                 if tabs[2].selected:
-                    RulesTab(tabs)
+                    RulesTab(screen, tabs)
                 if tabs[3].selected:
-                    PiecesTab(tabs)
+                    PiecesTab(screen, tabs)
             screen.fill(cm.WHITE)
             screen.blit(HeaderText, (cm.WIDTH * 0.4, cm.HEIGHT / 4))
             for line in range(len(text_label)):
@@ -86,7 +86,7 @@ def RulesTab(tabs):
             pygame.display.flip()
 
 
-def PiecesTab(tabs):
+def PiecesTab(screen, tabs):
     positions = [(cm.WIDTH / 6, cm.HEIGHT / 2), (cm.WIDTH / 2, cm.HEIGHT / 2),
                  (5 * cm.WIDTH / 6, cm.HEIGHT / 2), (cm.WIDTH / 6, 7 * cm.HEIGHT / 8),
                  (cm.WIDTH / 2, 7 * cm.HEIGHT / 8), (5 * cm.WIDTH / 6, 7 * cm.HEIGHT / 8)]
@@ -120,25 +120,25 @@ def PiecesTab(tabs):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if tabs[0].selected:
-                    start_menu()
+                    return
                 if tabs[1].selected:
-                    ObjectiveTab(tabs)
+                    ObjectiveTab(screen, tabs)
                 if tabs[2].selected:
-                    RulesTab(tabs)
+                    RulesTab(screen, tabs)
                 if tabs[3].selected:
-                    PiecesTab(tabs)
+                    PiecesTab(screen, tabs)
                 if buttons[0].selected:
-                    pawnPage(tabs)
+                    pawnPage(screen, tabs)
                 if buttons[1].selected:
-                    rookPage(tabs)
+                    rookPage(screen, tabs)
                 if buttons[2].selected:
-                    knightPage(tabs)
+                    knightPage(screen, tabs)
                 if buttons[3].selected:
-                    queenPage(tabs)
+                    queenPage(screen, tabs)
                 if buttons[4].selected:
-                    bishopPage(tabs)
+                    bishopPage(screen, tabs)
                 if buttons[5].selected:
-                    kingPage(tabs)
+                    kingPage(screen, tabs)
             screen.fill(cm.WHITE)
             # screen.blit(HeaderText, (cm.WIDTH / 2, 0))
             for tab in tabs:
@@ -153,7 +153,7 @@ def PiecesTab(tabs):
             pygame.display.flip()
 
 
-def pawnPage(tabs):
+def pawnPage(screen, tabs):
     HeaderText = cm.font.render("The Pawn", True, cm.BLACK)
     PieceDes = ["The basic infantry and usually considered cannon ",
                 "fodder, they can only move one square at a time",
@@ -180,13 +180,13 @@ def pawnPage(tabs):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if tabs[0].selected:
-                    start_menu()
+                    return
                 if tabs[1].selected:
-                    ObjectiveTab(tabs)
+                    ObjectiveTab(screen, tabs)
                 if tabs[2].selected:
-                    RulesTab(tabs)
+                    RulesTab(screen, tabs)
                 if tabs[3].selected:
-                    PiecesTab(tabs)
+                    PiecesTab(screen, tabs)
         screen.fill(cm.WHITE)
         screen.blit(HeaderText, (cm.WIDTH * 0.4, cm.HEIGHT * 0.55))
         for tab in tabs:
@@ -200,7 +200,7 @@ def pawnPage(tabs):
         pygame.display.flip()
 
 
-def rookPage(tabs):
+def rookPage(screen, tabs):
     HeaderText = cm.font.render("The Rook", True, cm.BLACK)
     PieceDes = ["The archers, they provide long range support, they "
         , "can move up to two squares in any direction and do "
@@ -227,13 +227,13 @@ def rookPage(tabs):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if tabs[0].selected:
-                    start_menu()
+                    return
                 if tabs[1].selected:
-                    ObjectiveTab(tabs)
+                    ObjectiveTab(screen, tabs)
                 if tabs[2].selected:
-                    RulesTab(tabs)
+                    RulesTab(screen, tabs)
                 if tabs[3].selected:
-                    PiecesTab(tabs)
+                    PiecesTab(screen, tabs)
         screen.fill(cm.WHITE)
         screen.blit(HeaderText, (cm.WIDTH * 0.4, cm.HEIGHT * 0.55))
         for tab in tabs:
@@ -246,7 +246,7 @@ def rookPage(tabs):
         pygame.display.flip()
 
 
-def knightPage(tabs):
+def knightPage(screen, tabs):
     HeaderText = cm.font.render("The Knight", True, cm.BLACK)
     PieceDes = ["The mounted attackers charging into battle, they can "
         , "move up to four squares in any direction and do not "
@@ -275,13 +275,13 @@ def knightPage(tabs):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if tabs[0].selected:
-                    start_menu()
+                    return
                 if tabs[1].selected:
-                    ObjectiveTab(tabs)
+                    ObjectiveTab(screen, tabs)
                 if tabs[2].selected:
-                    RulesTab(tabs)
+                    RulesTab(screen, tabs)
                 if tabs[3].selected:
-                    PiecesTab(tabs)
+                    PiecesTab(screen, tabs)
         screen.fill(cm.WHITE)
         screen.blit(HeaderText, (cm.WIDTH * 0.4, cm.HEIGHT * 0.55))
         for tab in tabs:
@@ -294,7 +294,7 @@ def knightPage(tabs):
         pygame.display.flip()
 
 
-def queenPage(tabs):
+def queenPage(screen, tabs):
     HeaderText = cm.font.render("The Queen", True, cm.BLACK)
     PieceDes = ["The king’s right (or left) hand, she can move up to three "
         , "squares in any direction and does not have to move in a "
@@ -311,13 +311,13 @@ def queenPage(tabs):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if tabs[0].selected:
-                    start_menu()
+                    return
                 if tabs[1].selected:
-                    ObjectiveTab(tabs)
+                    ObjectiveTab(screen, tabs)
                 if tabs[2].selected:
-                    RulesTab(tabs)
+                    RulesTab(screen, tabs)
                 if tabs[3].selected:
-                    PiecesTab(tabs)
+                    PiecesTab(screen, tabs)
         screen.fill(cm.WHITE)
         screen.blit(HeaderText, (cm.WIDTH * 0.4, cm.HEIGHT * 0.55))
         for tab in tabs:
@@ -330,7 +330,7 @@ def queenPage(tabs):
         pygame.display.flip()
 
 
-def bishopPage(tabs):
+def bishopPage(screen, tabs):
     HeaderText = cm.font.render("The Bishop", True, cm.BLACK)
     PieceDes = ["The king’s trusted advisors, if they are captured, then"
         , "the pieces under their command fall to the king’s "
@@ -353,13 +353,13 @@ def bishopPage(tabs):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if tabs[0].selected:
-                    start_menu()
+                    return
                 if tabs[1].selected:
-                    ObjectiveTab(tabs)
+                    ObjectiveTab(screen, tabs)
                 if tabs[2].selected:
-                    RulesTab(tabs)
+                    RulesTab(screen, tabs)
                 if tabs[3].selected:
-                    PiecesTab(tabs)
+                    PiecesTab(screen, tabs)
         screen.fill(cm.WHITE)
         screen.blit(HeaderText, (cm.WIDTH * 0.4, cm.HEIGHT * 0.55))
         for tab in tabs:
@@ -372,7 +372,7 @@ def bishopPage(tabs):
         pygame.display.flip()
 
 
-def kingPage(tabs):
+def kingPage(screen, tabs):
     HeaderText = cm.font.render("The King", True, cm.BLACK)
     PieceDes = ["if this piece is captured you lose, the leader of the army"
         , "and commander of the center corps, can move up to "
@@ -393,13 +393,13 @@ def kingPage(tabs):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if tabs[0].selected:
-                    start_menu()
+                    return
                 if tabs[1].selected:
-                    ObjectiveTab(tabs)
+                    ObjectiveTab(screen, tabs)
                 if tabs[2].selected:
-                    RulesTab(tabs)
+                    RulesTab(screen, tabs)
                 if tabs[3].selected:
-                    PiecesTab(tabs)
+                    PiecesTab(screen, tabs)
         screen.fill(cm.WHITE)
         screen.blit(HeaderText, (cm.WIDTH * 0.4, cm.HEIGHT * 0.55))
         for tab in tabs:
