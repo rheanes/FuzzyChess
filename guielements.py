@@ -13,9 +13,8 @@ import sys
 
 pygame.init()
 
-
 def create_text_surface(text, font_size, txt_rgb, bg_rgb):
-    font = pygame.freetype.SysFont("Arial", font_size)
+    font = pygame.freetype.SysFont(cm.fonttype, font_size)
     surface, _ = font.render(text=text, fgcolor=txt_rgb, bgcolor=bg_rgb)
     return surface
 

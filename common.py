@@ -10,15 +10,16 @@ GAME_WIDTH = 800
 
 
 #fonts
-font = "Arial"
-smallfont = pygame.font.SysFont("Arial", 30)
-rulesfont = pygame.font.SysFont("Arial", 18)
+
+fonttype = "menlo"
+font = pygame.font.SysFont(fonttype, 45)
+rulesfont = pygame.font.SysFont(fonttype, 20)
 
 #colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-buttoncolor = (112, 128, 144)
-buttonhover = (165, 175, 185)
+buttonhover = (44, 47, 51)
+buttoncolor =  (153, 170, 181)
 blackish = (10, 10, 10)
 RED = (255, 0, 0) # highlight attack positions
 BLUE = (50, 255, 255) # highlight potential positions
