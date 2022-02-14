@@ -75,7 +75,7 @@ def highlight_moves(positions: tuple[int, int], team: Team):
 def potential_piece_moves(square: Square):
     piece = square.piece
     if piece.type == Type.PAWN:
-        if piece.team == Team.YELLOW or (piece.team == Team.RED):
+        if piece.team == Team.YELLOW or (piece.team == Team.RED) or piece.team == Team.ORANGE:
             highlight_moves(pawn_moves_top((square.row, square.col)), square.piece.team)
         else:
             highlight_moves(pawn_moves_bottom((square.row, square.col)), square.piece.team)
