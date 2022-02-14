@@ -103,7 +103,7 @@ def move_piece(curr_pos: Square, new_pos: Square):
 #if __name__ == '__main__':
 def playgame(screen):
     Home_Button = GUI.button(pos=(WIDTH-100, 100), font_size=25, txt_col=BLACK, bg_col=buttoncolor,
-                         text="Return to Homescreen")
+                         text="Return to Homescreen", bg_hover= buttonhover)
     buttons = [Home_Button]
     create_board()
     square_group = []
