@@ -48,11 +48,11 @@ class Element(Sprite):
 
 # class for interactable elements that have text
 class button(Sprite):
-    def __init__(self, pos, text, font_size, txt_col, bg_col):
+    def __init__(self, pos, text, font_size, txt_col, bg_col, bg_hover):
         self.selected = False
 
         unselected_img = create_text_surface(text, font_size, txt_col, bg_col)
-        highlighted_img = create_text_surface(text, font_size * 1.3, txt_col, bg_col)
+        highlighted_img = create_text_surface(text, font_size * 1.3, txt_col, bg_hover)
 
         self.images = [unselected_img, highlighted_img]
         self.rects = [unselected_img.get_rect(center=pos), highlighted_img.get_rect(center=pos)]
