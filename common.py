@@ -18,8 +18,8 @@ rulesfont = pygame.font.SysFont(fonttype, 20)
 #colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-buttonhover = (44, 47, 51)
-buttoncolor =  (153, 170, 181)
+buttoncolor = (211, 211, 211)
+buttonhover =  (222, 184, 135)
 blackish = (10, 10, 10)
 RED = (255, 0, 0) # highlight attack positions
 BLUE = (50, 255, 255) # highlight potential positions

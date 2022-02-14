@@ -9,12 +9,12 @@ pygame.display.set_caption('Medieval Fuzzy Logic Chess')
 while True:
     b_knight = Element("./Images/blue_knight.png", (cm.WIDTH * 0.375, cm.HEIGHT * 0.5))
     HeaderText = cm.font.render("Medieval Fuzzy Logic Chess", True, cm.BLACK)
-    play_button = button(pos=(cm.WIDTH * 0.75, cm.HEIGHT * 0.375), font_size=65, txt_col=cm.BLACK, bg_col=cm.LIGHT_GRAY,
-                         text="Play", bg_hover= cm.LIGHT_GRAY)
-    rules_button = button(pos=(cm.WIDTH * 0.75, cm.HEIGHT * 0.5), font_size=65, txt_col=cm.BLACK, bg_col=cm.BROWN,
-                          text="Rules", bg_hover= cm.BROWN)
-    quit_button = button(pos=(cm.WIDTH * 0.75, cm.HEIGHT * 0.625), font_size=65, txt_col=cm.BLACK, bg_col=cm.RED,
-                         text="Quit", bg_hover = cm.RED)
+    play_button = button(pos=(cm.WIDTH * 0.75, cm.HEIGHT * 0.375), font_size=65, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+                         text="Play", bg_hover= cm.buttonhover)
+    rules_button = button(pos=(cm.WIDTH * 0.75, cm.HEIGHT * 0.5), font_size=65, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+                          text="Rules", bg_hover= cm.buttonhover)
+    quit_button = button(pos=(cm.WIDTH * 0.75, cm.HEIGHT * 0.625), font_size=65, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
+                         text="Quit", bg_hover = cm.buttonhover)
     yeet = [play_button, rules_button, quit_button]
     while True:
         for event in pygame.event.get():
