@@ -1,13 +1,13 @@
 from guielements import *
 def rulespage(screen):
     Home_Button = button(pos=(cm.WIDTH / 2, 0.2 * cm.HEIGHT), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
-                         text="Return to Homescreen")
+                         text="Return to Homescreen", bg_hover= cm.buttonhover)
     Obj_Tab = button(pos=(cm.WIDTH / 6, cm.HEIGHT / 8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
-                     text="Objectives")
+                     text="Objectives" , bg_hover= cm.buttonhover)
     Rule_Tab = button(pos=(cm.WIDTH / 2, cm.HEIGHT / 8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
-                      text="Rules")
+                      text="Rules", bg_hover= cm.buttonhover)
     Pieces_Tab = button(pos=(5 * cm.WIDTH / 6, cm.HEIGHT / 8), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
-                        text="Pieces")
+                        text="Pieces", bg_hover= cm.buttonhover)
     tabs = [Home_Button, Obj_Tab, Rule_Tab, Pieces_Tab]
     ObjectiveTab(screen, tabs)
 
@@ -28,12 +28,12 @@ def ObjectiveTab(screen, tabs):
                 if tabs[0].selected:
                     return
                 if tabs[1].selected:
-                    ObjectiveTab(screen, tabs)
+                    break
                 if tabs[2].selected:
                     RulesTab(screen, tabs)
                 if tabs[3].selected:
                     PiecesTab(screen, tabs)
-        screen.fill(cm.WHITE)
+        screen.fill(cm.BACKGROUND)
         screen.blit(HeaderText, (cm.WIDTH * 0.40, cm.HEIGHT / 4))
         # loops through text list and blits each line to the screen
         for line in range(len(text_label)):
@@ -73,10 +73,10 @@ def RulesTab(screen, tabs):
                 if tabs[1].selected:
                     ObjectiveTab(screen, tabs)
                 if tabs[2].selected:
-                    RulesTab(screen, tabs)
+                    break
                 if tabs[3].selected:
                     PiecesTab(screen, tabs)
-            screen.fill(cm.WHITE)
+            screen.fill(cm.BACKGROUND)
             screen.blit(HeaderText, (cm.WIDTH * 0.4, cm.HEIGHT / 4))
             for line in range(len(text_label)):
                 screen.blit(text_label[line], (text_pos[0], text_pos[1] + (line * 18) + (10 * line)))
@@ -92,18 +92,18 @@ def PiecesTab(screen, tabs):
                  (cm.WIDTH / 2, 7 * cm.HEIGHT / 8), (5 * cm.WIDTH / 6, 7 * cm.HEIGHT / 8)]
     # HeaderText = cm.font.render("RULES PAGE", True, cm.BLACK)
     Pawn_Button = button(pos=(positions[0]), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
-                         text="Pawn")
+                         text="Pawn", bg_hover= cm.buttonhover)
     Rook_Button = button(pos=(positions[1]), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
-                         text="Rook")
+                         text="Rook", bg_hover= cm.buttonhover)
     Knight_Button = button(pos=(positions[2]), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
-                           text="Knight")
+                           text="Knight", bg_hover= cm.buttonhover)
     Queen_Button = button(pos=(positions[3]), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
-                          text="Queen")
+                          text="Queen", bg_hover= cm.buttonhover)
     Bishop_Button = button(pos=(positions[4]), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
-                           text="Bishop")
+                           text="Bishop", bg_hover= cm.buttonhover)
     King_Button = button(pos=(positions[5]), font_size=50, txt_col=cm.BLACK,
                          bg_col=cm.buttoncolor,
-                         text="King")
+                         text="King", bg_hover= cm.buttonhover)
     buttons = [Pawn_Button, Rook_Button, Knight_Button, Queen_Button, Bishop_Button, King_Button]
     # images and text for pieces
     pawn = Element("./Images/blue_pawn.png", (positions[0][0], positions[0][1] - 20))
@@ -126,7 +126,7 @@ def PiecesTab(screen, tabs):
                 if tabs[2].selected:
                     RulesTab(screen, tabs)
                 if tabs[3].selected:
-                    PiecesTab(screen, tabs)
+                    break
                 if buttons[0].selected:
                     pawnPage(screen, tabs)
                 if buttons[1].selected:
@@ -139,7 +139,7 @@ def PiecesTab(screen, tabs):
                     bishopPage(screen, tabs)
                 if buttons[5].selected:
                     kingPage(screen, tabs)
-            screen.fill(cm.WHITE)
+            screen.fill(cm.BACKGROUND)
             # screen.blit(HeaderText, (cm.WIDTH / 2, 0))
             for tab in tabs:
                 tab.draw(screen)
@@ -187,7 +187,7 @@ def pawnPage(screen, tabs):
                     RulesTab(screen, tabs)
                 if tabs[3].selected:
                     PiecesTab(screen, tabs)
-        screen.fill(cm.WHITE)
+        screen.fill(cm.BACKGROUND)
         screen.blit(HeaderText, (cm.WIDTH * 0.4, cm.HEIGHT * 0.55))
         for tab in tabs:
             tab.draw(screen)
@@ -234,7 +234,7 @@ def rookPage(screen, tabs):
                     RulesTab(screen, tabs)
                 if tabs[3].selected:
                     PiecesTab(screen, tabs)
-        screen.fill(cm.WHITE)
+        screen.fill(cm.BACKGROUND)
         screen.blit(HeaderText, (cm.WIDTH * 0.4, cm.HEIGHT * 0.55))
         for tab in tabs:
             tab.draw(screen)
@@ -282,7 +282,7 @@ def knightPage(screen, tabs):
                     RulesTab(screen, tabs)
                 if tabs[3].selected:
                     PiecesTab(screen, tabs)
-        screen.fill(cm.WHITE)
+        screen.fill(cm.BACKGROUND)
         screen.blit(HeaderText, (cm.WIDTH * 0.4, cm.HEIGHT * 0.55))
         for tab in tabs:
             tab.draw(screen)
@@ -318,7 +318,7 @@ def queenPage(screen, tabs):
                     RulesTab(screen, tabs)
                 if tabs[3].selected:
                     PiecesTab(screen, tabs)
-        screen.fill(cm.WHITE)
+        screen.fill(cm.BACKGROUND)
         screen.blit(HeaderText, (cm.WIDTH * 0.4, cm.HEIGHT * 0.55))
         for tab in tabs:
             tab.draw(screen)
@@ -360,7 +360,7 @@ def bishopPage(screen, tabs):
                     RulesTab(screen, tabs)
                 if tabs[3].selected:
                     PiecesTab(screen, tabs)
-        screen.fill(cm.WHITE)
+        screen.fill(cm.BACKGROUND)
         screen.blit(HeaderText, (cm.WIDTH * 0.4, cm.HEIGHT * 0.55))
         for tab in tabs:
             tab.draw(screen)
@@ -400,7 +400,7 @@ def kingPage(screen, tabs):
                     RulesTab(screen, tabs)
                 if tabs[3].selected:
                     PiecesTab(screen, tabs)
-        screen.fill(cm.WHITE)
+        screen.fill(cm.BACKGROUND)
         screen.blit(HeaderText, (cm.WIDTH * 0.4, cm.HEIGHT * 0.55))
         for tab in tabs:
             tab.draw(screen)
