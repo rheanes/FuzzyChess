@@ -46,6 +46,7 @@ class Piece:
         self.action = None
         self.image = image
         self.value = value
+        self.delegated = False
 
 enemies = {
     Team.BLUE : [Team.RED, Team.ORANGE, Team.YELLOW],
