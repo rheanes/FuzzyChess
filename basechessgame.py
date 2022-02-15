@@ -35,8 +35,8 @@ def update_display(screen):
         for j in range(9):
             pygame.draw.line(screen, BLACK, (j * gap, 0), (j * gap, GAME_WIDTH))
 
-    pygame.draw.rect(screen, common.LIGHT_GRAY, (801, 0, WIDTH, HEIGHT))
-    pygame.draw.rect(screen, common.LIGHT_GRAY, (0, 801, WIDTH, HEIGHT))
+    pygame.draw.rect(screen, BACKGROUND, (801, 0, WIDTH, HEIGHT))
+    pygame.draw.rect(screen, BACKGROUND, (0, 801, WIDTH, HEIGHT))
     #print('testing')
 
 
