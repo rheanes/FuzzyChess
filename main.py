@@ -3,7 +3,7 @@ from guielements import *
 from rulepage import rulespage
 from basechessgame import playgame
 clock = pygame.time.Clock()
-screen = pygame.display.set_mode((cm.WIDTH, cm.WIDTH))
+screen = pygame.display.set_mode((cm.WIDTH, cm.HEIGHT))
 pygame.display.set_caption('Medieval Fuzzy Logic Chess')
 
 while True:

@@ -30,10 +30,13 @@ def update_display(screen):
                 # screen.blit(pygame.transform.scale(starting_order[(square.row, square.col)], DEFAULT_IMAGE_SIZE), (square.x_pos, square.y_pos))
     """ Draw board lines """
     gap = GAME_WIDTH // 8
-    for i in range(8):
+    for i in range(9):
         pygame.draw.line(screen, BLACK, (0, i * gap), (GAME_WIDTH, i * gap))
         for j in range(9):
             pygame.draw.line(screen, BLACK, (j * gap, 0), (j * gap, GAME_WIDTH))
+
+    pygame.draw.rect(screen, common.LIGHT_GRAY, (801, 0, WIDTH, HEIGHT))
+    pygame.draw.rect(screen, common.LIGHT_GRAY, (0, 801, WIDTH, HEIGHT))
     #print('testing')
 
 
@@ -98,6 +101,7 @@ def move_piece(curr_pos: Square, new_pos: Square):
     board[curr_pos.row][curr_pos.col].piece = None
     print('pieced moved')
 
+
 #Comment out def playgame(): and uncomment if __name__ = '__main__' if you want to run
 #basechessgame.py without ScreenGUI.py
 #if __name__ == '__main__':
@@ -124,6 +128,11 @@ def playgame(screen):
                 if pos[0] >= GAME_WIDTH:
                     print("Clicked on right hand side of board")
                     chosen_square = None
+
+                elif pos[1] >= GAME_WIDTH:
+                    print("Clicked on bottom portion of board")
+                    chosen_square = None
+
                 #if you do click on the game board
                 else:
                     row, col = find_square_coordinates(pos)
