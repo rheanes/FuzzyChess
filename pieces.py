@@ -28,16 +28,24 @@ class Action(enum.Enum):
     MOVE = 0
     ATTACK = 1
 
+class Value(enum.Enum):
+    KING = 20
+    QUEEN = 18
+    BISHOP = 15
+    KNIGHT = 13
+    ROOK = 10
+    PAWN = 5
 
 #creates a chess piece class that shows:
 #team, attackable, and color
 class Piece:
-    def __init__(self, team, type, image):
+    def __init__(self, team, type, image, value):
         super().__init__()
         self.team = team
         self.type = type
         self.action = None
         self.image = image
+        self.value = value
 
 enemies = {
     Team.BLUE : [Team.RED, Team.ORANGE, Team.YELLOW],
