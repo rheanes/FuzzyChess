@@ -84,9 +84,10 @@ def potential_piece_moves(square: Square):
             highlight_moves(pawn_moves_bottom((square.row, square.col)), square.piece.team)
     if (piece.type == Type.KING) or (piece.type == Type.QUEEN):
         highlight_moves(king_queen_moves((square.row, square.col)), square.piece.team)
-    """
+
     elif piece.type == Type.ROOK:
-        highlight_moves(rook_moves((square.row, square.col)))
+        highlight_moves(rook_moves((square.row, square.col)), square.piece.team)
+    """
     elif piece.type == Type.BISHOP:
         highlight_moves(bishop_moves((square.row, square.col)))
     elif piece.type == Type.QUEEN:
@@ -107,16 +108,8 @@ def move_piece(curr_pos: Square, new_pos: Square):
 #if __name__ == '__main__':
 def playgame(screen):
     Home_Button = GUI.button(pos=(WIDTH-100, 100), font_size=25, txt_col=BLACK, bg_col=buttoncolor,
-                         text="Home", bg_hover= buttonhover)
-    Rules_Button = GUI.button(pos=(WIDTH-100, 200), font_size=25, txt_col=BLACK, bg_col=buttoncolor,
-                         text="Rules", bg_hover= buttonhover)
-    Deligate_Button = GUI.button(pos=(WIDTH-100, 450), font_size=25, txt_col=BLACK, bg_col=buttoncolor,
-                         text="Deligate", bg_hover= buttonhover)
-    End_Turn_Button = GUI.button(pos=(WIDTH-100, 550), font_size=25, txt_col=BLACK, bg_col=buttoncolor,
-                         text="End Turn", bg_hover= buttonhover)
-    Resign_Button = GUI.button(pos=(WIDTH-100, 650), font_size=25, txt_col=BLACK, bg_col=buttoncolor,
-                         text="Resign", bg_hover= buttonhover)
-    buttons = [Home_Button, Deligate_Button, Resign_Button, End_Turn_Button, Rules_Button]
+                         text="Return to Homescreen", bg_hover= buttonhover)
+    buttons = [Home_Button]
     create_board()
     square_group = []
     current_square = None
@@ -130,22 +123,11 @@ def playgame(screen):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 #Adding button functionality for home button
                 if Home_Button.selected:
-                    return
-                if Deligate_Button.selected:
-                    print('Deligate Button Selected')
-                    break
-                if Resign_Button.selected:
-                    print('Resign Button Selected')
-                    break
-                if End_Turn_Button.selected:
-                    print('End turn button selected')
-                    break
-                if Rules_Button.selected:
-                    print('rules button selected')
-                    break
+                    return True
                 pos = pygame.mouse.get_pos()
                 #if you dont click on the game board
                 if pos[0] >= GAME_WIDTH:
+                    print("Clicked on right hand side of board")
                     chosen_square = None
 
                 elif pos[1] >= GAME_WIDTH:

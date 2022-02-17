@@ -241,11 +241,32 @@ def king_queen_moves(position: tuple[int, int]):
     return positions
 
 
-"""
+
 
 ## This creates 4 lists for up, down, left and right and checks all those spaces for pieces of the opposite team. The list comprehension is pretty long so if you don't get it just msg me.
 def rook_moves(position: tuple[int, int]):
     row, col = position
+    positions = []
+    for curr_row in range(row - 3, row + 4):
+        for curr_col in range(col - 3, col + 4):
+            if on_board((curr_row, curr_col)):
+                #Implement a BFS algorithm to check spots around the square, and the spots around the
+                #accompanying squares up to the length of which the Rook can move.
+                #Essentially, from your position, check the coords (x,y), and then their potential partners
+                #up to the maximum movement. If any of the spaces found within the BFS are unoccupied, then
+                #we will add it to the list we are making. Afterwards, we append the list to the positions
+                #############################################################################################
+                #                                  POSITIONS TO CHECK PER SPACE                             #
+                #############################################################################################
+                #                         (pos - 1, pos + 1) | (pos, pos + 1) | (pos + 1, pos + 1)
+                #                         (pos - 1, pos)     |  CURR_POS      | (pos + 1, pos)
+                #                         (pos - 1, pos - 1) | (pos, pos - 1) | (pos + 1, pos - 1)
+                if (curr_row is not row) or (curr_col is not col):
+                    positions.append((curr_row, curr_col))
+    print('finished')
+    return positions
+
+'''   ## row, col = position
     cross = [[[index[0] + i, index[1]] for i in range(1, 8 - index[0])],
              [[index[0] - i, index[1]] for i in range(1, index[0] + 1)],
              [[index[0], index[1] + i] for i in range(1, 8 - index[1])],
@@ -262,9 +283,19 @@ def rook_moves(position: tuple[int, int]):
                     break
     return board
 
-
+'''
 ## Same as the rook but this time it creates 4 lists for the diagonal directions and so the list comprehension is a little bit trickier.
 def bishop_moves(position: tuple[int, int]):
+    row, col = position
+    positions = []
+    for curr_row in range(row - 4, row + 5):
+        for curr_col in range(col - 4, col + 5):
+            if on_board((curr_row, curr_col)):
+                if (curr_row is not row) or (curr_col is not col):
+                    positions.append((curr_row, curr_col))
+    print('finished')
+    return positions
+    '''
     row, col = position
     diagonals = [[[index[0] + i, index[1] + i] for i in range(1, 8)],
                  [[index[0] + i, index[1] - i] for i in range(1, 8)],
@@ -290,7 +321,7 @@ def queen_moves(position: tuple[int, int]):
     board = bishop_moves(index)
     return board
 
-"""
+'''
 ## Checks a 5x5 board_state around the piece and uses pythagoras to see if if a move is valid. Valid moves will be a distance of sqrt(5) from centre
 def knight_moves(position: tuple[int, int]):
     row, col = position
