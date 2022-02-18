@@ -65,7 +65,6 @@ def create_board():
 def remove_highlights():
     for row in range(8):
         for col in range(8):
-            #if (board[row][col].color == BLUE) or :
             if (row + col) % 2 == 1:
                 board[row][col].color = GREY
             else:

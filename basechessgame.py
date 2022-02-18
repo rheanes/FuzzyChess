@@ -85,9 +85,10 @@ def potential_piece_moves(square: Square):
             highlight_moves(pawn_moves_bottom((square.row, square.col)), square.piece.team)
     if (piece.type == Type.KING) or (piece.type == Type.QUEEN):
         highlight_moves(king_queen_moves((square.row, square.col)), square.piece.team)
-    """
+
     elif piece.type == Type.ROOK:
-        highlight_moves(rook_moves((square.row, square.col)))
+        highlight_moves(rook_moves((square.row, square.col)), square.piece.team)
+    """
     elif piece.type == Type.BISHOP:
         highlight_moves(bishop_moves((square.row, square.col)))
     elif piece.type == Type.QUEEN:
@@ -104,7 +105,7 @@ def move_piece(curr_pos: Square, new_pos: Square):
 
 
 #Comment out def playgame(): and uncomment if __name__ = '__main__' if you want to run
-#basechessgame.py without Screenpy
+#basechessgame.py without ScreenGUI.py
 #if __name__ == '__main__':
 def playgame(screen):
 
@@ -156,6 +157,7 @@ def playgame(screen):
                 pos = pygame.mouse.get_pos()
                 #if you dont click on the game board
                 if pos[0] >= GAME_WIDTH:
+                    print("Clicked on right hand side of board")
                     chosen_square = None
 
                 elif pos[1] >= GAME_WIDTH:
