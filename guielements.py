@@ -1,9 +1,9 @@
-import common as cm
+from common import *
+from enum import Enum
 import sys
 import pygame
 
 from pydoc import text
-from basechessgame import playgame
 import pygame
 import pygame.freetype
 from pygame.locals import *
@@ -14,7 +14,7 @@ import sys
 pygame.init()
 
 def create_text_surface(text, font_size, txt_rgb, bg_rgb):
-    font = pygame.freetype.SysFont(cm.fonttype, font_size)
+    font = pygame.freetype.SysFont(fonttype, font_size)
     surface, _ = font.render(text=text, fgcolor=txt_rgb, bgcolor=bg_rgb)
     return surface
 
@@ -25,7 +25,7 @@ def create_multiline_text(text, font, x, y):
     pos = pos_x, pos_y
     out = []
     for t in text:
-        out.append(font.render(t, True, cm.BLACK))
+        out.append(rulesfont.render(t, True, BLACK))
     return out, pos
 
 
@@ -47,9 +47,9 @@ class Element(Sprite):
 
 # class for interactable elements that have text
 class button(Sprite):
-    def __init__(self, pos, text, font_size, txt_col, bg_col, bg_hover):
+    def __init__(self, pos, text, font_size, txt_col, bg_col, bg_hover, action=None):
+        self.action = action
         self.selected = False
-
         unselected_img = create_text_surface(text, font_size, txt_col, bg_col)
         highlighted_img = create_text_surface(text, font_size * 1.3, txt_col, bg_hover)
 
@@ -67,11 +67,31 @@ class button(Sprite):
         return self.rects[1] if self.selected else self.rects[0]
 
     # selects different button images depending if the mouse is hovered over it
-    def moused_over(self, mouse_pos):
+    def moused_over(self, mouse_pos, mouse_down):
         if self.rect.collidepoint(mouse_pos):
             self.selected = True
+            if mouse_down:
+                return self.action
         else:
             self.selected = False
 
     def draw(self, surface):
         surface.blit(self.img, self.rect)
+
+
+class GameState(Enum):
+    Quit = -1
+    Home = 0
+    Play = 1
+    Delegate = 11
+    EndTurn = 12
+    Resign = 13
+    Rules = 20
+    HowTo = 21
+    Pieces = 22
+    Pawn = 31
+    Rook = 32
+    Knight = 33
+    Queen = 34
+    Bishop = 35
+    King = 36
