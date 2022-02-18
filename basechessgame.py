@@ -1,9 +1,10 @@
 import sys
+import pygame
 
 from common import *
 from board import *
 from pieces import *
-import guielements as GUI
+from guielements import *
 
 DEFAULT_IMAGE_SIZE = (GAME_WIDTH / 8, GAME_WIDTH / 8)
 SQUARE_WIDTH = SQUARE_HEIGHT = GAME_WIDTH / 8
@@ -103,46 +104,55 @@ def move_piece(curr_pos: Square, new_pos: Square):
 
 
 #Comment out def playgame(): and uncomment if __name__ = '__main__' if you want to run
-#basechessgame.py without ScreenGUI.py
+#basechessgame.py without Screenpy
 #if __name__ == '__main__':
 def playgame(screen):
-    Home_Button = GUI.button(pos=(WIDTH-100, 100), font_size=25, txt_col=BLACK, bg_col=buttoncolor,
-                         text="Home", bg_hover= buttonhover)
-    Rules_Button = GUI.button(pos=(WIDTH-100, 200), font_size=25, txt_col=BLACK, bg_col=buttoncolor,
-                         text="Rules", bg_hover= buttonhover)
-    Deligate_Button = GUI.button(pos=(WIDTH-100, 450), font_size=25, txt_col=BLACK, bg_col=buttoncolor,
-                         text="Deligate", bg_hover= buttonhover)
-    End_Turn_Button = GUI.button(pos=(WIDTH-100, 550), font_size=25, txt_col=BLACK, bg_col=buttoncolor,
-                         text="End Turn", bg_hover= buttonhover)
-    Resign_Button = GUI.button(pos=(WIDTH-100, 650), font_size=25, txt_col=BLACK, bg_col=buttoncolor,
-                         text="Resign", bg_hover= buttonhover)
+
+    Home_Button = button(pos=(WIDTH-100, 100),
+                             font_size=25,
+                             txt_col=BLACK,
+                             bg_col=buttoncolor,
+                             text="Home",
+                             bg_hover=buttonhover,
+                             action=GameState.Home)
+
+    Rules_Button = button(pos=(WIDTH-100, 200),
+                              font_size=25,
+                              txt_col=BLACK,
+                              bg_col=buttoncolor,
+                              text="Rules",
+                              bg_hover=buttonhover,
+                              action=GameState.Rules)
+    Deligate_Button = button(pos=(WIDTH-100, 450),
+                             font_size=25, txt_col=BLACK,
+                             bg_col=buttoncolor,
+                             text="Deligate",
+                             bg_hover=buttonhover,
+                             action=GameState.Delegate)
+    End_Turn_Button = button(pos=(WIDTH-100, 550),
+                             font_size=25,
+                             txt_col=BLACK,
+                             bg_col=buttoncolor,
+                             text="End Turn",
+                             bg_hover=buttonhover,
+                             action=GameState.EndTurn)
+    Resign_Button = button(pos=(WIDTH-100, 650),
+                           font_size=25,
+                           txt_col=BLACK,
+                           bg_col=buttoncolor,
+                           text="Resign",
+                           bg_hover=buttonhover)
     buttons = [Home_Button, Deligate_Button, Resign_Button, End_Turn_Button, Rules_Button]
     create_board()
     square_group = []
     current_square = None
     bottom_player_turn = True
     while True:
-        events = pygame.event.get()
-        for event in events:
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                #Adding button functionality for home button
-                if Home_Button.selected:
-                    return
-                if Deligate_Button.selected:
-                    print('Deligate Button Selected')
-                    break
-                if Resign_Button.selected:
-                    print('Resign Button Selected')
-                    break
-                if End_Turn_Button.selected:
-                    print('End turn button selected')
-                    break
-                if Rules_Button.selected:
-                    print('rules button selected')
-                    break
+        mouse_down = False
+        for event in pygame.event.get():
+            if event.type == MOUSEBUTTONDOWN and event.button == 1:
+                mouse_down = True
+
                 pos = pygame.mouse.get_pos()
                 #if you dont click on the game board
                 if pos[0] >= GAME_WIDTH:
@@ -193,7 +203,9 @@ def playgame(screen):
 
         update_display(screen)
         for b in buttons:
+            ui_action = b.moused_over(pygame.mouse.get_pos(), mouse_down)
+            if ui_action is not None:
+                return ui_action
             b.draw(screen)
-            b.moused_over(pygame.mouse.get_pos())
         pygame.display.flip()
         clock.tick(15)
