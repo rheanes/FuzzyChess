@@ -142,7 +142,8 @@ def playgame(screen):
                            txt_col=BLACK,
                            bg_col=buttoncolor,
                            text="Resign",
-                           bg_hover=buttonhover)
+                           bg_hover=buttonhover,
+                           action=GameState.Resign)
     buttons = [Home_Button, Deligate_Button, Resign_Button, End_Turn_Button, Rules_Button]
     create_board()
     square_group = []
@@ -157,11 +158,9 @@ def playgame(screen):
                 pos = pygame.mouse.get_pos()
                 #if you dont click on the game board
                 if pos[0] >= GAME_WIDTH:
-                    print("Clicked on right hand side of board")
                     chosen_square = None
 
                 elif pos[1] >= GAME_WIDTH:
-                    print("Clicked on bottom portion of board")
                     chosen_square = None
 
                 #if you do click on the game board

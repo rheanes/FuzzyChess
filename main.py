@@ -33,6 +33,7 @@ def main():
         #play Game
         if game_state == GameState.Play:
             game_state = playgame(screen)
+#-----------START RULES PAGEE STUFF ------------------
         #Rules Page
         if game_state == GameState.Rules:
             game_state = RulesPageScene(screen)
@@ -60,6 +61,21 @@ def main():
         #King Tab
         if game_state == GameState.King:
             game_state = KingScene(screen)
+#------------START GAME BUTTON STUFF -----------------
+        if game_state == GameState.Delegate:
+            #add code to do something here
+            print('start deligation')
+            game_state = playgame(screen)
+        if game_state == GameState.EndTurn:
+            #add code to do something
+            print('end turn')
+            game_state = playgame(screen)
+
+        if game_state == GameState.Resign:
+            #add code to do something
+            print('Resign!!')
+            game_state = playgame(screen)
+
 
 
 main()
