@@ -1,41 +1,66 @@
-import common as cm
 from guielements import *
-from rulepage import rulespage
+
 from basechessgame import playgame
-clock = pygame.time.Clock()
-screen = pygame.display.set_mode((cm.WIDTH, cm.HEIGHT))
-pygame.display.set_caption('Medieval Fuzzy Logic Chess')
 
-while True:
-    b_knight = Element("./Images/blue_knight.png", (cm.WIDTH * 0.375, cm.HEIGHT * 0.5))
-    HeaderText = cm.font.render("Medieval Fuzzy Logic Chess", True, cm.BLACK)
-    play_button = button(pos=(cm.WIDTH * 0.75, cm.HEIGHT * 0.375), font_size=65, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
-                         text="Play", bg_hover= cm.buttonhover)
-    rules_button = button(pos=(cm.WIDTH * 0.75, cm.HEIGHT * 0.5), font_size=65, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
-                          text="Rules", bg_hover= cm.buttonhover)
-    quit_button = button(pos=(cm.WIDTH * 0.75, cm.HEIGHT * 0.625), font_size=65, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
-                         text="Quit", bg_hover = cm.buttonhover)
-    yeet = [play_button, rules_button, quit_button]
+from Scenes.MainMenuScene import MenuScene
+from Scenes.RulesPageScene import RulesPageScene
+from Scenes.HowToPlay import HowToPlayScene
+from Scenes.PiecesScene import PiecesScene
+from Scenes.PawnScene import PawnScene
+from Scenes.RookScene import RookScene
+from Scenes.KnightScene import KnightScene
+from Scenes.QueenScene import QueenScene
+from Scenes.BishopScene import BishopScene
+from Scenes.KingScene import KingScene
+
+
+
+def main():
+    pygame.init()
+
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption('Medieval Fuzzy Logic Chess')
+    game_state = GameState.Home
+
     while True:
-        for event in pygame.event.get():
-            if event.type == MOUSEBUTTONDOWN:
-                if quit_button.selected:
-                    pygame.quit()
-                    sys.exit()
-            if event.type == MOUSEBUTTONDOWN:
-                if rules_button.selected:
-                    rulespage(screen)
-            if event.type == MOUSEBUTTONDOWN:
-                if play_button.selected:
-                    playgame(screen)
-        screen.fill(cm.BACKGROUND)
-        pygame.draw.lines(screen, cm.BLACK, True, [(20, 20), (cm.WIDTH - 20,  20), (cm.WIDTH - 20, cm.HEIGHT - 20),
-                                                   ( 20, cm.HEIGHT - 20)], width= 4)
-        b_knight.draw(screen)
-        screen.blit(HeaderText, (50, cm.HEIGHT/8))
-        for yee in yeet:
-            yee.moused_over(pygame.mouse.get_pos())
-            yee.draw(screen)
+        #Quit Gamestate
+        if game_state == GameState.Quit:
+            pygame.quit()
+            return
+        #Homescreen GameState
+        if game_state == GameState.Home:
+            game_state = MenuScene(screen)
+        #play Game
+        if game_state == GameState.Play:
+            game_state = playgame(screen)
+        #Rules Page
+        if game_state == GameState.Rules:
+            game_state = RulesPageScene(screen)
+        #How To Play
+        if game_state == GameState.HowTo:
+            game_state = HowToPlayScene(screen)
+        #Pieces
+        if game_state == GameState.Pieces:
+            game_state = PiecesScene(screen)
+        #Pawn tab
+        if game_state == GameState.Pawn:
+            game_state = PawnScene(screen)
+        #Rook Tab
+        if game_state == GameState.Rook:
+            game_state = RookScene(screen)
+        #Knight Tab
+        if game_state == GameState.Knight:
+            game_state = KnightScene(screen)
+        #Queen Tab
+        if game_state == GameState.Queen:
+            game_state = QueenScene(screen)
+        #Bishop Tab
+        if game_state == GameState.Bishop:
+            game_state = BishopScene(screen)
+        #King Tab
+        if game_state == GameState.King:
+            game_state = KingScene(screen)
 
-        pygame.display.update()
-        clock.tick(cm.tickrate)
+
+main()
+
