@@ -2,7 +2,7 @@ import pygame
 
 from common import *
 from pieces import Piece, Team, Type, Value
-
+from commanders import *
 
 class Square:
     def __init__(self, piece):
@@ -60,6 +60,8 @@ def create_board():
             board[row][col].x_pos = col * (WIDTH // 8)
             board[row][col].y_pos = row * (WIDTH // 8)
             """
+
+
 
 
 def remove_highlights():
