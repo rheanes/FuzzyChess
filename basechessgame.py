@@ -37,7 +37,7 @@ def update_display(screen):
             pygame.draw.line(screen, BLACK, (j * gap, 0), (j * gap, GAME_WIDTH))
 
     pygame.draw.rect(screen, BACKGROUND, (GAME_WIDTH + 1, 0, WIDTH, HEIGHT))
-    pygame.draw.rect(screen, BACKGROUND, (0, GAME_WDITH+1, WIDTH, HEIGHT))
+    pygame.draw.rect(screen, BACKGROUND, (0, GAME_WIDTH+1, WIDTH, HEIGHT))
     #print('testing')
 
 
@@ -75,7 +75,20 @@ def highlight_moves(positions: tuple[int, int], team: Team):
     print('finished highlighting')
 
 
-# take a piece and it's index to determine where the piece can move using functions that are defined for each piece.
+# Takes an input piece, and determines the maximum movement it can make. This is done through a recursive BFS
+# that goes as far as the piece has movement.
+# Implement a BFS algorithm to check spots around the square, and the spots around the
+# accompanying squares up to the length of which the Rook can move.
+# Essentially, from your position, check the coords (x,y), and then their potential partners
+# up to the maximum movement. If any of the spaces found within the BFS are unoccupied, then
+# we will add it to the list we are making. Afterwards, we append the list to the positions
+#############################################################################################
+#                                  POSITIONS TO CHECK PER SPACE                             #
+#############################################################################################
+#                         (pos - 1, pos + 1) | (pos, pos + 1) | (pos + 1, pos + 1)          #
+#                         (pos - 1, pos)     |  CURR_POS      | (pos + 1, pos)              #
+#                         (pos - 1, pos - 1) | (pos, pos - 1) | (pos + 1, pos - 1)          #
+#############################################################################################
 def maxMovement(maxSpeed: int, iterations: int, position: tuple[int, int], startPos: tuple[int, int], positions=None):
 
     if positions is None:
@@ -94,6 +107,7 @@ def maxMovement(maxSpeed: int, iterations: int, position: tuple[int, int], start
         return
 
     if (board[currRow][currCol].piece is not None) and position != startPos:
+        positions.append(position)
         return
 
     maxMovement(maxSpeed, iterations + 1, (currRow, currCol + 1), startPos, positions)
