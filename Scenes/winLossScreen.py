@@ -1,15 +1,15 @@
 from guielements import *
-
+from common import *
 
 def winLossScreen(screen, win):
     if (win == True):
-        headerText = cm.font.render("You Win", True, cm.black)
+        headerText = font.render("You Win", True, BLACK)
     else:
-        headerText = cm.font.render("You Lose", True, cm.black)
-    homeButton = button(pos=(cm.WIDTH * 0.2, 0.8 * cm.HEIGHT), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
-                        text="Main Menu", bg_hover=cm.buttonhover)
-    playButton = button(pos=(cm.WIDTH * 0.8, 0.8 * cm.HEIGHT), font_size=50, txt_col=cm.BLACK, bg_col=cm.buttoncolor,
-                        text="Play again", bg_hover=cm.buttonhover)
+        headerText = font.render("You Lose", True, BLACK)
+    homeButton = button(pos=(WIDTH * 0.2, 0.8 * HEIGHT), font_size=50, txt_col=BLACK, bg_col=buttoncolor,
+                        text="Main Menu", bg_hover=buttonhover, action=GameState.Home)
+    playButton = button(pos=(WIDTH * 0.8, 0.8 * HEIGHT), font_size=50, txt_col=BLACK, bg_col=buttoncolor,
+                        text="Play again", bg_hover=buttonhover, action=GameState.Play)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -20,5 +20,5 @@ def winLossScreen(screen, win):
                     # return to main menu
                 if playButton.selected:
                     # start a new game
-        screen.fill(cm.BACKGROUND)
+        screen.fill(BACKGROUND)
         pygame.display.flip()
