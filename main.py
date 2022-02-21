@@ -35,10 +35,15 @@ def main():
             game_state = playgame(screen)
         #Win Game
         if game_state == GameState.Win:
-            game_state == VictoryScene(screen)
+            #TODO Implement Victory screen
+            #game_state == VictoryScene(screen)
+            game_state = playgame(screen)
         #Lose Game (ALSO OCCURS ON RESIGN)
-        if game_state == GameState.Win:
-            game_state == LossScene(screen)
+        if game_state == GameState.Loss:
+            # TODO Implement Victory screen
+            #game_state == LossScene(screen)
+            game_state = playgame(screen)
+
 
 #-----------START RULES PAGEE STUFF ------------------
         #Rules Page
@@ -76,11 +81,6 @@ def main():
         if game_state == GameState.EndTurn:
             #add code to do something
             print('end turn')
-            game_state = playgame(screen)
-
-        if game_state == GameState.Resign:
-            #add code to do something
-            print('Resign!!')
             game_state = playgame(screen)
 
 
