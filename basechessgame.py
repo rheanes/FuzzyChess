@@ -194,7 +194,7 @@ def playgame(screen):
                            bg_col=buttoncolor,
                            text="Resign",
                            bg_hover=buttonhover,
-                           action=GameState.Resign)
+                           action=GameState.Loss)
     buttons = [Home_Button, Deligate_Button, Resign_Button, End_Turn_Button, Rules_Button]
     square_group = []
     current_square = None
