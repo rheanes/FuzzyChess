@@ -6,6 +6,7 @@ from board import *
 from pieces import *
 from guielements import *
 
+
 DEFAULT_IMAGE_SIZE = (GAME_WIDTH / 8, GAME_WIDTH / 8)
 SQUARE_WIDTH = SQUARE_HEIGHT = GAME_WIDTH / 8
 clock = pygame.time.Clock()
@@ -37,7 +38,7 @@ def update_display(screen):
             pygame.draw.line(screen, BLACK, (j * gap, 0), (j * gap, GAME_WIDTH))
 
     pygame.draw.rect(screen, BACKGROUND, (GAME_WIDTH + 1, 0, WIDTH, HEIGHT))
-    pygame.draw.rect(screen, BACKGROUND, (0, GAME_WDITH+1, WIDTH, HEIGHT))
+    pygame.draw.rect(screen, BACKGROUND, (0, GAME_WIDTH+1, WIDTH, HEIGHT))
     #print('testing')
 
 
@@ -140,12 +141,11 @@ def move_piece(curr_pos: Square, new_pos: Square):
     board[curr_pos.row][curr_pos.col].piece = None
     print('pieced moved')
 
-
+FirstRun=True
 #Comment out def playgame(): and uncomment if __name__ = '__main__' if you want to run
 #basechessgame.py without ScreenGUI.py
 #if __name__ == '__main__':
 def playgame(screen):
-
     Home_Button = button(pos=(WIDTH-100, 100),
                              font_size=25,
                              txt_col=BLACK,
@@ -182,10 +182,13 @@ def playgame(screen):
                            bg_hover=buttonhover,
                            action=GameState.Resign)
     buttons = [Home_Button, Deligate_Button, Resign_Button, End_Turn_Button, Rules_Button]
-    create_board()
     square_group = []
     current_square = None
     bottom_player_turn = True
+    global FirstRun
+    if FirstRun:
+        create_board()
+        FirstRun=False
     while True:
         mouse_down = False
         for event in pygame.event.get():
