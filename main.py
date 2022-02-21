@@ -33,6 +33,13 @@ def main():
         #play Game
         if game_state == GameState.Play:
             game_state = playgame(screen)
+        #Win Game
+        if game_state == GameState.Win:
+            game_state == VictoryScene(screen)
+        #Lose Game (ALSO OCCURS ON RESIGN)
+        if game_state == GameState.Win:
+            game_state == LossScene(screen)
+
 #-----------START RULES PAGEE STUFF ------------------
         #Rules Page
         if game_state == GameState.Rules:
