@@ -36,8 +36,8 @@ def update_display(screen):
         for j in range(9):
             pygame.draw.line(screen, BLACK, (j * gap, 0), (j * gap, GAME_WIDTH))
 
-    pygame.draw.rect(screen, BACKGROUND, (801, 0, WIDTH, HEIGHT))
-    pygame.draw.rect(screen, BACKGROUND, (0, 801, WIDTH, HEIGHT))
+    pygame.draw.rect(screen, BACKGROUND, (GAME_WIDTH + 1, 0, WIDTH, HEIGHT))
+    pygame.draw.rect(screen, BACKGROUND, (0, GAME_WDITH+1, WIDTH, HEIGHT))
     #print('testing')
 
 
@@ -76,6 +76,43 @@ def highlight_moves(positions: tuple[int, int], team: Team):
 
 
 # take a piece and it's index to determine where the piece can move using functions that are defined for each piece.
+def maxMovement(maxSpeed: int, iterations: int, position: tuple[int, int], startPos: tuple[int, int], positions=None):
+
+    if positions is None:
+        positions = []
+
+    currRow = position[0]
+    currCol = position[1]
+
+    if (currRow < 0) or (currCol < 0):
+        return
+
+    if (currRow > 7) or (currCol > 7):
+        return
+
+    if iterations > maxSpeed:
+        return
+
+    if (board[currRow][currCol].piece is not None) and position != startPos:
+        return
+
+    maxMovement(maxSpeed, iterations + 1, (currRow, currCol + 1), startPos, positions)
+    maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol + 1), startPos, positions)
+    maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol), startPos, positions)
+    maxMovement(maxSpeed, iterations + 1, (currRow - 1, currCol + 1), startPos, positions)
+    maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol - 1), startPos, positions)
+    maxMovement(maxSpeed, iterations + 1, (currRow - 1, currCol), startPos, positions)
+    maxMovement(maxSpeed, iterations + 1, (currRow - 1, currCol - 1), startPos, positions)
+    maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol), startPos, positions)
+
+    if position in positions:
+        return positions
+    else:
+        positions.append(position)
+
+    return positions
+
+
 def potential_piece_moves(square: Square):
     piece = square.piece
     if piece.type == Type.PAWN:
@@ -84,18 +121,18 @@ def potential_piece_moves(square: Square):
         else:
             highlight_moves(pawn_moves_bottom((square.row, square.col)), square.piece.team)
     if (piece.type == Type.KING) or (piece.type == Type.QUEEN):
-        highlight_moves(king_queen_moves((square.row, square.col)), square.piece.team)
+        #Old call first
+        #highlight_moves(king_queen_moves((square.row, square.col)), square.piece.team)
+        highlight_moves(maxMovement(4, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
 
     elif piece.type == Type.ROOK:
-        highlight_moves(rook_moves((square.row, square.col)), square.piece.team)
-    """
+        highlight_moves(maxMovement(3, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+
     elif piece.type == Type.BISHOP:
-        highlight_moves(bishop_moves((square.row, square.col)))
-    elif piece.type == Type.QUEEN:
-        highlight_moves(queen_moves((square.row, square.col)))
-    """
-    if piece.type == Type.KNIGHT:
-        highlight_moves(knight_moves((square.row, square.col)), square.piece.team)
+        highlight_moves(maxMovement(3, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+
+    elif piece.type == Type.KNIGHT:
+        highlight_moves(maxMovement(5, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
 
 
 def move_piece(curr_pos: Square, new_pos: Square):
