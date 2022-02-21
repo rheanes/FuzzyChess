@@ -85,7 +85,8 @@ class GameState(Enum):
     Play = 1
     Delegate = 11
     EndTurn = 12
-    Resign = 13
+    Win = 13
+    Loss = 14
     Rules = 20
     HowTo = 21
     Pieces = 22
