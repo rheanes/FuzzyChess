@@ -10,6 +10,14 @@ from guielements import *
 DEFAULT_IMAGE_SIZE = (GAME_WIDTH / 8, GAME_WIDTH / 8)
 SQUARE_WIDTH = SQUARE_HEIGHT = GAME_WIDTH / 8
 clock = pygame.time.Clock()
+turn = 0
+
+def turnChange():
+    global turn
+    if turn == 0:
+        turn += 1
+    else:
+        turn -= 1
 
 def update_display(screen):
     """ Draw board squares """
@@ -130,25 +138,28 @@ def maxMovement(maxSpeed: int, iterations: int, position: tuple[int, int], start
 
 def potential_piece_moves(square: Square):
     piece = square.piece
-    if piece.type == Type.PAWN:
-        if piece.team == Team.YELLOW or (piece.team == Team.RED) or piece.team == Team.ORANGE:
+    if (piece.team == Team.YELLOW or (piece.team == Team.RED) or piece.team == Team.ORANGE) and turn == 1:
+        if piece.type == Type.PAWN:
             highlight_moves(pawn_moves_top((square.row, square.col)), square.piece.team)
-        else:
+        elif (piece.type == Type.KING) or (piece.type == Type.QUEEN):
+            highlight_moves(maxMovement(4, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+        elif piece.type == Type.ROOK:
+            highlight_moves(maxMovement(3, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+        elif piece.type == Type.BISHOP:
+            highlight_moves(maxMovement(3, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+        elif piece.type == Type.KNIGHT:
+            highlight_moves(maxMovement(5, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+    elif (piece.team == Team.GREEN or piece.team == Team.BLUE or piece.team == Team.PURPLE) and turn == 0:
+        if piece.type == Type.PAWN:
             highlight_moves(pawn_moves_bottom((square.row, square.col)), square.piece.team)
-    if (piece.type == Type.KING) or (piece.type == Type.QUEEN):
-        #Old call first
-        #highlight_moves(king_queen_moves((square.row, square.col)), square.piece.team)
-        highlight_moves(maxMovement(4, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
-
-    elif piece.type == Type.ROOK:
-        highlight_moves(maxMovement(3, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
-
-    elif piece.type == Type.BISHOP:
-        highlight_moves(maxMovement(3, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
-
-    elif piece.type == Type.KNIGHT:
-        highlight_moves(maxMovement(5, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
-
+        if (piece.type == Type.KING) or (piece.type == Type.QUEEN):
+            highlight_moves(maxMovement(4, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+        elif piece.type == Type.ROOK:
+            highlight_moves(maxMovement(3, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+        elif piece.type == Type.BISHOP:
+            highlight_moves(maxMovement(3, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+        elif piece.type == Type.KNIGHT:
+            highlight_moves(maxMovement(5, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
 
 def move_piece(curr_pos: Square, new_pos: Square):
     board[new_pos.row][new_pos.col].piece = board[curr_pos.row][curr_pos.col].piece
@@ -248,9 +259,11 @@ def playgame(screen):
                             if board[row][col].piece is not None:
                                 remove_highlights()
                                 move_piece(current_square, chosen_square)
+                                turnChange()
                             else:
                                 remove_highlights()
                                 move_piece(current_square, chosen_square)
+                                turnChange()
                         else:
                             pass
             else:
