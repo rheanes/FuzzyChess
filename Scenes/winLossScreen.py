@@ -2,7 +2,6 @@ from guielements import *
 from common import *
 
 def winLossScreen(screen, win):
-    win = True
     if (win == True):
         headerText = font.render("You Win", True, BLACK)
     else:
