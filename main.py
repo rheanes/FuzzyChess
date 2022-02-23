@@ -12,7 +12,7 @@ from Scenes.KnightScene import KnightScene
 from Scenes.QueenScene import QueenScene
 from Scenes.BishopScene import BishopScene
 from Scenes.KingScene import KingScene
-
+from Scenes.winLossScreen import winLossScreen
 
 
 def main():
@@ -36,13 +36,13 @@ def main():
         #Win Game
         if game_state == GameState.Win:
             #TODO Implement Victory screen
-            #game_state == VictoryScene(screen)
-            game_state = playgame(screen)
+            game_state = winLossScreen(screen, True)
+            #game_state = playgame(screen)
         #Lose Game (ALSO OCCURS ON RESIGN)
         if game_state == GameState.Loss:
             # TODO Implement Victory screen
-            #game_state == LossScene(screen)
-            game_state = playgame(screen)
+            game_state = winLossScreen(screen, False)
+            #game_state = playgame(screen)
 
 
 #-----------START RULES PAGEE STUFF ------------------
