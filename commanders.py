@@ -1,7 +1,7 @@
 
 import board as bd
 class Commander:
-    def __init__(self, troops,  leader) -> None:
+    def __init__(self, troops, leader) -> None:
         self.leader= leader
         self.troops = troops
         self.targets = []
@@ -15,6 +15,10 @@ class Commander:
     def use_turn(self):
         self.authority = False
 
+    def commander_lost(self):
+        if self.leader not in self.troops:
+            self.authority = False
+    
 
     
 
@@ -26,8 +30,8 @@ Needs to keep track of authority or action it posseses
 
 
 class King(Commander):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, troops, leader):
+        Commander.__init__(self, troops, leader)
         #self.delegate_action = True
 
     #sub refers to sub commander
