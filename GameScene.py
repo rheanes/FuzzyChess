@@ -1,23 +1,17 @@
 import sys
 import pygame
 
+import GameFunctions
 from common import *
 from board import *
 from pieces import *
 from guielements import *
-
+from GameFunctions import *
 
 DEFAULT_IMAGE_SIZE = (GAME_WIDTH / 8, GAME_WIDTH / 8)
 SQUARE_WIDTH = SQUARE_HEIGHT = GAME_WIDTH / 8
 clock = pygame.time.Clock()
 turn = 0
-
-def turnChange():
-    global turn
-    if turn == 0:
-        turn += 1
-    else:
-        turn -= 1
 
 def update_display(screen):
     """ Draw board squares """
@@ -49,93 +43,6 @@ def update_display(screen):
     pygame.draw.rect(screen, BACKGROUND, (0, GAME_WIDTH+1, WIDTH, HEIGHT))
     #print('testing')
 
-
-def find_square_coordinates(position: tuple[int, int]):
-    interval = GAME_WIDTH / 8
-    x, y = position
-    row = y // interval
-    col = x // interval
-    return int(row), int(col)
-
-
-# highlight possible moves
-# add 'type: Action' for type of action
-def highlight_moves(positions: tuple[int, int], team: Team):
-    for row, col in positions:
-        if board[row][col].color == BLUE:
-            pass
-        else:
-            if board[row][col].piece is None:
-                board[row][col].color = BLUE
-            elif board[row][col].piece is not None:
-                if board[row][col].piece.team in enemies[team]:
-                    board[row][col].color = BLACK
-                else:
-                    pass
-            else:
-                pass
-
-            """
-            if type is Action.MOVE:
-                board[row][col].color = BLUE
-            elif type is Action.ATTACK:
-                board[row][col].color = RED
-            """
-    print('finished highlighting')
-
-
-# Takes an input piece, and determines the maximum movement it can make. This is done through a recursive BFS
-# that goes as far as the piece has movement.
-# Implement a BFS algorithm to check spots around the square, and the spots around the
-# accompanying squares up to the length of which the Rook can move.
-# Essentially, from your position, check the coords (x,y), and then their potential partners
-# up to the maximum movement. If any of the spaces found within the BFS are unoccupied, then
-# we will add it to the list we are making. Afterwards, we append the list to the positions
-#############################################################################################
-#                                  POSITIONS TO CHECK PER SPACE                             #
-#############################################################################################
-#                         (pos - 1, pos + 1) | (pos, pos + 1) | (pos + 1, pos + 1)          #
-#                         (pos - 1, pos)     |  CURR_POS      | (pos + 1, pos)              #
-#                         (pos - 1, pos - 1) | (pos, pos - 1) | (pos + 1, pos - 1)          #
-#############################################################################################
-def maxMovement(maxSpeed: int, iterations: int, position: tuple[int, int], startPos: tuple[int, int], positions=None):
-
-    if positions is None:
-        positions = []
-
-    currRow = position[0]
-    currCol = position[1]
-
-    if (currRow < 0) or (currCol < 0):
-        return
-
-    if (currRow > 7) or (currCol > 7):
-        return
-
-    if iterations > maxSpeed:
-        return
-
-    if (board[currRow][currCol].piece is not None) and position != startPos:
-        positions.append(position)
-        return
-
-    maxMovement(maxSpeed, iterations + 1, (currRow, currCol + 1), startPos, positions)
-    maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol + 1), startPos, positions)
-    maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol), startPos, positions)
-    maxMovement(maxSpeed, iterations + 1, (currRow - 1, currCol + 1), startPos, positions)
-    maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol - 1), startPos, positions)
-    maxMovement(maxSpeed, iterations + 1, (currRow - 1, currCol), startPos, positions)
-    maxMovement(maxSpeed, iterations + 1, (currRow - 1, currCol - 1), startPos, positions)
-    maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol), startPos, positions)
-
-    if position in positions:
-        return positions
-    else:
-        positions.append(position)
-
-    return positions
-
-
 def potential_piece_moves(square: Square):
     piece = square.piece
     if (piece.team == Team.YELLOW or (piece.team == Team.RED) or piece.team == Team.ORANGE) and turn == 1:
@@ -161,15 +68,8 @@ def potential_piece_moves(square: Square):
         elif piece.type == Type.KNIGHT:
             highlight_moves(maxMovement(5, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
 
-def move_piece(curr_pos: Square, new_pos: Square):
-    board[new_pos.row][new_pos.col].piece = board[curr_pos.row][curr_pos.col].piece
-    board[curr_pos.row][curr_pos.col].piece = None
-    print('pieced moved')
 
 FirstRun=True
-#Comment out def playgame(): and uncomment if __name__ = '__main__' if you want to run
-#basechessgame.py without ScreenGUI.py
-#if __name__ == '__main__':
 def playgame(screen):
     Home_Button = button(pos=(WIDTH-100, 100),
                              font_size=25,
