@@ -1,6 +1,6 @@
 from guielements import *
 
-from basechessgame import playgame
+from basechessgame import playgame, turnChange
 
 from Scenes.MainMenuScene import MenuScene
 from Scenes.RulesPageScene import RulesPageScene
@@ -80,7 +80,7 @@ def main():
             game_state = playgame(screen)
         if game_state == GameState.EndTurn:
             #add code to do something
-            print('end turn')
+            turnChange()
             game_state = playgame(screen)
 
 
