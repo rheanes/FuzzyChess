@@ -6,6 +6,7 @@ main.py tracks the current gamestate and executes functions and switched to scen
 Images Folder contains all of the images that we are using in our project.
 
 --------------SCENES--------------------------------
+
 GameScene.py -
 Has the creation for our game. It draws the board and puts the pieces on our board. 
 It also tracks the logic of the game. 
