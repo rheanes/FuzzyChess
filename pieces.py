@@ -49,7 +49,7 @@ class Piece:
         self.delegated = False
 
 
-
+#-------------COMMANDER STUFF IS HERE ------------
 
 class Commander:
     def __init__(self, troops, leader) -> None:
@@ -104,20 +104,21 @@ class King(Commander):
 """
 King commander must be able to delegate and undelegate pieces
 """
-
-#orange_pieces = [board[0][1].piece, board[0][2].piece, board[1][0].piece, board[1][1].piece, board[1][2].piece]
-#orange_commander = Commander(orange_pieces, board[0][2].piece)
-#red_pieces = [board[0][0].piece, board[0][7].piece, board[0][3].piece, board[0][4].piece, board[1][3].piece, board[1][4].piece]
-#red_commander = King(red_pieces, board[0][4].piece)
-#yellow_pieces = [board[0][5].piece, board[0][6].piece, board[1][5].piece, board[1][6].piece, board[1][7].piece]
-#yellow_commander = Commander(yellow_pieces, board[0][5].piece)
-#blue_pieces = [board[7][4].piece, board[7][3].piece, board[7][0].piece, board[7][7].piece, board[6][3].piece, board[6][4].piece]
-#blue_commander = King(yellow_pieces, board[7][4])
-#green_pieces = [board[7][1].piece, board[7][2].piece, board[6][0].piece, board[6][1].piece, board[6][2].piece]
-#green_commander = Commander(yellow_pieces, board[7][2].piece)
-#purple_pieces = [board[7][5].piece, board[7][6].piece, board[6][5].piece, board[6][6].piece, board[6][7].piece]
-#purple_commander = Commander(yellow_pieces, board[7][5].piece)
-#orange_commander.see_pieces()
+'''
+orange_pieces = [board[0][1].piece, board[0][2].piece, board[1][0].piece, board[1][1].piece, board[1][2].piece]
+orange_commander = Commander(orange_pieces, board[0][2].piece)
+red_pieces = [board[0][0].piece, board[0][7].piece, board[0][3].piece, board[0][4].piece, board[1][3].piece, board[1][4].piece]
+red_commander = King(red_pieces, board[0][4].piece)
+yellow_pieces = [board[0][5].piece, board[0][6].piece, board[1][5].piece, board[1][6].piece, board[1][7].piece]
+yellow_commander = Commander(yellow_pieces, board[0][5].piece)
+blue_pieces = [board[7][4].piece, board[7][3].piece, board[7][0].piece, board[7][7].piece, board[6][3].piece, board[6][4].piece]
+blue_commander = King(yellow_pieces, board[7][4])
+green_pieces = [board[7][1].piece, board[7][2].piece, board[6][0].piece, board[6][1].piece, board[6][2].piece]
+green_commander = Commander(yellow_pieces, board[7][2].piece)
+purple_pieces = [board[7][5].piece, board[7][6].piece, board[6][5].piece, board[6][6].piece, board[6][7].piece]
+purple_commander = Commander(yellow_pieces, board[7][5].piece)
+orange_commander.see_pieces()
+'''
 
 enemies = {
     Team.BLUE : [Team.RED, Team.ORANGE, Team.YELLOW],
@@ -146,10 +147,8 @@ def on_board(position: tuple[int, int]):
     """
     if (-1 < x < 8) and (-1 < y < 8):
         return True
-"""
-    MOVES OF PIECES
-"""
 
+#----------_PAWN MOVES HERE--------------
 
 def pawn_moves_top(position: tuple[int, int]): # team on the top
     row, col = position
@@ -180,14 +179,3 @@ def pawn_moves_bottom(position: tuple[int, int]): # team on the bottom
 
     return positions
 
-"""
-     0       1       2       3       4       5       6       7
-0   0,0     0,1     0,2      (0,3)    0,4     0,5     (0,6)     0,7
-1   1,0    (1,1)   (1,2)     (1,3)   (1,4)   (1,5)     1,6     1,7
-2   2,0    (2,1)   (2,2)     (2,3)   (2,4)   (2,5)     2,6     2,7
-3   (3,0)  (3,1)   (3,2)      3,3    (3,4)    (3,5     3,6     3,7
-4   4,0     4,1    (4,2)    (4,3)     (4,4)     4,5     4,6     4,7
-5   5,0    (5,1)   (5,2    (5,3)     5,4     (5,5)     5,6     5,7
-6   (6,0)     6,1     6,2    (6,3)     6,4     6,5     (6,6)     6,7
-7   7,0     7,1     7,2     7,3     7,4     7,5     7,6     7,7
-"""
