@@ -11,15 +11,25 @@ Has the creation for our game. It draws the board and puts the pieces on our boa
 It also tracks the logic of the game. 
 
 RulesScene.py - This is the scene that draws the rules page to the screen. 
+
 HowToPlay.py - This is the scene that describes the different actions a user can perform. 
+
 PiecesScene.py - This is the scene that will give general information about the pieces. Including the capture table.
+
 PawnScene.py - This is the scene that will display all the information about the pawns to the screen.
+
 KnightScene.py - This is the scene that will display all the information about the knights to the screen.
+
 RookScene.py - This is the scene that will display all the information about the rooks to the screen.
+
 QueenScene.py - This is the scene that will display all the information about the queens to the screen.
+
 BishopScene.py - This is the scene that will display all the information about the bishops to the screen. 
+
 KingScene.py - This is the scene that will display all the information about the kings to the screen. 
+
 MainMenuScene.py - This is the scene that will draw or main menu to the screen.
+
 -----------------------------------------------------------
 
 RulesPageCommon.py - Contains all of the elements that are common between the different scenes within the rules page and puts them on the scene.
