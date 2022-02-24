@@ -6,12 +6,18 @@ from common import *
 from board import *
 from pieces import *
 from guielements import *
-from GameFunctions import *
 
 DEFAULT_IMAGE_SIZE = (GAME_WIDTH / 8, GAME_WIDTH / 8)
 SQUARE_WIDTH = SQUARE_HEIGHT = GAME_WIDTH / 8
 clock = pygame.time.Clock()
 turn = 0
+
+def turnChange():
+    global turn
+    if turn == 0:
+        turn += 1
+    else:
+        turn -= 1
 
 def update_display(screen):
     """ Draw board squares """
