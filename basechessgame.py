@@ -69,7 +69,7 @@ def highlight_moves(positions: tuple[int, int], team: Team):
                 board[row][col].color = BLUE
             elif board[row][col].piece is not None:
                 if board[row][col].piece.team in enemies[team]:
-                    board[row][col].color = RED
+                    board[row][col].color = BLACK
                 else:
                     pass
             else:
