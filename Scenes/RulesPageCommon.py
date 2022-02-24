@@ -98,7 +98,7 @@ def rules_multiline_text(text):
     pos = 175, 175
     out = []
     for t in text:
-        out.append(rulesfont.render(t, True, BLACK))
+        out.append(rulesfont.render(t, True, LIGHT_GRAY))
     return out, pos
 
 
