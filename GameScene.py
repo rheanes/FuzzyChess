@@ -1,7 +1,6 @@
 import sys
 import pygame
 
-import GameFunctions
 from common import *
 from board import *
 from pieces import *
