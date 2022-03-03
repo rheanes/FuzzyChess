@@ -12,6 +12,22 @@ SQUARE_WIDTH = SQUARE_HEIGHT = GAME_WIDTH / 8
 clock = pygame.time.Clock()
 turn = 0
 
+orange_pieces = [op1, op2, op3, ok, ob]
+orange_commander = Commander(orange_pieces, ob)
+red_pieces = [rr1, rr2, rp1, rp2, rq, rK]
+red_commander = King(red_pieces, rK)
+yellow_pieces = [yp1, yp2, yp3, yk, yb]
+yellow_commander = Commander(yellow_pieces, yb)
+blue_pieces = [br1, br2, bp1, bp2, bq, bK]
+blue_commander = King(blue_pieces, bK)
+green_pieces = [gp1, gp2, gp3, gk, gb]
+green_commander = Commander(green_pieces, gb)
+purple_pieces = [pp1, pp2, pp3, pk, pb]
+purple_commander = Commander(purple_pieces, pb)
+
+player_commanders= [green_commander, blue_commander, purple_commander]
+ai_commanders = [orange_commander, red_commander, yellow_commander]
+
 def turnChange():
     global turn
     if turn == 0:
@@ -73,6 +89,9 @@ def potential_piece_moves(square: Square):
             highlight_moves(maxMovement(3, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
         elif piece.type == Type.KNIGHT:
             highlight_moves(maxMovement(5, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+
+
+#def start_deligation():
 
 
 FirstRun=True
@@ -139,7 +158,7 @@ def playgame(screen):
                     row, col = find_square_coordinates(pos)
                     print('row ', row, ' col ', col)
                     chosen_square = board[row][col]
-
+                    
                 # conditions for selected_square
                     if current_square is None:  # have piece selected
                         # positions = potential_piece_moves(board[row][col], (row, col))
@@ -148,6 +167,8 @@ def playgame(screen):
                         else:
                             current_square = chosen_square
                             potential_piece_moves(board[row][col])
+                            if current_square.piece == blue_commander.leader:
+                                blue_commander.see_pieces()
                         """
                         for position in positions:
                             row, col = position
@@ -179,6 +200,7 @@ def playgame(screen):
         for b in buttons:
             ui_action = b.moused_over(pygame.mouse.get_pos(), mouse_down)
             if ui_action is not None:
+                #if b == Deligate_Button:    
                 return ui_action
             b.draw(screen)
         pygame.display.flip()
