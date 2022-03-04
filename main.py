@@ -13,6 +13,7 @@ from Scenes.QueenScene import QueenScene
 from Scenes.BishopScene import BishopScene
 from Scenes.KingScene import KingScene
 from Scenes.winLossScreen import winLossScreen
+from board import remove_highlights
 
 
 def main():
@@ -28,18 +29,22 @@ def main():
             pygame.quit()
             return
         #Homescreen GameState
+        remove_highlights()
         if game_state == GameState.Home:
             game_state = MenuScene(screen)
         #play Game
+        remove_highlights()
         if game_state == GameState.Play:
             game_state = playgame(screen)
         #Win Game
+        remove_highlights()
         if game_state == GameState.Win:
             #TODO Implement Victory screen
             game_state = winLossScreen(screen, True)
             #game_state = playgame(screen)
         #Lose Game (ALSO OCCURS ON RESIGN)
         if game_state == GameState.Loss:
+            remove_highlights()
             # TODO Implement Victory screen
             game_state = winLossScreen(screen, False)
             #game_state = playgame(screen)

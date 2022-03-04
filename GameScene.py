@@ -71,24 +71,24 @@ def potential_piece_moves(square: Square):
         if piece.type == Type.PAWN:
             highlight_moves(pawn_moves_top((square.row, square.col)), square.piece.team)
         elif (piece.type == Type.KING) or (piece.type == Type.QUEEN):
-            highlight_moves(maxMovement(4, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+            highlight_moves(maxMovement(3, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
         elif piece.type == Type.ROOK:
-            highlight_moves(maxMovement(3, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+            highlight_moves(maxMovement(2, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
         elif piece.type == Type.BISHOP:
-            highlight_moves(maxMovement(3, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+            highlight_moves(maxMovement(2, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
         elif piece.type == Type.KNIGHT:
-            highlight_moves(maxMovement(5, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+            highlight_moves(maxMovement(4, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
     elif (piece.team == Team.GREEN or piece.team == Team.BLUE or piece.team == Team.PURPLE) and turn == 0:
         if piece.type == Type.PAWN:
             highlight_moves(pawn_moves_bottom((square.row, square.col)), square.piece.team)
         if (piece.type == Type.KING) or (piece.type == Type.QUEEN):
-            highlight_moves(maxMovement(4, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+            highlight_moves(maxMovement(3, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
         elif piece.type == Type.ROOK:
-            highlight_moves(maxMovement(3, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+            highlight_moves(maxMovement(2, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
         elif piece.type == Type.BISHOP:
-            highlight_moves(maxMovement(3, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+            highlight_moves(maxMovement(2, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
         elif piece.type == Type.KNIGHT:
-            highlight_moves(maxMovement(5, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+            highlight_moves(maxMovement(4, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
 
 
 #def start_deligation():
