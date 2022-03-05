@@ -10,7 +10,7 @@ from guielements import *
 DEFAULT_IMAGE_SIZE = (GAME_WIDTH / 8, GAME_WIDTH / 8)
 SQUARE_WIDTH = SQUARE_HEIGHT = GAME_WIDTH / 8
 clock = pygame.time.Clock()
-turn = 0
+turn = True # human turn
 
 orange_pieces = [op1, op2, op3, ok, ob]
 orange_commander = Commander(orange_pieces, ob)
@@ -30,10 +30,7 @@ ai_commanders = [orange_commander, red_commander, yellow_commander]
 
 def turnChange():
     global turn
-    if turn == 0:
-        turn += 1
-    else:
-        turn -= 1
+    turn = not turn
 
 def update_display(screen):
     """ Draw board squares """
@@ -67,7 +64,7 @@ def update_display(screen):
 
 def potential_piece_moves(square: Square):
     piece = square.piece
-    if (piece.team == Team.YELLOW or (piece.team == Team.RED) or piece.team == Team.ORANGE) and turn == 1:
+    if (piece.team == Team.YELLOW or (piece.team == Team.RED) or piece.team == Team.ORANGE):
         if piece.type == Type.PAWN:
             highlight_moves(pawn_moves_top((square.row, square.col)), square.piece.team)
         elif (piece.type == Type.KING) or (piece.type == Type.QUEEN):
@@ -78,7 +75,7 @@ def potential_piece_moves(square: Square):
             highlight_moves(maxMovement(2, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
         elif piece.type == Type.KNIGHT:
             highlight_moves(maxMovement(4, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
-    elif (piece.team == Team.GREEN or piece.team == Team.BLUE or piece.team == Team.PURPLE) and turn == 0:
+    elif (piece.team == Team.GREEN or piece.team == Team.BLUE or piece.team == Team.PURPLE):
         if piece.type == Type.PAWN:
             highlight_moves(pawn_moves_bottom((square.row, square.col)), square.piece.team)
         if (piece.type == Type.KING) or (piece.type == Type.QUEEN):
@@ -138,32 +135,30 @@ def playgame(screen):
     global FirstRun
     if FirstRun:
         create_board()
-        FirstRun=False
+        FirstRun = False
     while True:
         mouse_down = False
         for event in pygame.event.get():
             if event.type == MOUSEBUTTONDOWN and event.button == 1:
                 mouse_down = True
 
-                pos = pygame.mouse.get_pos()
+                x,y = pygame.mouse.get_pos()
+
                 #if you dont click on the game board
-                if pos[0] >= GAME_WIDTH:
-                    chosen_square = None
-
-                elif pos[1] >= GAME_WIDTH:
-                    chosen_square = None
-
+                if x >= GAME_WIDTH or y >= GAME_WIDTH:
+                    if End_Turn_Button.selected:
+                        turnChange()
                 #if you do click on the game board
                 else:
-                    row, col = find_square_coordinates(pos)
+                    row, col = find_square_coordinates((x, y))
                     print('row ', row, ' col ', col)
                     chosen_square = board[row][col]
                     
                 # conditions for selected_square
-                    if current_square is None:  # have piece selected
+                    if current_square is None:
                         # positions = potential_piece_moves(board[row][col], (row, col))
                         if chosen_square.piece is None:
-                            pass
+                            pass # do nothing
                         else:
                             current_square = chosen_square
                             potential_piece_moves(board[row][col])
@@ -178,19 +173,19 @@ def playgame(screen):
                         if chosen_square.piece is not None:
                             remove_highlights()
                             current_square = chosen_square
-                            potential_piece_moves(board[row][col])
-                        elif (board[row][col].color is WHITE) or (board[row][col].color is GREY):
+                            potential_piece_moves(chosen_square)
+                        elif (chosen_square.color is WHITE) or (chosen_square.color is GREY):
                             remove_highlights()
                             current_square = None
-                        elif board[row][col].color is BLUE:
-                            if board[row][col].piece is not None:
+                        elif chosen_square.color is BLUE:
+                            if chosen_square.piece is not None:
                                 remove_highlights()
                                 move_piece(current_square, chosen_square)
-                                turnChange()
+                                # commit_action()
                             else:
                                 remove_highlights()
                                 move_piece(current_square, chosen_square)
-                                turnChange()
+                                # commit_action()
                         else:
                             pass
             else:
