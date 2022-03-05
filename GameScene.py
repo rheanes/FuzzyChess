@@ -87,8 +87,8 @@ def potential_piece_moves(square: Square):
         elif piece.type == Type.KNIGHT:
             highlight_moves(maxMovement(4, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
 
-
-#def start_deligation():
+def display_turn_count():
+    pass
 
 
 FirstRun=True
@@ -143,17 +143,14 @@ def playgame(screen):
                 if event.type == MOUSEBUTTONDOWN and event.button == 1:
                     mouse_down = True
 
-                    pos = pygame.mouse.get_pos()
+                    x,y = pygame.mouse.get_pos()
                     #if you dont click on the game board
-                    if pos[0] >= GAME_WIDTH:
-                        chosen_square = None
-
-                    elif pos[1] >= GAME_WIDTH:
-                        chosen_square = None
-
+                    if x >= GAME_WIDTH or y >= GAME_WIDTH:
+                        if End_Turn_Button.selected:
+                            turn = False
                     #if you do click on the game board
                     else:
-                        row, col = find_square_coordinates(pos)
+                        row, col = find_square_coordinates((x,y))
                         print('row ', row, ' col ', col)
                         chosen_square = board[row][col]
 
