@@ -167,11 +167,6 @@ def playgame(screen):
                                 potential_piece_moves(board[row][col])
                                 if current_square.piece == blue_commander.leader:
                                     blue_commander.see_pieces()
-                            """
-                            for position in positions:
-                                row, col = position
-                                board[row][col].color = BLUE
-                            """
                         else:  # a piece is already selected
                             if chosen_square.piece is not None:
                                 remove_highlights()
