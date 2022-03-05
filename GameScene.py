@@ -161,19 +161,19 @@ def playgame(screen):
                                 pass
                             else:
                                 current_square = chosen_square
-                                potential_piece_moves(board[row][col])
+                                potential_piece_moves(chosen_square)
                                 if current_square.piece == blue_commander.leader:
                                     blue_commander.see_pieces()
                         else:  # a piece is already selected
                             if chosen_square.piece is not None:
                                 remove_highlights()
                                 current_square = chosen_square
-                                potential_piece_moves(board[row][col])
-                            elif (board[row][col].color is WHITE) or (board[row][col].color is GREY):
+                                potential_piece_moves(chosen_square)
+                            elif (chosen_square.color is WHITE) or (chosen_square.color is GREY):
                                 remove_highlights()
                                 current_square = None
-                            elif board[row][col].color is BLUE:
-                                if board[row][col].piece is not None:
+                            elif chosen_square.color is BLUE:
+                                if chosen_square.piece is not None:
                                     remove_highlights()
                                     move_piece(current_square, chosen_square)
 
