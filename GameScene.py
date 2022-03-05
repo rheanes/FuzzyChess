@@ -10,7 +10,7 @@ from guielements import *
 DEFAULT_IMAGE_SIZE = (GAME_WIDTH / 8, GAME_WIDTH / 8)
 SQUARE_WIDTH = SQUARE_HEIGHT = GAME_WIDTH / 8
 clock = pygame.time.Clock()
-turn = 0
+turn = True # True maeans human move
 
 orange_pieces = [op1, op2, op3, ok, ob]
 orange_commander = Commander(orange_pieces, ob)
@@ -30,10 +30,7 @@ ai_commanders = [orange_commander, red_commander, yellow_commander]
 
 def turnChange():
     global turn
-    if turn == 0:
-        turn += 1
-    else:
-        turn -= 1
+    turn = not turn
 
 def update_display(screen):
     """ Draw board squares """
@@ -141,60 +138,63 @@ def playgame(screen):
         FirstRun=False
     while True:
         mouse_down = False
-        for event in pygame.event.get():
-            if event.type == MOUSEBUTTONDOWN and event.button == 1:
-                mouse_down = True
+        if turn:
+            for event in pygame.event.get():
+                if event.type == MOUSEBUTTONDOWN and event.button == 1:
+                    mouse_down = True
 
-                pos = pygame.mouse.get_pos()
-                #if you dont click on the game board
-                if pos[0] >= GAME_WIDTH:
-                    chosen_square = None
+                    pos = pygame.mouse.get_pos()
+                    #if you dont click on the game board
+                    if pos[0] >= GAME_WIDTH:
+                        chosen_square = None
 
-                elif pos[1] >= GAME_WIDTH:
-                    chosen_square = None
+                    elif pos[1] >= GAME_WIDTH:
+                        chosen_square = None
 
-                #if you do click on the game board
-                else:
-                    row, col = find_square_coordinates(pos)
-                    print('row ', row, ' col ', col)
-                    chosen_square = board[row][col]
-                    
-                # conditions for selected_square
-                    if current_square is None:  # have piece selected
-                        # positions = potential_piece_moves(board[row][col], (row, col))
-                        if chosen_square.piece is None:
-                            pass
-                        else:
-                            current_square = chosen_square
-                            potential_piece_moves(board[row][col])
-                            if current_square.piece == blue_commander.leader:
-                                blue_commander.see_pieces()
-                        """
-                        for position in positions:
-                            row, col = position
-                            board[row][col].color = BLUE
-                        """
-                    else:  # a piece is already selected
-                        if chosen_square.piece is not None:
-                            remove_highlights()
-                            current_square = chosen_square
-                            potential_piece_moves(board[row][col])
-                        elif (board[row][col].color is WHITE) or (board[row][col].color is GREY):
-                            remove_highlights()
-                            current_square = None
-                        elif board[row][col].color is BLUE:
-                            if board[row][col].piece is not None:
-                                remove_highlights()
-                                move_piece(current_square, chosen_square)
-                                turnChange()
+                    #if you do click on the game board
+                    else:
+                        row, col = find_square_coordinates(pos)
+                        print('row ', row, ' col ', col)
+                        chosen_square = board[row][col]
+
+                    # conditions for selected_square
+                        if current_square is None:  # have piece selected
+                            # positions = potential_piece_moves(board[row][col], (row, col))
+                            if chosen_square.piece is None:
+                                pass
                             else:
+                                current_square = chosen_square
+                                potential_piece_moves(board[row][col])
+                                if current_square.piece == blue_commander.leader:
+                                    blue_commander.see_pieces()
+                            """
+                            for position in positions:
+                                row, col = position
+                                board[row][col].color = BLUE
+                            """
+                        else:  # a piece is already selected
+                            if chosen_square.piece is not None:
                                 remove_highlights()
-                                move_piece(current_square, chosen_square)
-                                turnChange()
-                        else:
-                            pass
-            else:
-                pass
+                                current_square = chosen_square
+                                potential_piece_moves(board[row][col])
+                            elif (board[row][col].color is WHITE) or (board[row][col].color is GREY):
+                                remove_highlights()
+                                current_square = None
+                            elif board[row][col].color is BLUE:
+                                if board[row][col].piece is not None:
+                                    remove_highlights()
+                                    move_piece(current_square, chosen_square)
+
+                                else:
+                                    remove_highlights()
+                                    move_piece(current_square, chosen_square)
+
+                            else:
+                                pass
+                else:
+                    pass
+        else:
+            pass
 
         update_display(screen)
         for b in buttons:
