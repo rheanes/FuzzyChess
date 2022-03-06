@@ -1,6 +1,6 @@
 from guielements import *
 
-from GameScene import playgame, turnChange
+from GameScene import playgame, turnChange, start_deligation
 
 from Scenes.MainMenuScene import MenuScene
 from Scenes.RulesPageScene import RulesPageScene

@@ -28,6 +28,8 @@ purple_commander = Commander(purple_pieces, pb)
 player_commanders= [green_commander, blue_commander, purple_commander]
 ai_commanders = [orange_commander, red_commander, yellow_commander]
 
+#deligated
+
 def turnChange():
     global turn
     if turn == 0:
@@ -91,7 +93,11 @@ def potential_piece_moves(square: Square):
             highlight_moves(maxMovement(5, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
 
 
-#def start_deligation():
+def start_deligation(p, c, k):
+    team_king = k
+    selected_piece = p
+    selected_commander = c
+    team_king.delegate(selected_piece, selected_commander)
 
 
 FirstRun=True
@@ -200,7 +206,8 @@ def playgame(screen):
         for b in buttons:
             ui_action = b.moused_over(pygame.mouse.get_pos(), mouse_down)
             if ui_action is not None:
-                #if b == Deligate_Button:    
+                #if b == Deligate_Button:
+                        
                 return ui_action
             b.draw(screen)
         pygame.display.flip()
