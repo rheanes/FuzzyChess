@@ -143,9 +143,11 @@ def playgame(screen):
     if FirstRun:
         create_board()
         FirstRun=False
-    global turn
+
     while True:
         mouse_down = False
+
+        global turn
         if turn:
             for event in pygame.event.get():
                 if event.type == MOUSEBUTTONDOWN and event.button == 1:
@@ -161,39 +163,41 @@ def playgame(screen):
                         row, col = find_square_coordinates((x,y))
                         print('row ', row, ' col ', col)
                         chosen_square = board[row][col]
-
+                        """
                         # prevents clicking on enemy pieces
-                        if chosen_square.piece.team not in enemies:
-                            # conditions for selected_square
-                            if current_square is None:
-                                if chosen_square.piece is None:
-                                    pass
-                                else:
-                                    current_square = chosen_square
-                                    potential_piece_moves(chosen_square)
-                                    if current_square.piece == blue_commander.leader:
-                                        blue_commander.see_pieces()
-                            else:  # a piece is already selected
+                        if (chosen_square.piece.team in enemies) and chosen_square.piece:
+                            pass
+                        else:
+                        """
+                        # conditions for selected_square
+                        if current_square is None:
+                            if chosen_square.piece is None:
+                                pass
+                            else:
+                                current_square = chosen_square
+                                potential_piece_moves(chosen_square)
+                                if current_square.piece == blue_commander.leader:
+                                    blue_commander.see_pieces()
+                        else:  # a piece is already selected
+                            if chosen_square.piece is not None:
+                                remove_highlights()
+                                current_square = chosen_square
+                                potential_piece_moves(chosen_square)
+                            elif (chosen_square.color is WHITE) or (chosen_square.color is GREY):
+                                remove_highlights()
+                                current_square = None
+                            elif chosen_square.color is BLUE:
                                 if chosen_square.piece is not None:
-                                    remove_highlights()
-                                    current_square = chosen_square
-                                    potential_piece_moves(chosen_square)
-                                elif (chosen_square.color is WHITE) or (chosen_square.color is GREY):
-                                    remove_highlights()
                                     current_square = None
-                                elif chosen_square.color is BLUE:
-                                    if chosen_square.piece is not None:
-                                        current_square = None
-                                        remove_highlights()
-                                        move_piece(current_square, chosen_square)
-
-                                    else:
-                                        current_square = None
-                                        remove_highlights()
-                                        move_piece(current_square, chosen_square)
+                                    remove_highlights()
+                                    move_piece(current_square, chosen_square)
 
                                 else:
-                                    pass
+                                    move_piece(current_square, chosen_square)
+                                    current_square = None
+
+                            else:
+                                pass
                 else:
                     pass
         else:
