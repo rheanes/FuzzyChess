@@ -163,7 +163,7 @@ def playgame(screen):
                         row, col = find_square_coordinates((x,y))
                         print('row ', row, ' col ', col)
                         chosen_square = board[row][col]
-                        """
+                        """ current causes issues
                         # prevents clicking on enemy pieces
                         if (chosen_square.piece.team in enemies) and chosen_square.piece:
                             pass
