@@ -2,14 +2,13 @@ import pygame
 import sys
 import common as cm
 import random
-from pieces import *
 
-attackMatrix = ({4, 4, 4, 4, 5, 0},
-                {4, 4, 4, 4, 5, 2},
-                {5, 5, 4, 5, 5, 3},
-                {5, 5, 5, 5, 5, 2},
-                {4, 4, 5, 4, 5, 5},
-                {6, 6, 5, 6, 6, 4})
+attackMatrix = [[4, 4, 4, 4, 5, 0],
+                [4, 4, 4, 4, 5, 2],
+                [5, 5, 4, 5, 5, 3],
+                [5, 5, 5, 5, 5, 2],
+                [4, 4, 5, 4, 5, 5],
+                [6, 6, 5, 6, 6, 4]]
 
 
 # ------------------------------ACTUAL DICE ROLL ---------------------
@@ -20,12 +19,10 @@ def attackRoll():
     return roll
 
 
-def attack(attacker: Piece,
-           defender: Piece) -> bool:
+def attack(attacker: int,
+           defender: int) -> bool:
     num = attackRoll()
-    atk = attacker.type
-    dfd = defender.type
-    if attackMatrix[atk][dfd] >= num:
+    if attackMatrix[attacker][defender] >= num:
         return True
     else:
         return False

@@ -179,11 +179,11 @@ def playgame(screen):
                                 if current_square.piece == blue_commander.leader:
                                     blue_commander.see_pieces()
                         else:  # a piece is already selected
-                            if chosen_square.piece is not None:
+                            if chosen_square.piece is not None and chosen_square.piece.team == current_square.piece.team:
                                 remove_highlights()
                                 current_square = chosen_square
                                 potential_piece_moves(chosen_square)
-                            elif (chosen_square.color is WHITE) or (chosen_square.color is GREY):
+                            if (chosen_square.color is WHITE) or (chosen_square.color is GREY):
                                 remove_highlights()
                                 current_square = None
                             elif chosen_square.color is BLUE:
@@ -191,10 +191,20 @@ def playgame(screen):
                                     current_square = None
                                     remove_highlights()
                                     move_piece(current_square, chosen_square)
-
                                 else:
+                                    remove_highlights()
                                     move_piece(current_square, chosen_square)
                                     current_square = None
+                            elif chosen_square.color is BLACK:
+                                if chosen_square.piece is not None:
+                                    if GameFunctions.attack(current_square.piece.type._value_, chosen_square.piece.type._value_) is True:
+                                        remove_highlights()
+                                        chosen_square.piece = None
+                                        move_piece(current_square, chosen_square)
+                                        current_square = None
+                                    else:
+                                        remove_highlights()
+
 
                             else:
                                 pass
