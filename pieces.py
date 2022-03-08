@@ -39,7 +39,7 @@ class Value(enum.Enum):
 #creates a chess piece class that shows:
 #team, attackable, and color
 class Piece:
-    def __init__(self, team, type, image, value, defenseMatrix, delegated):
+    def __init__(self, team, type, image, value, delegated):
         super().__init__()
         self.team = team
         self.type = type
@@ -47,7 +47,6 @@ class Piece:
         self.image = image
         self.value = value
         self.delegated = False
-        self.defenseMatrix = (int, int)
         self.delegated = False
 
 
@@ -55,7 +54,7 @@ class Piece:
 
 class Commander:
     def __init__(self, troops, leader) -> None:
-        self.leader= leader
+        self.leader = leader
         self.troops = troops
         self.targets = []
         self.authority = True

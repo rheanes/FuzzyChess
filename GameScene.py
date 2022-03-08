@@ -25,7 +25,7 @@ green_commander = Commander(green_pieces, gb)
 purple_pieces = [pp1, pp2, pp3, pk, pb]
 purple_commander = Commander(purple_pieces, pb)
 
-player_commanders= [green_commander, blue_commander, purple_commander]
+player_commanders = [green_commander, blue_commander, purple_commander]
 ai_commanders = [orange_commander, red_commander, yellow_commander]
 
 #deligated
@@ -66,7 +66,7 @@ def update_display(screen):
 
 def potential_piece_moves(square: Square):
     piece = square.piece
-    if (piece.team == Team.YELLOW or (piece.team == Team.RED) or piece.team == Team.ORANGE) and turn == 1:
+    if (piece.team == Team.YELLOW or (piece.team == Team.RED) or piece.team == Team.ORANGE):
         if piece.type == Type.PAWN:
             highlight_moves(pawn_moves_top((square.row, square.col)), square.piece.team)
         elif (piece.type == Type.KING) or (piece.type == Type.QUEEN):
@@ -77,7 +77,7 @@ def potential_piece_moves(square: Square):
             highlight_moves(maxMovement(2, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
         elif piece.type == Type.KNIGHT:
             highlight_moves(maxMovement(4, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
-    elif (piece.team == Team.GREEN or piece.team == Team.BLUE or piece.team == Team.PURPLE) and turn == 0:
+    elif (piece.team == Team.GREEN or piece.team == Team.BLUE or piece.team == Team.PURPLE):
         if piece.type == Type.PAWN:
             highlight_moves(pawn_moves_bottom((square.row, square.col)), square.piece.team)
         if (piece.type == Type.KING) or (piece.type == Type.QUEEN):
@@ -159,16 +159,19 @@ def playgame(screen):
                            bg_hover=buttonhover,
                            action=GameState.Loss)
     buttons = [Home_Button, Deligate_Button, Resign_Button, End_Turn_Button, Rules_Button]
-    square_group = []
+    enemies = [Team.RED, Team.YELLOW, Team.ORANGE]
     current_square = None
-    bottom_player_turn = True
+
     global FirstRun
     turn = True
     if FirstRun:
         create_board()
         FirstRun=False
+
     while True:
         mouse_down = False
+
+        global turn
         if turn:
             for event in pygame.event.get():
                 if event.type == MOUSEBUTTONDOWN and event.button == 1:
@@ -188,9 +191,16 @@ def playgame(screen):
                         #if Deligate_Button.selected:
                             #selected_piece = chosen_square
                             
-                    # conditions for selected_square
-                        if current_square is None:  # have piece selected
-                            # positions = potential_piece_moves(board[row][col], (row, col))
+                    
+                        """ 
+                        current causes issues
+                        # prevents clicking on enemy pieces
+                        if (chosen_square.piece.team in enemies) and chosen_square.piece:
+                            pass
+                        else:
+                        """
+                        # conditions for selected_square
+                        if current_square is None:
                             if chosen_square.piece is None:
                                 pass
                             else:
@@ -199,21 +209,32 @@ def playgame(screen):
                                 if current_square.piece == blue_commander.leader:
                                     blue_commander.see_pieces()
                         else:  # a piece is already selected
-                            if chosen_square.piece is not None:
+                            if chosen_square.piece is not None and chosen_square.piece.team == current_square.piece.team:
                                 remove_highlights()
                                 current_square = chosen_square
                                 potential_piece_moves(chosen_square)
-                            elif (chosen_square.color is WHITE) or (chosen_square.color is GREY):
+                            if (chosen_square.color is WHITE) or (chosen_square.color is GREY):
                                 remove_highlights()
                                 current_square = None
                             elif chosen_square.color is BLUE:
                                 if chosen_square.piece is not None:
+                                    current_square = None
                                     remove_highlights()
                                     move_piece(current_square, chosen_square)
                                 else:
                                     remove_highlights()
                                     move_piece(current_square, chosen_square)
-                            #elif Deligate_Button.selected:
+                                    current_square = None
+                            elif chosen_square.color is BLACK:
+                                if chosen_square.piece is not None:
+                                    if GameFunctions.attack(current_square.piece.type._value_, chosen_square.piece.type._value_) is True:
+                                        remove_highlights()
+                                        chosen_square.piece = None
+                                        move_piece(current_square, chosen_square)
+                                        current_square = None
+                                    else:
+                                        remove_highlights()
+
 
                             else:
                                 pass
