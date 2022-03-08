@@ -47,7 +47,6 @@ class Piece:
         self.image = image
         self.value = value
         self.delegated = False
-        self.delegated = False
 
 
 #-------------COMMANDER STUFF IS HERE ------------

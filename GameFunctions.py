@@ -19,10 +19,25 @@ def attackRoll():
     return roll
 
 
+# Attack action. This is called whenever a piece wants to claim another piece.
+# It takes the values of the attacker and defender, and references the attackMatrix
+# for it's given roll. If it rolls at least the number in that matrix, then the piece
+# should claim it. Thus we return true. If we don't, then we return false. We have
+# an optional parameter (hasMoved) as well in the event a knight is the attacker.
+# The knight tells the attack function it has moved, and gets a bonus to its move.
+
 def attack(attacker: int,
-           defender: int) -> bool:
+           defender: int,
+           hasMoved: bool = False) -> bool:
     num = attackRoll()
-    if attackMatrix[attacker][defender] >= num:
-        return True
+    if hasMoved:
+        if attackMatrix[attacker][defender] >= num + 1:
+            return True
+        else:
+            return False
+
     else:
-        return False
+        if attackMatrix[attacker][defender] >= num:
+            return True
+        else:
+            return False
