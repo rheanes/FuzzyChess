@@ -55,7 +55,7 @@ class Piece:
 
 class Commander:
     def __init__(self, troops, leader) -> None:
-        self.leader= leader
+        self.leader = leader
         self.troops = troops
         self.targets = []
         self.authority = True
