@@ -94,11 +94,13 @@ class King(Commander):
             self.troops.append(piece)
             self.use_turn()
         #if the piece is not delegated
-        elif piece.delegated == False and piece is not self.leader:
+        elif piece.delegated == False and piece is not self.leader and piece in self.troops:
             piece.delegated = True
             self.troops.remove(piece)
             sub.troops.append(piece)
             self.use_turn()
+        else:
+            print("invalid target for delegation")
     
 
 """

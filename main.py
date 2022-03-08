@@ -82,6 +82,7 @@ def main():
         if game_state == GameState.Delegate:
             #add code to do something here
             print('start deligation')
+            #start_deligation()
             game_state = playgame(screen)
         if game_state == GameState.EndTurn:
             #add code to do something

@@ -89,11 +89,34 @@ def potential_piece_moves(square: Square):
         elif piece.type == Type.KNIGHT:
             highlight_moves(maxMovement(4, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
 
-def start_deligation(p, c, k):
-    team_king = k
-    selected_piece = p
-    selected_commander = c
-    team_king.delegate(selected_piece, selected_commander)
+#def start_deligation():
+#    """
+#    on click event handling
+#    if click is on piece in corps, store as selected piece
+#    if click is on commander, store as selected commander
+#    """
+#    
+#    count = 0 #tracks number of clicks
+#    selected_piece = None # stores piece to be transfered
+#    selected_commander = None # stores commander for piece to be transferred to
+#    x, y = pygame.mouse.get_pos() 
+#    row,col = find_square_coordinates((x, y))
+#    chosen_square = board[row][col] # stores clicked on square 
+#    if chosen_square.piece in blue_commander.troops: # if the chosen square is in the kings corps, it is valid for deligation
+#        selected_piece = chosen_square.piece
+#        count += 1
+#    if chosen_square.piece is green_commander.leader: # if the second square selected is either green or purple commanders, store that piece
+#        selected_commander = chosen_square.piece
+#        count += 1
+#    elif chosen_square.piece is purple_commander.leader:
+#        selected_commander = chosen_square.piece
+#        count += 1
+#    if count == 2: # if two clicks have happened, delegate piece to designated commander
+#        if selected_piece is not None and selected_commander is not None:
+#            blue_commander.delegate(selected_piece, selected_commander)
+
+
+
 def display_turn_count():
     pass
 
@@ -140,6 +163,7 @@ def playgame(screen):
     current_square = None
 
     global FirstRun
+    turn = True
     if FirstRun:
         create_board()
         FirstRun=False
@@ -158,12 +182,18 @@ def playgame(screen):
                     if x >= GAME_WIDTH or y >= GAME_WIDTH:
                         if End_Turn_Button.selected:
                             turn = False
+
                     #if you do click on the game board
                     else:
                         row, col = find_square_coordinates((x,y))
                         print('row ', row, ' col ', col)
                         chosen_square = board[row][col]
-                        """ current causes issues
+                        #if Deligate_Button.selected:
+                            #selected_piece = chosen_square
+                            
+                    
+                        """ 
+                        current causes issues
                         # prevents clicking on enemy pieces
                         if (chosen_square.piece.team in enemies) and chosen_square.piece:
                             pass
@@ -217,8 +247,6 @@ def playgame(screen):
         for b in buttons:
             ui_action = b.moused_over(pygame.mouse.get_pos(), mouse_down)
             if ui_action is not None:
-                #if b == Deligate_Button:
-                        
                 return ui_action
             b.draw(screen)
         pygame.display.flip()
