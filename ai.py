@@ -1,3 +1,6 @@
+from board import *
+
+
 class Commander:
     def __init__(self, troops, targets) -> None:
         self.troops = troops

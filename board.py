@@ -3,7 +3,6 @@ import pygame
 from common import *
 from pieces import Piece, Team, Type, Value, enemies, pawn_moves_top, pawn_moves_bottom
 
-
 #----------------BOARD CREATING AND SQUATE CLASS ------------
 class Square:
     def __init__(self, piece):
