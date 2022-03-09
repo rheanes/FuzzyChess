@@ -3,7 +3,7 @@ import pygame.draw_py
 from guielements import *
 from common import *
 
-Home_Button = button(pos=(70, HEIGHT/10),
+Home_Button = button((WIDTH-150, HEIGHT/10-50),
                      font_size=25,
                      txt_col=BLACK,
                      bg_col=BACKGROUND,
@@ -84,15 +84,18 @@ Back_To_Game = button(pos=(WIDTH-150, HEIGHT/10),
 tabs = [Home_Button, Rules_Button, HowTo_Button, Pieces_Button,
         Pawn_Button, Rook_button, Knight_Button, Queen_Button, Bishop_Button, King_Button, Back_To_Game]
 
-positions6 = [(WIDTH / 6, 3 / 8 * HEIGHT), (WIDTH / 3, 3 / 8 * HEIGHT),
-                 (WIDTH / 2, 3 / 8 * HEIGHT),
-                 (2 / 3 * WIDTH, 3 / 8 * HEIGHT), (5 / 6 * WIDTH, 3 / 8 * HEIGHT),
-                 (WIDTH, 3 / 8 * HEIGHT)]
+positions3 = [(3/8*WIDTH, 5/8*HEIGHT),
+              (5/8*WIDTH, 5/8*HEIGHT),
+              (7/8*WIDTH, 5/8*HEIGHT)]
+positions6 = [(WIDTH / 6, 5 / 8 * HEIGHT), (WIDTH / 3, 5 / 8 * HEIGHT),
+                 (WIDTH / 2, 5 / 8 * HEIGHT),
+                 (2 / 3 * WIDTH, 5 / 8 * HEIGHT), (5 / 6 * WIDTH, 5 / 8 * HEIGHT),
+                 (WIDTH, 5 / 8 * HEIGHT)]
 
-positions4 = [(WIDTH / 3, 3 / 8 * HEIGHT), (WIDTH / 2, 3 / 8 * HEIGHT),
-                 (WIDTH * 2 / 3, 3 / 8 * HEIGHT), (5 / 6 * WIDTH, 3 / 8 * HEIGHT)]
+positions4 = [(WIDTH / 3, 5 / 8 * HEIGHT), (WIDTH / 2, 5 / 8 * HEIGHT),
+                 (WIDTH * 2 / 3, 5 / 8 * HEIGHT), (5 / 6 * WIDTH, 5 / 8 * HEIGHT)]
 
-positions2 = [(WIDTH / 4, 3 / 8 * HEIGHT), (WIDTH * 3 / 4, 3 / 8 * HEIGHT)]
+positions2 = [(WIDTH / 4, 5 / 8 * HEIGHT), (WIDTH * 3 / 4, 5 / 8 * HEIGHT)]
 
 def rules_multiline_text(text):
     pos = 175, 175
