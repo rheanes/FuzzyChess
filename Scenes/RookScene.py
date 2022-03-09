@@ -5,19 +5,19 @@ from common import *
 
 def RookScene(screen):
     Page_Title = font.render("Rooks", True, BLACK)
-    Page_Text = ["The archers, they provide long range support, they "
-        , "can move up to two squares in any direction and do "
-        , "not have to move in a straight line, they can make an  "
-        , "attack in any direction up to three squares away,  "
-        , "they do this by shooting over any squares between "
-        , "them and their target  so only the target is hit."]
-    img1 = Element("./Images/blue_rook.png", (positions6[0][0], positions6[0][1]))
-    img2 = Element("./Images/purple_rook.png", (positions6[1][0], positions6[1][1]))
-    img3 = Element("./Images/green_rook.png", (positions6[2][0], positions6[2][1]))
-    img4 = Element("./Images/red_rook.png", (positions6[3][0], positions6[3][1]))
-    img5 = Element("./Images/orange_rook.png", (positions6[4][0], positions6[4][1]))
-    img6 = Element("./Images/yellow_rook.png", (positions6[5][0], positions6[5][1]))
-    imgs = [img1, img2, img3, img4, img5, img6]
+    Page_Text = ["Movement: 2 Squares any direction",
+                 "Attack Range: 3 Squares any direction",
+                 "Min role to capture: Pawn=4, Rook=4, Bishop=4, Knight=5, Queen=5, King=5",
+                 "",
+                "The Rooks, or archers provide long range support, they ",
+                " do this by shooting over any squares between ",
+                 "them and their target  so only the target is hit."]
+
+    img1 = Element("./Images/blue_rook.png", (positions3[0][0], positions3[0][1]))
+    img2 = Element("./Images/purple_rook.png", (positions3[1][0], positions3[1][1]))
+    img3 = Element("./Images/green_rook.png", (positions3[2][0], positions3[2][1]))
+    imgs = [img1, img2, img3]
+
     while True:
         mouse_down = False
         for event in pygame.event.get():

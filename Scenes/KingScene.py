@@ -5,16 +5,18 @@ from common import *
 
 def KingScene(screen):
     Page_Title = font.render("Kings", True, BLACK)
-    Page_Text = ["if this piece is captured you lose, the leader of the army"
-        , "and commander of the center corps, can move up to "
-        , "three squares in any direction and does not have to  "
-        , "move in a straight line, can attack any adjacent square, "
-        , "can delegate pieces in his corps to another corps or ",
-                "pull pieces from the other corps into his own (this counts as "
+    Page_Text = ["Movement: 3 Squares any Direction",
+                 "Attack Range: 1 Square any Direction",
+                 "Min role to capture: Pawn=1, Rook=5, Bishop=4, Knight=4, Queen=4, King=4",
+                 "",
+        "If the king is captured you lose the leader of the army"
+        , "and you also lose the game."
+        , "The king can delegate pieces in his corps to another corps or "
+        ,"pull pieces from the other corps into his own (this counts as "
         , "this corps action)."]
-    img1 = Element("./Images/blue_king.png", (positions2[0][0], positions2[0][1]))
-    img2 = Element("./Images/red_king.png", (positions2[1][0], positions2[1][1]))
-    imgs = [img1, img2]
+
+    img = Element("./Images/blue_queen.png", (4/8*WIDTH, 5/8*HEIGHT))
+
     while True:
         mouse_down = False
         for event in pygame.event.get():
@@ -26,6 +28,5 @@ def KingScene(screen):
             if ui_action is not None:
                 return ui_action
             tab.draw(screen)
-        for img in imgs:
-            img.draw(screen)
+        img.draw(screen)
         pygame.display.flip()

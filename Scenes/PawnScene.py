@@ -5,20 +5,20 @@ from common import *
 
 def PawnScene(screen):
     Page_Title = font.render("Pawns", True, BLACK)
-    Page_Text = ["The basic infantry and usually considered cannon ",
-                "fodder, they can only move one square at a time",
-                "and may only move forward or forward diagonally, ",
+    Page_Text = ["Movement: 1 Square forward direction only",
+                 "Attack Range: 1 Square forward direction only",
+                 "Min role to capture: Pawn=4, Rook=6, Bishop=5, Knight=6, Queen=6, King=6",
+                 "",
+                "The pawn is the basic infantry and usually considered a cannon ",
                 "they can only attack in the same way they move, when",
                 "they reach the other side, they do not gain a",
-                "promotion like in traditional chess."]
+                "promotion like in traditional chess. For their first move,",
+                 "they can't move two squares like in traditional chess."]
 
-    img1 = Element("./Images/blue_pawn.png", (positions6[0][0], positions6[0][1]))
-    img2 = Element("./Images/purple_pawn.png", (positions6[1][0], positions6[1][1]))
-    img3 = Element("./Images/green_pawn.png", (positions6[2][0], positions6[2][1]))
-    img4 = Element("./Images/red_pawn.png", (positions6[3][0], positions6[3][1]))
-    img5 = Element("./Images/orange_pawn.png", (positions6[4][0], positions6[4][1]))
-    img6 = Element("./Images/yellow_pawn.png", (positions6[5][0], positions6[5][1]))
-    imgs = [img1, img2, img3, img4, img5, img6]
+    img1 = Element("./Images/blue_pawn.png", (positions3[0][0], positions3[0][1]))
+    img2 = Element("./Images/purple_pawn.png", (positions3[1][0], positions3[1][1]))
+    img3 = Element("./Images/green_pawn.png", (positions3[2][0], positions3[2][1]))
+    imgs = [img1, img2, img3]
     while True:
         mouse_down = False
         for event in pygame.event.get():
