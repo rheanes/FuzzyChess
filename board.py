@@ -3,7 +3,6 @@ import pygame
 from common import *
 from pieces import Piece, Team, Type, Value, enemies, pawn_moves_top, pawn_moves_bottom
 
-
 #----------------BOARD CREATING AND SQUATE CLASS ------------
 class Square:
     def __init__(self, piece):
@@ -18,37 +17,81 @@ class Square:
 
 board = [[Square(None) for _ in range(8)] for _ in range(8)]
 
+rr1 = Piece(Team.RED, Type.ROOK, pygame.image.load('./Images/red_rook.png'), Value.ROOK, False)
+ok = Piece(Team.ORANGE, Type.KNIGHT, pygame.image.load('./Images/orange_knight.png'), Value.KNIGHT, False)
+ob = Piece(Team.ORANGE, Type.BISHOP, pygame.image.load('./Images/orange_bishop.png'), Value.BISHOP, False)
+rK = Piece(Team.RED, Type.KING, pygame.image.load('./Images/red_king.png'), Value.KING, False)
+rq = Piece(Team.RED, Type.QUEEN, pygame.image.load('./Images/red_queen.png'), Value.QUEEN, False)
+yk = Piece(Team.YELLOW, Type.KNIGHT, pygame.image.load('./Images/yellow_knight.png'), Value.KNIGHT, False)
+yb = Piece(Team.YELLOW, Type.BISHOP, pygame.image.load('./Images/yellow_bishop.png'), Value.BISHOP, False)
+rr2 = Piece(Team.RED, Type.ROOK, pygame.image.load('./Images/red_rook.png'), Value.ROOK, False)
+
+rp1 = Piece(Team.RED, Type.PAWN, pygame.image.load('./Images/red_pawn.png'), Value.PAWN, False)
+rp2 = Piece(Team.RED, Type.PAWN, pygame.image.load('./Images/red_pawn.png'), Value.PAWN, False)
+op1 = Piece(Team.ORANGE, Type.PAWN, pygame.image.load('./Images/orange_pawn.png'), Value.PAWN, False)
+op2 = Piece(Team.ORANGE, Type.PAWN, pygame.image.load('./Images/orange_pawn.png'), Value.PAWN, False)
+op3 = Piece(Team.ORANGE, Type.PAWN, pygame.image.load('./Images/orange_pawn.png'), Value.PAWN, False)
+yp1 = Piece(Team.YELLOW, Type.PAWN, pygame.image.load('./Images/yellow_pawn.png'), Value.PAWN, False)
+yp2 = Piece(Team.YELLOW, Type.PAWN, pygame.image.load('./Images/yellow_pawn.png'), Value.PAWN, False)
+yp3 = Piece(Team.YELLOW, Type.PAWN, pygame.image.load('./Images/yellow_pawn.png'), Value.PAWN, False)
+
+br1 = Piece(Team.BLUE, Type.ROOK, pygame.image.load('./Images/blue_rook.png'), Value.ROOK, False)
+gk = Piece(Team.GREEN, Type.KNIGHT, pygame.image.load('./Images/green_knight.png'), Value.KNIGHT, False)
+gb = Piece(Team.GREEN, Type.BISHOP, pygame.image.load('./Images/green_bishop.png'), Value.BISHOP, False)
+bq = Piece(Team.BLUE, Type.QUEEN, pygame.image.load('./Images/blue_queen.png'), Value.QUEEN, False)
+bK = Piece(Team.BLUE, Type.KING, pygame.image.load('./Images/blue_king.png'), Value.KING, False)
+pb = Piece(Team.PURPLE, Type.BISHOP, pygame.image.load('./Images/purple_bishop.png'), Value.BISHOP, False)
+pk = Piece(Team.PURPLE, Type.KNIGHT, pygame.image.load('./Images/purple_knight.png'), Value.KNIGHT, False)
+br2 = Piece(Team.BLUE, Type.ROOK, pygame.image.load('./Images/blue_rook.png'), Value.ROOK, False)
+
+bp1 = Piece(Team.BLUE, Type.PAWN, pygame.image.load('./Images/blue_pawn.png'), Value.PAWN, False)
+bp2 = Piece(Team.BLUE, Type.PAWN, pygame.image.load('./Images/blue_pawn.png'), Value.PAWN, False)
+gp1 = Piece(Team.GREEN, Type.PAWN, pygame.image.load('./Images/green_pawn.png'), Value.PAWN, False)
+gp2 = Piece(Team.GREEN, Type.PAWN, pygame.image.load('./Images/green_pawn.png'), Value.PAWN, False)
+gp3 = Piece(Team.GREEN, Type.PAWN, pygame.image.load('./Images/green_pawn.png'), Value.PAWN, False)
+pp1 = Piece(Team.PURPLE, Type.PAWN, pygame.image.load('./Images/purple_pawn.png'), Value.PAWN, False)
+pp2 = Piece(Team.PURPLE, Type.PAWN, pygame.image.load('./Images/purple_pawn.png'), Value.PAWN, False)
+pp3 = Piece(Team.PURPLE, Type.PAWN, pygame.image.load('./Images/purple_pawn.png'), Value.PAWN, False)
 
 # creates the board
 def create_board():
-    board[0] = [Square(Piece(Team.RED, Type.ROOK, pygame.image.load('./Images/red_rook.png'), Value.ROOK)),
-                Square(Piece(Team.ORANGE, Type.KNIGHT, pygame.image.load('./Images/orange_knight.png'), Value.KNIGHT)),
-                Square(Piece(Team.ORANGE, Type.BISHOP, pygame.image.load('./Images/orange_bishop.png'), Value.BISHOP)),
-                Square(Piece(Team.RED, Type.QUEEN, pygame.image.load('./Images/red_queen.png'), Value.QUEEN)),
-                Square(Piece(Team.RED, Type.KING, pygame.image.load('./Images/red_king.png'), Value.KING)),
-                Square(Piece(Team.YELLOW, Type.BISHOP, pygame.image.load('./Images/yellow_bishop.png'), Value.BISHOP)),
-                Square(Piece(Team.YELLOW, Type.KNIGHT, pygame.image.load('./Images/yellow_knight.png'), Value.KNIGHT)),
-                Square(Piece(Team.RED, Type.ROOK, pygame.image.load('./Images/red_rook.png'), Value.ROOK))]
+    board[0] = [Square(rr1),
+                Square(ok),
+                Square(ob),
+                Square(rq),
+                Square(rK),
+                Square(yb),
+                Square(yk),
+                Square(rr2)]
 
-    board[7] = [Square(Piece(Team.BLUE, Type.ROOK, pygame.image.load('./Images/blue_rook.png'), Value.ROOK)),
-                Square(Piece(Team.GREEN, Type.KNIGHT, pygame.image.load('./Images/green_knight.png'), Value.KNIGHT)),
-                Square(Piece(Team.GREEN, Type.BISHOP, pygame.image.load('./Images/green_bishop.png'), Value.BISHOP)),
-                Square(Piece(Team.BLUE, Type.QUEEN, pygame.image.load('./Images/blue_queen.png'), Value.QUEEN)),
-                Square(Piece(Team.BLUE, Type.KING, pygame.image.load('./Images/blue_king.png'), Value.KING)),
-                Square(Piece(Team.PURPLE, Type.BISHOP, pygame.image.load('./Images/purple_bishop.png'), Value.BISHOP)),
-                Square(Piece(Team.PURPLE, Type.KNIGHT, pygame.image.load('./Images/purple_knight.png'), Value.KNIGHT)),
-                Square(Piece(Team.BLUE, Type.ROOK, pygame.image.load('./Images/blue_rook.png'), Value.ROOK))]
+    board[7] = [Square(br1),
+                Square(gk),
+                Square(gb),
+                Square(bq),
+                Square(bK),
+                Square(pb),
+                Square(pk),
+                Square(br2)]
 
-    for col in range(8):
-        if col <= 2:
-            board[1][col] = Square(Piece(Team.ORANGE, Type.PAWN, pygame.image.load('./Images/orange_pawn.png'), Value.PAWN))
-            board[6][col] = Square(Piece(Team.GREEN, Type.PAWN, pygame.image.load('./Images/green_pawn.png'), Value.PAWN))
-        if col == 3 or col == 4:
-            board[1][col] = Square(Piece(Team.RED, Type.PAWN, pygame.image.load('./Images/red_pawn.png'), Value.PAWN))
-            board[6][col] = Square(Piece(Team.BLUE, Type.PAWN, pygame.image.load('./Images/blue_pawn.png'), Value.PAWN))
-        if col >= 5:
-            board[1][col] = Square(Piece(Team.YELLOW, Type.PAWN, pygame.image.load('./Images/yellow_pawn.png'), Value.PAWN))
-            board[6][col] = Square(Piece(Team.PURPLE, Type.PAWN, pygame.image.load('./Images/purple_pawn.png'), Value.PAWN))
+    
+    board[1][0] = Square(op1)
+    board[1][1] = Square(op2)
+    board[1][2] = Square(op3)
+    board[6][0] = Square(gp1)
+    board[6][1] = Square(gp2)
+    board[6][2] = Square(gp3)
+        
+    board[1][3] = Square(rp1)
+    board[1][4] = Square(rp2)
+    board[6][3] = Square(bp1)
+    board[6][4] = Square(bp2)
+
+    board[1][5] = Square(yp1)
+    board[1][6] = Square(yp2)
+    board[1][7] = Square(yp3)
+    board[6][5] = Square(pp1)
+    board[6][6] = Square(pp2)
+    board[6][7] = Square(pp3)
 #adding colors to squares
     for row in range(8):
         for col in range(8):
@@ -151,14 +194,29 @@ def maxMovement(maxSpeed: int, iterations: int, position: tuple[int, int], start
         positions.append(position)
         return
 
+    #Checks to the Right square
     maxMovement(maxSpeed, iterations + 1, (currRow, currCol + 1), startPos, positions)
+
+    #Checks to the Down-Right square
     maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol + 1), startPos, positions)
+
+    #Checks to the Down square
     maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol), startPos, positions)
-    maxMovement(maxSpeed, iterations + 1, (currRow - 1, currCol + 1), startPos, positions)
+
+    #Checks to the Down-Left square
     maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol - 1), startPos, positions)
-    maxMovement(maxSpeed, iterations + 1, (currRow - 1, currCol), startPos, positions)
+
+    #Checks to the Left square
+    maxMovement(maxSpeed, iterations + 1, (currRow, currCol - 1), startPos, positions)
+
+    #Checks to the Up-Left square
     maxMovement(maxSpeed, iterations + 1, (currRow - 1, currCol - 1), startPos, positions)
-    maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol), startPos, positions)
+
+    #Checks to the Up Square
+    maxMovement(maxSpeed, iterations + 1, (currRow - 1, currCol), startPos, positions)
+
+    #Checks to the Up-Right square
+    maxMovement(maxSpeed, iterations + 1, (currRow - 1, currCol + 1), startPos, positions)
 
     if position in positions:
         return positions

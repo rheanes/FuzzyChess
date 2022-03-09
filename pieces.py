@@ -39,7 +39,7 @@ class Value(enum.Enum):
 #creates a chess piece class that shows:
 #team, attackable, and color
 class Piece:
-    def __init__(self, team, type, image, value):
+    def __init__(self, team, type, image, value, delegated):
         super().__init__()
         self.team = team
         self.type = type
@@ -53,7 +53,7 @@ class Piece:
 
 class Commander:
     def __init__(self, troops, leader) -> None:
-        self.leader= leader
+        self.leader = leader
         self.troops = troops
         self.targets = []
         self.authority = True
@@ -88,17 +88,19 @@ class King(Commander):
     #sub refers to sub commander
     def delegate(self, piece, sub):
         #if the piece has already been delegated
-        if piece.delegated == True:
+        if piece.delegated == True and piece is not sub.leader:
             piece.delegated = False
             sub.troops.remove(piece)
             self.troops.append(piece)
             self.use_turn()
         #if the piece is not delegated
-        elif piece.delegated == False:
+        elif piece.delegated == False and piece is not self.leader and piece in self.troops:
             piece.delegated = True
             self.troops.remove(piece)
             sub.troops.append(piece)
             self.use_turn()
+        else:
+            print("invalid target for delegation")
     
 
 """
