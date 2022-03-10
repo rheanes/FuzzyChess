@@ -7,6 +7,8 @@ from board import *
 from pieces import *
 from guielements import *
 
+#HELLO FOR TYLER
+
 DEFAULT_IMAGE_SIZE = (GAME_WIDTH / 8, GAME_WIDTH / 8)
 SQUARE_WIDTH = SQUARE_HEIGHT = GAME_WIDTH / 8
 clock = pygame.time.Clock()
