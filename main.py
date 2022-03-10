@@ -22,7 +22,6 @@ def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption('Medieval Fuzzy Logic Chess')
     game_state = GameState.Home
-
     while True:
         #Quit Gamestate
         if game_state == GameState.Quit:
