@@ -5,10 +5,15 @@ from common import *
 
 def HowToPlayScene(screen):
     Page_Title = font.render("How to Play", True, BLACK)
-    Page_Text = ["Much like normal chess, the goal of fuzzy logic ",
-                     "chess is to capture the enemy's king. However, ",
-                     "there are no checks or checkmates and capturing",
-                     "the king is like capturing any other piece."]
+    Page_Text = ["There are three extra action buttons on the side of the board.",
+                 "The Deligate button allows the player to change the membership of a piece to a corp.",
+                 "The end turn button will end the turn of the player and they will not be able",
+                 "to make actions till next turn. The resign button will cause the player to instantly",
+                 "forefit the game and lose.In order to move pieces, simply click the piece you would",
+                 "like to move, and if it is possible to move that piece, then the potential movments will",
+                 "be displayed on the board in blue. If a piece can attack another piece then it will",
+                 "highlight the square with black. Simply click on the blue or red square to attack",
+                 "or move the currently selected piece."]
     while True:
         mouse_down = False
         for event in pygame.event.get():

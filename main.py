@@ -1,6 +1,6 @@
 from guielements import *
 
-from GameScene import playgame, turnChange, start_deligation
+from GameScene import playgame, delegation_mode, turnChange
 
 from Scenes.MainMenuScene import MenuScene
 from Scenes.RulesPageScene import RulesPageScene
@@ -29,22 +29,24 @@ def main():
             pygame.quit()
             return
         #Homescreen GameState
-        remove_highlights()
+        #remove_highlights()
         if game_state == GameState.Home:
             game_state = MenuScene(screen)
         #play Game
-        remove_highlights()
+        #remove_highlights()
         if game_state == GameState.Play:
+            print('playing game')
             game_state = playgame(screen)
+
         #Win Game
-        remove_highlights()
+        #remove_highlights()
         if game_state == GameState.Win:
             #TODO Implement Victory screen
             game_state = winLossScreen(screen, True)
             #game_state = playgame(screen)
         #Lose Game (ALSO OCCURS ON RESIGN)
         if game_state == GameState.Loss:
-            remove_highlights()
+            #remove_highlights()
             # TODO Implement Victory screen
             game_state = winLossScreen(screen, False)
             #game_state = playgame(screen)
@@ -81,12 +83,12 @@ def main():
 #------------START GAME BUTTON STUFF -----------------
         if game_state == GameState.Delegate:
             #add code to do something here
-            print('start deligation')
-            #start_deligation()
+            print('Deligation selected.')
+            #delegation_mode = True
             game_state = playgame(screen)
         if game_state == GameState.EndTurn:
             #add code to do something
-            turnChange()
+            print('EndTurn selected.')
             game_state = playgame(screen)
 
 

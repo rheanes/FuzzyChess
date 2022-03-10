@@ -1,7 +1,7 @@
 import sys
 import pygame
 
-import GameFunctions
+from GameFunctions import attack
 from common import *
 from board import *
 from pieces import *
@@ -10,7 +10,6 @@ from guielements import *
 DEFAULT_IMAGE_SIZE = (GAME_WIDTH / 8, GAME_WIDTH / 8)
 SQUARE_WIDTH = SQUARE_HEIGHT = GAME_WIDTH / 8
 clock = pygame.time.Clock()
-turn = True # True maeans human move
 
 orange_pieces = [op1, op2, op3, ok, ob]
 orange_commander = Commander(orange_pieces, ob)
@@ -28,11 +27,14 @@ purple_commander = Commander(purple_pieces, pb)
 player_commanders = [green_commander, blue_commander, purple_commander]
 ai_commanders = [orange_commander, red_commander, yellow_commander]
 
-#deligated
+delegation_mode = False
 
 def turnChange():
     global turn
-    turn = not turn
+    if not turn:
+        turn = True;
+    else:
+        turn = False
 
 def update_display(screen):
     """ Draw board squares """
@@ -89,61 +91,137 @@ def potential_piece_moves(square: Square):
         elif piece.type == Type.KNIGHT:
             highlight_moves(maxMovement(4, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
 
-#def start_deligation():
-#    """
-#    on click event handling
-#    if click is on piece in corps, store as selected piece
-#    if click is on commander, store as selected commander
-#    """
-#    
-#    count = 0 #tracks number of clicks
-#    selected_piece = None # stores piece to be transfered
-#    selected_commander = None # stores commander for piece to be transferred to
-#    x, y = pygame.mouse.get_pos() 
-#    row,col = find_square_coordinates((x, y))
-#    chosen_square = board[row][col] # stores clicked on square 
-#    if chosen_square.piece in blue_commander.troops: # if the chosen square is in the kings corps, it is valid for deligation
-#        selected_piece = chosen_square.piece
-#        count += 1
-#    if chosen_square.piece is green_commander.leader: # if the second square selected is either green or purple commanders, store that piece
-#        selected_commander = chosen_square.piece
-#        count += 1
-#    elif chosen_square.piece is purple_commander.leader:
-#        selected_commander = chosen_square.piece
-#        count += 1
-#    if count == 2: # if two clicks have happened, delegate piece to designated commander
-#        if selected_piece is not None and selected_commander is not None:
-#            blue_commander.delegate(selected_piece, selected_commander)
+deligated_piece = None
+deligated_commander = None
+enemies = [Team.RED, Team.YELLOW, Team.ORANGE]
+human_piece_deligated = False
+action_count = 0
+turn = True  # True maeans human move
+delegation_mode = False
+commander = Team.GREEN
 
+def delegate(chosen_square):
+    global deligated_piece
+    global deligated_commander
+    global action_count
+    global human_piece_deligated
+    global delegation_mode
+    if (chosen_square.piece is not None) and (chosen_square.piece.team not in enemies):
+        if (chosen_square.piece.type is not Type.KING) and (chosen_square.piece.type is not Type.BISHOP):
+            deligated_piece = chosen_square.piece
+            print('deligated piece selected')
+            # deligation_count += 1
+        elif (chosen_square.piece.type is Type.KING) or (chosen_square.piece.type is Type.BISHOP):
+            deligated_commander = chosen_square.piece
+            # deligation_count += 1
+            print('deligated commander selected')
+        if (deligated_piece is not None) and (deligated_commander is not None):
+            blue_commander.delegate(deligated_piece, deligated_commander)
+            human_piece_deligated = True
+            action_count += 1
+            delegation_mode = False
+            reset_delieation()
+            print('deligation completed')
 
+def reset_delieation():
+    global human_piece_deligated
+    human_piece_deligated = False
+    global deligated_piece
+    deligated_piece = None
+    global deligated_commander
+    deligated_commander = None
+    global action_count
+    global delegation_mode
 
 def display_turn_count():
     pass
 
+# class for interactable elements that have text
+class DelegateButton(Sprite):
+    def __init__(self, pos, text, font_size, txt_col, bg_col, bg_hover, action=None):
+        self.action = action
+        self.selected = False
+        self.remain_selected = False
+        unselected_img = create_text_surface(text, font_size, txt_col, bg_col)
+        highlighted_img = create_text_surface(text, font_size * 1.3, txt_col, bg_hover)
+
+        self.images = [unselected_img, highlighted_img]
+        self.rects = [unselected_img.get_rect(center=pos), highlighted_img.get_rect(center=pos)]
+
+        super().__init__()
+
+    @property
+    def img(self):
+        return self.images[1] if self.selected else self.images[0]
+
+    @property
+    def rect(self):
+        return self.rects[1] if self.selected else self.rects[0]
+
+    # selects different button images depending if the mouse is hovered over it
+    def moused_over(self, mouse_pos, mouse_down):
+        global delegation_mode
+        if self.rect.collidepoint(mouse_pos):
+            self.selected = True
+            if mouse_down:
+                self.remain_selected = True
+                delegation_mode = True
+                print('test')
+                return self.action
+        else:
+            if delegation_mode:
+                self.selected = True
+            else:
+                self.selected = False
+
+    def draw(self, surface):
+        surface.blit(self.img, self.rect)
+
+def next_commander():
+    pass
+
+def reset_turn():
+    global human_piece_deligated
+    human_piece_deligated = False
+    global action_count
+    action_count = 0
+    global turn
+    turn = True
+
+def message_box(text):
+    print(text)
 
 FirstRun=True
 def playgame(screen):
     Home_Button = button(pos=(WIDTH-100, 100),
+                         font_size=25,
+                         txt_col=BLACK,
+                         bg_col=buttoncolor,
+                         text="Home",
+                         bg_hover=buttonhover,
+                         action=GameState.Home)
+
+    Rules_Button = button(pos=(WIDTH-100, 200),
+                          font_size=25,
+                          txt_col=BLACK,
+                          bg_col=buttoncolor,
+                          text="Rules",
+                          bg_hover=buttonhover,
+                          action=GameState.Rules)
+    Delegate_Button = DelegateButton(pos=(WIDTH-100, 350),
+                                     font_size=25,
+                                     txt_col=BLACK,
+                                     bg_col=buttoncolor,
+                                     text="Delegate",
+                                     bg_hover=buttonhover,
+                                     action=GameState.Play)
+    Recall_Button = button(pos=(WIDTH-100, 450),
                              font_size=25,
                              txt_col=BLACK,
                              bg_col=buttoncolor,
-                             text="Home",
+                             text="Recall",
                              bg_hover=buttonhover,
-                             action=GameState.Home)
-
-    Rules_Button = button(pos=(WIDTH-100, 200),
-                              font_size=25,
-                              txt_col=BLACK,
-                              bg_col=buttoncolor,
-                              text="Rules",
-                              bg_hover=buttonhover,
-                              action=GameState.Rules)
-    Deligate_Button = button(pos=(WIDTH-100, 450),
-                             font_size=25, txt_col=BLACK,
-                             bg_col=buttoncolor,
-                             text="Deligate",
-                             bg_hover=buttonhover,
-                             action=GameState.Delegate)
+                             action=GameState.Play)
     End_Turn_Button = button(pos=(WIDTH-100, 550),
                              font_size=25,
                              txt_col=BLACK,
@@ -158,21 +236,30 @@ def playgame(screen):
                            text="Resign",
                            bg_hover=buttonhover,
                            action=GameState.Loss)
-    buttons = [Home_Button, Deligate_Button, Resign_Button, End_Turn_Button, Rules_Button]
-    enemies = [Team.RED, Team.YELLOW, Team.ORANGE]
+    buttons = [Home_Button, Delegate_Button, Resign_Button, End_Turn_Button, Rules_Button, Recall_Button]
+
     current_square = None
+    global action_count
+    global turn
+    delegated_pieces = []
+    global delegation_mode
+    global commander
 
     global FirstRun
-    turn = True
     if FirstRun:
         create_board()
         FirstRun=False
 
     while True:
         mouse_down = False
+        pygame.mouse.get_pressed()
+        #print('Delegation: ', Delegate_Button.selected)
+        #print('Delegation remain selected: ', Delegate_Button.remain_selected)
+        #print('Delegation Mode: ', delegation_mode)
+        print('action count', action_count)
 
-        global turn
         if turn:
+            print('human turn')
             for event in pygame.event.get():
                 if event.type == MOUSEBUTTONDOWN and event.button == 1:
                     mouse_down = True
@@ -181,7 +268,7 @@ def playgame(screen):
                     #if you dont click on the game board
                     if x >= GAME_WIDTH or y >= GAME_WIDTH:
                         if End_Turn_Button.selected:
-                            turn = False
+                            turnChange()
 
                     #if you do click on the game board
                     else:
@@ -194,6 +281,8 @@ def playgame(screen):
 
                         """ 
                         current causes issues
+                        chosen_square = board[row][col] # refers to the square clicked by the mouse
+                        """ current causes issues
                         # prevents clicking on enemy pieces
                         if (chosen_square.piece.team in enemies) and chosen_square.piece:
                             pass
@@ -229,21 +318,75 @@ def playgame(screen):
                                         move_piece(current_square, chosen_square)
                                         current_square = None
                                     else:
+
+                        if (Delegate_Button.selected or delegation_mode) and (commander == Type.KING):
+                            #if (human_piece_deligated is not True):
+                            #if not delegation_mode:
+                            #    delegation_mode = True
+                                #print('!!!!!!!!!!!!!!!!!!!check point!!!!!!!!!!!!!!!!!!!!!!!!')
+                            #else:
+                            delegate(chosen_square)
+                        #elif Recall_Button.selected:
+                        #    recall()
+                        else:
+                            # conditions for selected_square
+                            if current_square is None:
+                                if chosen_square.piece is None:
+                                    pass
+                                else:
+                                    current_square = chosen_square
+                                    potential_piece_moves(chosen_square)
+                                    if current_square.piece == blue_commander.leader:
+                                        blue_commander.see_pieces()
+                            else:  # a piece is currently selected
+                                if chosen_square.piece is not None: # clicking alternative piece on your side
+                                    remove_highlights()
+                                    current_square = chosen_square
+                                    potential_piece_moves(chosen_square)
+                                elif (chosen_square.color is WHITE) or (chosen_square.color is GREY):  # lets you unselect current piece
+                                    remove_highlights()
+                                    current_square = None
+                                elif chosen_square.color is BLUE: # deals with movement
+                                    if (chosen_square.piece is not None) and (): # there is a piece there
+                                        current_square = None
+                                        remove_highlights()
+                                        move_piece(current_square, chosen_square)
+                                        action_count += 1
+                                    else:
+                                        remove_highlights()
+                                        move_piece(current_square, chosen_square)
+                                        current_square = None
+                                        action_count += 1
+                                elif chosen_square.color is BLACK:
+                                    if chosen_square.piece is not None:
+                                        if attack(current_square.piece.type._value_, chosen_square.piece.type._value_) is True:
+                                            chosen_square = None
+                                            move_piece(current_square, chosen_square)
+                                            current_square = None
+                                            action_count += 1
                                         remove_highlights()
                                         current_square = None
 
 
                             else:
                                 pass
+                                else:
+                                    pass
                 else:
                     pass
-        else:
-            pass
+        else: # AI starts
+            print('hello from computer')
+            reset_turn()
+
+        if action_count == 3:
+            turnChange()
 
         update_display(screen)
         for b in buttons:
             ui_action = b.moused_over(pygame.mouse.get_pos(), mouse_down)
             if ui_action is not None:
+                #if b == Deligate_Button:
+                        
                 return ui_action
             b.draw(screen)
         pygame.display.flip()

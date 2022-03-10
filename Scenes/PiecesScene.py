@@ -5,10 +5,10 @@ from common import *
 
 def PiecesScene(screen):
     Page_Title = font.render("Rooks", True, BLACK)
-    Page_Text = ["Much like normal chess, the goal of fuzzy logic ",
-                     "chess is to capture the enemy's king. However, ",
-                     "there are no checks or checkmates and capturing",
-                     "the king is like capturing any other piece."]
+    Page_Text = ["Each piece is a member of a corp and can only be moved by the commander of the corp",
+                 "The colors of the pieces symbolize which corp they belong to.",
+                 "The bishops and the king are the commanders of the military. If a bishop is captured, then",
+                 "a turn is lost for the side that lost the bishop."]
     while True:
         mouse_down = False
         for event in pygame.event.get():

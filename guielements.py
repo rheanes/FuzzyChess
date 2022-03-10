@@ -83,6 +83,12 @@ class GameState(Enum):
     Quit = -1
     Home = 0
     Play = 1
+    Load1 = 4
+    Load2 = 5
+    Load3 = 6
+    Save1 = 7
+    Save2 = 8
+    Save3 = 9
     Delegate = 11
     EndTurn = 12
     Win = 13

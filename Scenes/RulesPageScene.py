@@ -8,7 +8,8 @@ def RulesPageScene(screen):
     Page_Text = ["Much like normal chess, the goal of fuzzy logic ",
                      "chess is to capture the enemy's king. However, ",
                      "there are no checks or checkmates and capturing",
-                     "the king is like capturing any other piece."]
+                     "the king is like capturing any other piece.",
+                 "But it remains true that as soon as the king is captured, the game ends."]
     while True:
         mouse_down = False
         for event in pygame.event.get():

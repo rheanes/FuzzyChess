@@ -5,17 +5,18 @@ from common import *
 
 def BishopScene(screen):
     Page_Title = font.render("Bishops", True, BLACK)
-    Page_Text = ["The king’s trusted advisors, if they are captured, then"
+    Page_Text = ["Movement: 2 Squares any direction",
+                 "Attack Range: 1 Squares any direction",
+                 "Min role to capture: Pawn=3, Rook=5, Bishop=4, Knight=5, Queen=5, King=5",
+                 "",
+        "The king’s trusted advisors, if they are captured, then"
         , "the pieces under their command fall to the king’s "
         , "command and that corps’ action is lost for the remainder  "
-        , "of the game, they can move up to two squares  "
-        , "in any direction and do not have to move in a straight "
-        , "line, they can attack any adjacent square."]
-    img1 = Element("./Images/green_bishop.png", (positions4[0][0], positions4[0][1]))
-    img2 = Element("./Images/purple_bishop.png", (positions4[1][0], positions4[1][1]))
-    img3 = Element("./Images/orange_bishop.png", (positions4[2][0], positions4[2][1]))
-    img4 = Element("./Images/yellow_bishop.png", (positions4[3][0], positions4[3][1]))
-    imgs = [img1, img2, img3, img4]
+        , "of the game. This makes them the second most valuable piece",
+            "next to the king."]
+    img1 = Element("./Images/green_bishop.png", (3/8*WIDTH, 5/8*HEIGHT))
+    img2 = Element("./Images/purple_bishop.png", (5/8*WIDTH, 5/8*HEIGHT))
+    imgs = [img1, img2]
     while True:
         mouse_down = False
         for event in pygame.event.get():
