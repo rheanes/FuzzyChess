@@ -37,7 +37,7 @@ def attack(attacker: int,
             return False
 
     else:
-        if attackMatrix[attacker][defender] >= num:
+        if num >= attackMatrix[attacker][defender]:
             return True
         else:
             return False
