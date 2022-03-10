@@ -31,7 +31,10 @@ delegation_mode = False
 
 def turnChange():
     global turn
-    turn = not turn
+    if not turn:
+        turn = True;
+    else:
+        turn = False
 
 def update_display(screen):
     """ Draw board squares """
@@ -95,6 +98,7 @@ human_piece_deligated = False
 action_count = 0
 turn = True  # True maeans human move
 delegation_mode = False
+commander = Team.GREEN
 
 def delegate(chosen_square):
     global deligated_piece
@@ -116,6 +120,7 @@ def delegate(chosen_square):
             human_piece_deligated = True
             action_count += 1
             delegation_mode = False
+            reset_delieation()
             print('deligation completed')
 
 def reset_delieation():
@@ -126,6 +131,7 @@ def reset_delieation():
     global deligated_commander
     deligated_commander = None
     global action_count
+    global delegation_mode
 
 def display_turn_count():
     pass
@@ -174,6 +180,14 @@ class DelegateButton(Sprite):
 def next_commander():
     pass
 
+def reset_turn():
+    global human_piece_deligated
+    human_piece_deligated = False
+    global action_count
+    action_count = 0
+    global turn
+    turn = True
+
 def message_box(text):
     print(text)
 
@@ -221,10 +235,9 @@ def playgame(screen):
     current_square = None
     global action_count
     global turn
-    delegation_finished = False
     delegated_pieces = []
     global delegation_mode
-    commander = Team.GREEN
+    global commander
 
     global FirstRun
     if FirstRun:
@@ -237,8 +250,10 @@ def playgame(screen):
         #print('Delegation: ', Delegate_Button.selected)
         #print('Delegation remain selected: ', Delegate_Button.remain_selected)
         #print('Delegation Mode: ', delegation_mode)
+        print('action count', action_count)
 
-        if turn or (action_count == 3):
+        if turn:
+            print('human turn')
             for event in pygame.event.get():
                 if event.type == MOUSEBUTTONDOWN and event.button == 1:
                     mouse_down = True
@@ -247,7 +262,7 @@ def playgame(screen):
                     #if you dont click on the game board
                     if x >= GAME_WIDTH or y >= GAME_WIDTH:
                         if End_Turn_Button.selected:
-                            turn = False
+                            turnChange()
 
                     #if you do click on the game board
                     else:
@@ -312,10 +327,11 @@ def playgame(screen):
                 else:
                     pass
         else: # AI starts
-            human_piece_deligated = False
-            deligated_piece = None
-            deligated_commander = None
-            action_count = 0
+            print('hello from computer')
+            reset_turn()
+
+        if action_count == 3:
+            turnChange()
 
         update_display(screen)
         for b in buttons:
