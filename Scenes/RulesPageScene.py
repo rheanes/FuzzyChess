@@ -15,6 +15,9 @@ def RulesPageScene(screen):
         for event in pygame.event.get():
             if event.type == MOUSEBUTTONDOWN and event.button == 1:
                 mouse_down = True
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
         drawscreen(screen, Page_Title, Page_Text)
         for tab in tabs:
             ui_action = tab.moused_over(pygame.mouse.get_pos(),mouse_down)
