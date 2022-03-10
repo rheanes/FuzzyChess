@@ -276,13 +276,6 @@ def playgame(screen):
                     else:
                         row, col = find_square_coordinates((x,y))
                         print('row ', row, ' col ', col)
-                        chosen_square = board[row][col]
-                        #if Deligate_Button.selected:
-                            #selected_piece = chosen_square
-                            
-
-                        """ 
-                        current causes issues
                         chosen_square = board[row][col] # refers to the square clicked by the mouse
                         """ current causes issues
                         # prevents clicking on enemy pieces
@@ -290,36 +283,6 @@ def playgame(screen):
                             pass
                         else:
                         """
-                        # conditions for selected_square
-                        if current_square is None:
-                            if chosen_square.piece is None:
-                                pass
-                            else:
-                                current_square = chosen_square
-                                potential_piece_moves(chosen_square)
-                                if current_square.piece == blue_commander.leader:
-                                    blue_commander.see_pieces()
-                        else:  # a piece is already selected
-                            if (chosen_square.color is WHITE) or (chosen_square.color is GREY):
-                                remove_highlights()
-                                current_square = None
-                            elif chosen_square.color is BLUE:
-                                if chosen_square.piece is not None:
-                                    current_square = None
-                                    remove_highlights()
-                                    move_piece(current_square, chosen_square)
-                                else:
-                                    remove_highlights()
-                                    move_piece(current_square, chosen_square)
-                                    current_square = None
-                            elif chosen_square.color is BLACK:
-                                if chosen_square.piece is not None:
-                                    if GameFunctions.attack(current_square.piece.type.value, chosen_square.piece.type.value) is True:
-                                        remove_highlights()
-                                        chosen_square.piece = None
-                                        move_piece(current_square, chosen_square)
-                                        current_square = None
-                                    else:
 
                         if (Delegate_Button.selected or delegation_mode) and (commander == Type.KING):
                             #if (human_piece_deligated is not True):
@@ -341,11 +304,11 @@ def playgame(screen):
                                     if current_square.piece == blue_commander.leader:
                                         blue_commander.see_pieces()
                             else:  # a piece is currently selected
-                                if chosen_square.piece is not None: # clicking alternative piece on your side
+                                """if chosen_square.piece is not None: # clicking alternative piece on your side
                                     remove_highlights()
                                     current_square = chosen_square
-                                    potential_piece_moves(chosen_square)
-                                elif (chosen_square.color is WHITE) or (chosen_square.color is GREY):  # lets you unselect current piece
+                                    potential_piece_moves(chosen_square)"""
+                                if (chosen_square.color is WHITE) or (chosen_square.color is GREY):  # lets you unselect current piece
                                     remove_highlights()
                                     current_square = None
                                 elif chosen_square.color is BLUE: # deals with movement
@@ -361,17 +324,12 @@ def playgame(screen):
                                         action_count += 1
                                 elif chosen_square.color is BLACK:
                                     if chosen_square.piece is not None:
-                                        if attack(current_square.piece.type._value_, chosen_square.piece.type._value_) is True:
+                                        if attack(current_square.piece.type.value, chosen_square.piece.type.value) is True:
                                             chosen_square = None
                                             move_piece(current_square, chosen_square)
                                             current_square = None
                                             action_count += 1
                                         remove_highlights()
-                                        current_square = None
-
-
-                            else:
-                                pass
                                 else:
                                     pass
                 else:
@@ -388,7 +346,7 @@ def playgame(screen):
             ui_action = b.moused_over(pygame.mouse.get_pos(), mouse_down)
             if ui_action is not None:
                 #if b == Deligate_Button:
-                        
+
                 return ui_action
             b.draw(screen)
         pygame.display.flip()
