@@ -208,14 +208,20 @@ def playgame(screen):
                           text="Rules",
                           bg_hover=buttonhover,
                           action=GameState.Rules)
-    Delegate_Button = DelegateButton(pos=(WIDTH-100, 450),
+    Delegate_Button = DelegateButton(pos=(WIDTH-100, 350),
                                      font_size=25,
                                      txt_col=BLACK,
                                      bg_col=buttoncolor,
                                      text="Delegate",
                                      bg_hover=buttonhover,
                                      action=GameState.Play)
-    #Recall_Button None
+    Recall_Button = button(pos=(WIDTH-100, 450),
+                             font_size=25,
+                             txt_col=BLACK,
+                             bg_col=buttoncolor,
+                             text="Recall",
+                             bg_hover=buttonhover,
+                             action=GameState.Play)
     End_Turn_Button = button(pos=(WIDTH-100, 550),
                              font_size=25,
                              txt_col=BLACK,
@@ -230,7 +236,7 @@ def playgame(screen):
                            text="Resign",
                            bg_hover=buttonhover,
                            action=GameState.Loss)
-    buttons = [Home_Button, Delegate_Button, Resign_Button, End_Turn_Button, Rules_Button]
+    buttons = [Home_Button, Delegate_Button, Resign_Button, End_Turn_Button, Rules_Button, Recall_Button]
 
     current_square = None
     global action_count
