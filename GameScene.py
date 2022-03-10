@@ -323,12 +323,11 @@ def playgame(screen):
                                         current_square = None
                                         action_count += 1
                                 elif chosen_square.color is BLACK:
-                                    if chosen_square.piece is not None:
-                                        if attack(current_square.piece.type.value, chosen_square.piece.type.value) is True:
-                                            chosen_square = None
-                                            move_piece(current_square, chosen_square)
-                                            current_square = None
-                                            action_count += 1
+                                    if attack(current_square.piece.type.value, chosen_square.piece.type.value) is True:
+                                        chosen_square.piece = None
+                                        move_piece(current_square, chosen_square)
+                                        current_square = None
+                                        action_count += 1
                                         remove_highlights()
                                 else:
                                     pass
