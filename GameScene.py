@@ -253,10 +253,6 @@ def playgame(screen):
         FirstRun=False
 
     while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
         mouse_down = False
         pygame.mouse.get_pressed()
         #print('Delegation: ', Delegate_Button.selected)
@@ -267,6 +263,9 @@ def playgame(screen):
         if turn:
             print('human turn')
             for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
                 if event.type == MOUSEBUTTONDOWN and event.button == 1:
                     mouse_down = True
 
