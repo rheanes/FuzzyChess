@@ -173,7 +173,7 @@ def remove_highlights():
 #                         (pos - 1, pos)     |  CURR_POS      | (pos + 1, pos)              #
 #                         (pos - 1, pos - 1) | (pos, pos - 1) | (pos + 1, pos - 1)          #
 #############################################################################################
-def maxMovement(maxSpeed: int, iterations: int, position: tuple[int, int], startPos: tuple[int, int], positions=None):
+def maxMovement(maxSpeed: int, iterations: int, position: tuple[int, int], startPos: tuple[int, int], piece: int, positions=None):
 
     if positions is None:
         positions = []
@@ -190,37 +190,39 @@ def maxMovement(maxSpeed: int, iterations: int, position: tuple[int, int], start
     if iterations > maxSpeed:
         return
 
-    if (board[currRow][currCol].piece is not None) and position != startPos:
-        positions.append(position)
-        return
-
     #Checks to the Right square
-    maxMovement(maxSpeed, iterations + 1, (currRow, currCol + 1), startPos, positions)
+    maxMovement(maxSpeed, iterations + 1, (currRow, currCol + 1), startPos, piece, positions)
 
     #Checks to the Down-Right square
-    maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol + 1), startPos, positions)
+    maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol + 1), startPos, piece, positions)
 
     #Checks to the Down square
-    maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol), startPos, positions)
+    maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol), startPos, piece, positions)
 
     #Checks to the Down-Left square
-    maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol - 1), startPos, positions)
+    maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol - 1), startPos, piece, positions)
 
     #Checks to the Left square
-    maxMovement(maxSpeed, iterations + 1, (currRow, currCol - 1), startPos, positions)
+    maxMovement(maxSpeed, iterations + 1, (currRow, currCol - 1), startPos, piece, positions)
 
     #Checks to the Up-Left square
-    maxMovement(maxSpeed, iterations + 1, (currRow - 1, currCol - 1), startPos, positions)
+    maxMovement(maxSpeed, iterations + 1, (currRow - 1, currCol - 1), startPos, piece, positions)
 
     #Checks to the Up Square
-    maxMovement(maxSpeed, iterations + 1, (currRow - 1, currCol), startPos, positions)
+    maxMovement(maxSpeed, iterations + 1, (currRow - 1, currCol), startPos, piece, positions)
 
     #Checks to the Up-Right square
-    maxMovement(maxSpeed, iterations + 1, (currRow - 1, currCol + 1), startPos, positions)
+    maxMovement(maxSpeed, iterations + 1, (currRow - 1, currCol + 1), startPos, piece, positions)
 
     if position in positions:
         return positions
     else:
-        positions.append(position)
+        if board[currRow][currCol].piece is None:
+            positions.append(position)
+        elif piece == 4 and (position != startPos):
+            if iterations < 3:
+                positions.append(position)
+        elif iterations < 2 and (position != startPos):
+            positions.append(position)
 
     return positions
