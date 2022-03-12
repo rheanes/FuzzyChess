@@ -276,6 +276,9 @@ def playgame(screen):
         if turn:
             print('human turn')
             for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
                 if event.type == MOUSEBUTTONDOWN and event.button == 1:
                     mouse_down = True
 
