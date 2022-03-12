@@ -1,7 +1,7 @@
 from guielements import *
 
-from GameScene import playgame, delegation_mode, turnChange
-
+from GameScene import playgame, delegation_mode, turnChange, create_board
+from board import clear_board
 from Scenes.MainMenuScene import MenuScene
 from Scenes.RulesPageScene import RulesPageScene
 from Scenes.HowToPlay import HowToPlayScene
@@ -41,14 +41,19 @@ def main():
 
         #Win Game
         #remove_highlights()
+        global FirstRun
         if game_state == GameState.Win:
             #TODO Implement Victory screen
+            clear_board()
+            create_board()
             game_state = winLossScreen(screen, True)
             #game_state = playgame(screen)
         #Lose Game (ALSO OCCURS ON RESIGN)
         if game_state == GameState.Loss:
             #remove_highlights()
             # TODO Implement Victory screen
+            clear_board()
+            create_board()
             game_state = winLossScreen(screen, False)
             #game_state = playgame(screen)
 
