@@ -1,5 +1,6 @@
 import enum
 import board as bd
+import pygame
 """
     ATTENTION: Fix the piece moves to return all highlighted squares
 """
@@ -48,6 +49,8 @@ class Piece:
         self.value = value
         self.delegated = False
 
+    def switch_sprite(self, new_img):
+        self.image = pygame.image.load(new_img)
 
 #-------------COMMANDER STUFF IS HERE ------------
 
@@ -57,6 +60,7 @@ class Commander:
         self.troops = troops
         self.targets = []
         self.authority = True
+        self.has_moved = False
 
     def see_pieces(self):
         for i in range(len(self.troops)):

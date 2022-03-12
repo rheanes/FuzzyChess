@@ -371,7 +371,7 @@ def playgame(screen):
             print('hello from computer')
             reset_turn()
             # after AI is done enable next line
-            #turnChange()
+            turnChange()
 
         if action_count == 3:
             turnChange()
