@@ -12,10 +12,17 @@ def winLossScreen(screen, win):
                         text="Play again", bg_hover=buttonhover, action=GameState.Play)
     buttons = [homeButton, playButton]
     while True:
+        #for event in pygame.event.get():
+        #    if event.type == pygame.QUIT:
+        #        pygame.quit()
+        #        exit()
         mouse_down = False
         for event in pygame.event.get():
             if event.type == MOUSEBUTTONDOWN and event.button == 1:
                 mouse_down = True
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
         screen.fill(BACKGROUND)
         screen.blit(headerText, (50, HEIGHT / 8))
         for b in buttons:

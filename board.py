@@ -104,6 +104,25 @@ def create_board():
             board[row][col].x_pos = col * (WIDTH // 8)
             board[row][col].y_pos = row * (WIDTH // 8)
             """
+
+def clear_board():
+    for row in range(8):
+        for col in range(8):
+            board[row][col] = Square(None)
+    # adding colors to squares
+    for row in range(8):
+        for col in range(8):
+            if (row + col) % 2 == 1:
+                board[row][col].color = GREY
+
+            board[row][col].row = row
+            board[row][col].col = col
+            """
+            board[row][col].x_pos = col * (WIDTH // 8)
+            board[row][col].y_pos = row * (WIDTH // 8)
+            """
+
+
     #_----------_SQUARE UTILITY-------------
 
 def find_square_coordinates(position: tuple[int, int]):

@@ -61,7 +61,7 @@ class Commander:
     def see_pieces(self):
         for i in range(len(self.troops)):
             print(self.troops[i].type)
-        
+
 
     def use_turn(self):
         self.authority = False
@@ -69,9 +69,9 @@ class Commander:
     def commander_lost(self):
         if self.leader not in self.troops:
             self.authority = False
-    
 
-    
+
+
 
 """
 Each commander needs to know their living troops
@@ -87,13 +87,13 @@ class King(Commander):
 
     #sub refers to sub commander
     def delegate(self, piece, sub):
-        #if the piece has already been delegated
+        # if the piece has already been delegated
         if piece.delegated == True and piece is not sub.leader:
             piece.delegated = False
             sub.troops.remove(piece)
             self.troops.append(piece)
             self.use_turn()
-        #if the piece is not delegated
+        # if the piece is not delegated
         elif piece.delegated == False and piece is not self.leader and piece in self.troops:
             piece.delegated = True
             self.troops.remove(piece)
@@ -101,7 +101,7 @@ class King(Commander):
             self.use_turn()
         else:
             print("invalid target for delegation")
-    
+
 
 """
 King commander must be able to delegate and undelegate pieces

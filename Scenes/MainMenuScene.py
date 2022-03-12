@@ -33,6 +33,9 @@ def MenuScene(screen):
         for event in pygame.event.get():
             if event.type == MOUSEBUTTONDOWN and event.button == 1:
                 mouse_down = True
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
         screen.fill(BACKGROUND)
         pygame.draw.lines(screen, BLACK, True, [(20, 20), (WIDTH - 20, 20), (WIDTH - 20, HEIGHT - 20),
                                                    (20, HEIGHT - 20)], width=4)
