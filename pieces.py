@@ -96,6 +96,7 @@ class King(Commander):
             piece.delegated = False
             sub.troops.remove(piece)
             self.troops.append(piece)
+
             self.use_turn()
         # if the piece is not delegated
         elif piece.delegated == False and piece is not self.leader and piece in self.troops:

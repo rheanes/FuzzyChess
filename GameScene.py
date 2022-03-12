@@ -29,6 +29,10 @@ purple_commander = Commander(purple_pieces, pb)
 player_commanders = [green_commander, blue_commander, purple_commander]
 ai_commanders = [orange_commander, red_commander, yellow_commander]
 
+color_matrix = {Team.BLUE: './Images/blue_pawn.png',
+                Team.GREEN: './Images/green_pawn.png',
+                Team.PURPLE: './Images/purple_pawn.png'}
+
 delegation_mode = False
 
 def turnChange():
@@ -134,6 +138,7 @@ def delegate(chosen_square):
             # deligation_count += 1
             print('deligated commander selected')
         if (delegated_piece is not None) and (delegated_commander is not None):
+            delegated_piece.switch_sprite(color_matrix[delegated_commander.leader.team])
             blue_commander.delegate(delegated_piece, delegated_commander)
             human_piece_delegated = True
             action_count += 1
