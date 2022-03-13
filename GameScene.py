@@ -30,12 +30,12 @@ player_commanders = [green_commander, blue_commander, purple_commander]
 ai_commanders = [orange_commander, red_commander, yellow_commander]
 
 color_matrix_pawn = {Team.BLUE: './Images/blue_pawn.png',
-                Team.GREEN: './Images/green_pawn.png',
-                Team.PURPLE: './Images/purple_pawn.png'}
+                Team.GREEN: './Images/green_pawn_d.png',
+                Team.PURPLE: './Images/purple_pawn_d.png'}
 
 color_matrix_rook = {Team.BLUE: './Images/blue_rook.png',
-                Team.GREEN: './Images/green_rook.png',
-                Team.PURPLE: './Images/purple_rook.png'}
+                Team.GREEN: './Images/green_rook_d.png',
+                Team.PURPLE: './Images/purple_rook_d.png'}
 
 delegation_mode = False
 
