@@ -335,11 +335,11 @@ def playgame(screen):
                            bg_hover=buttonhover,
                            action=GameState.Play)
 
-    Current_turn = WhosTurn(pos=(WIDTH - 1100, 700),
+    Current_turn = WhosTurn(pos=(WIDTH - 1060, 700),
                                      font_size=25,
                                      txt_col=BLACK,
                                      bg_col=buttoncolor,
-                                     text="Current Turn: ",
+                                     text="Current Turn: Human",
                                      bg_hover=buttonhover,
                                      action=GameState.Play)
 
