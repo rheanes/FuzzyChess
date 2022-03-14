@@ -208,8 +208,10 @@ class DelegateButton(Sprite):
     def draw(self, surface):
         surface.blit(self.img, self.rect)
 
-def next_commander():
-    pass
+def end_commander_turn(team: Team, is_knight_special):
+    global deployed_team
+    if not is_knight_special:
+        deployed_team.append(team)
 
 def reset_turn():
     global human_piece_deligated
@@ -219,6 +221,83 @@ def reset_turn():
 
 def message_box(text):
     print(text)
+# new changes
+def remove_team(team):
+    old_troops = []
+    if team == Team.YELLOW or team == Team.ORANGE:
+        if team.YELLOW:
+            for troop in yellow_commander.troops:
+                if troop.type == Type.PAWN:
+                    troop[:].image = './Images/red_pawn.png'
+                    troop[:].team = Team.RED
+                elif troop.type == Type.BISHOP:
+                    troop[:].image = './Images/red_bishop.png'
+                    troop[:].team = Team.RED
+                elif troop.type == Type.KNIGHT:
+                    troop[:].image = './Images/red_knight.png'
+                    troop[:].team = Team.RED
+                else:
+                    pass
+            red_commander.troops.append(yellow_commander.troops)
+        elif team.ORANGE:
+            for troop in orange_commander.troops:
+                if troop.type == Type.PAWN:
+                    troop[:].image = './Images/orange_pawn.png'
+                    troop[:].team = Team.RED
+                elif troop.type == Type.BISHOP:
+                    troop[:].image = './Images/orange_bishop.png'
+                    troop[:].team = Team.RED
+                elif troop.type == Type.KNIGHT:
+                    troop[:].image = './Images/orange_knight.png'
+                    troop[:].team = Team.RED
+                else:
+                    pass
+            red_commander.troops.append(orange_commander.troops)
+        else:
+            pass
+    elif team == Team.GREEN or team == Team.PURPLE:
+        if team.GREEN:
+            for troop in green_commander.troops:
+                if troop.type == Type.PAWN:
+                    troop[:].image = './Images/green_pawn.png'
+                    troop[:].team = Team.BLUE
+                elif troop.type == Type.BISHOP:
+                    troop[:].image = './Images/green_bishop.png'
+                    troop[:].team = Team.BLUE
+                elif troop.type == Type.KNIGHT:
+                    troop[:].image = './Images/green_knight.png'
+                    troop[:].team = Team.BLUE
+                else:
+                    pass
+            red_commander.troops.append(yellow_commander.troops)
+        elif team.PURPLE:
+            for troop in purple_commander.troops:
+                if troop.type == Type.PAWN:
+                    troop[:].image = './Images/purple_pawn.png'
+                    troop[:].team = Team.BLUE
+                elif troop.type == Type.BISHOP:
+                    troop[:].image = './Images/purple_bishop.png'
+                    troop[:].team = Team.BLUE
+                elif troop.type == Type.KNIGHT:
+                    troop[:].image = './Images/purple_knight.png'
+                    troop[:].team = Team.BLUE
+                else:
+                    pass
+            red_commander.troops.append(orange_commander.troops)
+
+
+def ajacent_enemies(pos: tuple[int, int], team: Team):
+    new_pos_list = [(pos.row -1, pos.col - 1),(pos.row - 1, pos.col),(pos.row - 1, pos.col + 1),
+               (pos.row, pos.col - 1),(pos.row, pos.col + 1),
+               (pos.row + 1, pos.col - 1),(pos.row + 1, pos.col),(pos.row + 1, pos.col + 1)]
+
+    for new_pos in new_pos_list:
+        if not on_board(new_pos):
+            new_pos_list.remove(new_pos[:])
+
+    for new_pos in new_pos_list:
+        if board[new_pos[0]][new_pos[1]].team in enemies[team]:
+            return True
 
 FirstRun=True
 def playgame(screen):
@@ -266,7 +345,24 @@ def playgame(screen):
                            bg_hover=buttonhover,
                            action=GameState.Loss)
 
-    buttons = [Home_Button, Delegate_Button, Resign_Button, End_Turn_Button, Rules_Button, Recall_Button]
+    Action_Counter = Action_Counttxt(pos=(WIDTH - 1100, 650),
+                           font_size=25,
+                           txt_col=BLACK,
+                           bg_col=buttoncolor,
+                           text="Action Count: ",
+                           bg_hover=buttonhover,
+                           action=GameState.Play)
+
+    Current_turn = WhosTurn(pos=(WIDTH - 1060, 700),
+                                     font_size=25,
+                                     txt_col=BLACK,
+                                     bg_col=buttoncolor,
+                                     text="Current Turn: Human",
+                                     bg_hover=buttonhover,
+                                     action=GameState.Play)
+
+    buttons = [Home_Button, Delegate_Button, Resign_Button, End_Turn_Button, Rules_Button, Recall_Button, Action_Counter, Current_turn]
+
 
     current_square = None
     global action_count
@@ -274,8 +370,12 @@ def playgame(screen):
     delegated_pieces = []
     global delegation_mode
     global commander
+    global blue_commander
+    global red_commander
     captured_pieces = []
-    #chosen_team = None
+    global deployed_team
+    action_limit = 3
+    human_team = [Team.GREEN, Team.BLUE, Team.PURPLE]
     global FirstRun
     if FirstRun:
         create_board()
@@ -291,6 +391,15 @@ def playgame(screen):
 
         if turn:
             print('human turn')
+            if not blue_commander.authority:
+                return GameState.Loss
+            elif not green_commander.authority:
+                action_limit -= 1
+            elif not purple_commander.authority:
+                action_limit -= 1
+            else:
+                pass
+            print('enter pygame events')
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -315,82 +424,98 @@ def playgame(screen):
                             pass
                         else:
                         """
+                        if chosen_square.piece.team in human_team:
+                            if Delegate_Button.selected and (current_square.piece.team not in deployed_team):
+                                #if (human_piece_deligated is not True):
+                                #if not delegation_mode:
+                                #    delegation_mode = True
+                                    #print('!!!!!!!!!!!!!!!!!!!check point!!!!!!!!!!!!!!!!!!!!!!!!')
+                                #else:
+                                #print('check point')
+                                result = delegate(chosen_square)
+                                if result is not None:
+                                    delegated_pieces.append(result)
+                            #elif Recall_Button.selected:
 
-                        if Delegate_Button.selected:
-                            #if (human_piece_deligated is not True):
-                            #if not delegation_mode:
-                            #    delegation_mode = True
-                                #print('!!!!!!!!!!!!!!!!!!!check point!!!!!!!!!!!!!!!!!!!!!!!!')
-                            #else:
-                            print('check point')
-                            result = delegate(chosen_square)
-                            if result is not None:
-                                delegated_pieces.append(result)
-                        #elif Recall_Button.selected:
-
-                        else:
-                            # conditions for selected_square
-                            if current_square is None:
-                                if chosen_square.piece is None:
-                                    pass
-                                else:
-                                    current_square = chosen_square
-                                    potential_piece_moves(chosen_square)
-                                    if current_square.piece == blue_commander.leader:
-                                        blue_commander.see_pieces()
-                            else:  # a piece is currently selected
-                                #global chosen_team
-                                """
-                                if chosen_square.piece is None:
-                                    print('chosen square is none')
-                                else:
-                                    print('chosen square is not none')
-                                """
-                                """
-                                if chosen_square.piece is not None: # clicking alternative piece on your side
-                                    remove_highlights()
-                                    current_square = chosen_square
-                                    potential_piece_moves(chosen_square)
-                                """
-                                if (chosen_square.color is WHITE) or (chosen_square.color is GREY):  # lets you unselect current piece
-                                    remove_highlights()
-                                    current_square = None
-                                elif chosen_square.color is BLUE: # deals with movement
-                                    if chosen_square.piece is None: # there is a piece there
-                                        """
-                                            current_square = None
-                                            remove_highlights()
-                                            move_piece(current_square, chosen_square)
-                                            action_count += 1
-                                        else:
-                                        """
-                                        remove_highlights()
-                                        move_piece(current_square, chosen_square)
-                                        current_square = None
-                                        action_count += 1
-                                elif chosen_square.color is BLACK:
-                                    if attack(current_square.piece.type.value, chosen_square.piece.type.value) is True:
-                                        captured_pieces.append(chosen_square.piece)
-                                        chosen_square.piece = None
-                                        move_piece(current_square, chosen_square)
-                                        current_square = None
-                                        action_count += 1
-                                        remove_highlights()
+                            else:
+                                # conditions for selected_square
+                                if current_square is None:
+                                    if chosen_square.piece is None:
+                                        pass
                                     else:
+                                        current_square = chosen_square
+                                        potential_piece_moves(chosen_square)
+                                        if current_square.piece == blue_commander.leader:
+                                            blue_commander.see_pieces()
+                                else:  # a piece is currently selected
+                                    #global chosen_team
+                                    """
+                                    if chosen_square.piece is None:
+                                        print('chosen square is none')
+                                    else:
+                                        print('chosen square is not none')
+                                    """
+                                    """
+                                    if chosen_square.piece is not None: # clicking alternative piece on your side
                                         remove_highlights()
-                                        action_count += 1
+                                        current_square = chosen_square
+                                        potential_piece_moves(chosen_square)
+                                    """
+
+                                    if (chosen_square.color is WHITE) or (chosen_square.color is GREY):  # lets you unselect current piece
+                                        remove_highlights()
                                         current_square = None
-                                else:
-                                    pass
+                                    elif (chosen_square.color is BLUE) and (current_square.color not in deployed_team): # deals with movement
+                                        if chosen_square.piece is None: # there is a no piece there
+                                            """
+                                                current_square = None
+                                                remove_highlights()
+                                                move_piece(current_square, chosen_square)
+                                                action_count += 1
+                                            else:
+                                            """
+                                            tmp_row = chosen_square.row
+                                            tmp_col = chosen_square.col
+
+                                            move_piece(current_square, chosen_square)
+                                            remove_highlights()
+                                            current_square = None
+                                            is_knight_special = False
+                                            if current_square.piece.type == Type.KNIGHT and not ajacent_enemies((tmp_row, tmp_col), current_square.piece.team):
+                                                action_count += 1
+                                                is_knight_special = True
+                                            action_count -= 1
+                                            end_commander_turn(chosen_square, is_knight_special)
+                                    elif (chosen_square.color is BLACK) and (current_square.color not in deployed_team):
+                                        if attack(current_square.piece.type.value, chosen_square.piece.type.value) is True:
+                                            captured_pieces.append(chosen_square.piece)
+                                            end_commander_turn(chosen_square.piece.team)
+
+                                            if chosen_square.piece.type is Type.BISHOP:
+                                                remove_team(chosen_square.piece.team)
+                                            elif chosen_square.piece.type is Type.KING:
+                                                return GameState.Win
+
+                                            chosen_square.piece = None
+                                            move_piece(current_square, chosen_square)
+                                            current_square = None
+                                            action_count += 1
+                                            remove_highlights()
+                                        else:
+                                            remove_highlights()
+                                            action_count += 1
+                                            current_square = None
+                                    else:
+                                        pass
                 else:
                     pass
         else: # AI starts
-            print('hello from computer')
+            #print('hello from computer')
             reset_turn()
             # after AI is done enable next line
             turnChange()
 
-        if action_count == 3:
+        if action_count < action_limit:
             turnChange()
 
         update_display(screen)
