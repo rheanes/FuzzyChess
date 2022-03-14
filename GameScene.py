@@ -1,5 +1,6 @@
 import sys
 import pygame
+import pygame.event
 
 from GameFunctions import attack
 from common import *
@@ -166,7 +167,67 @@ def reset_delegation():
 
 def display_turn_count():
     pass
+# ActionCount Text
+class Action_Counttxt(Sprite):
+    def __init__(self, pos, text, font_size, txt_col, bg_col, bg_hover, action=None):
+        self.action = action
+       #self.selected = False
+        unselected_img = create_text_surface(text, font_size, txt_col, bg_col)
+        #highlighted_img = create_text_surface(text, font_size * 1.3, txt_col, bg_hover)
 
+        self.images = unselected_img
+        self.rects = unselected_img.get_rect(center=pos)
+        super().__init__()
+
+    @property
+    def img(self):
+        return self.images
+
+    @property
+    def rect(self):
+        return self.rects
+
+    def moused_over(self, mouse_pos, mouse_down):
+        if self.rect.collidepoint(mouse_pos):
+            self.selected = False
+            #if mouse_down:
+                #return self.action
+      #  else:
+          #  self.selected = False
+
+    def draw(self, surface):
+        surface.blit(self.img, self.rect)
+
+# Current Turn Text
+class WhosTurn(Sprite):
+    def __init__(self, pos, text, font_size, txt_col, bg_col, bg_hover, action=None):
+        self.action = action
+       #self.selected = False
+        unselected_img = create_text_surface(text, font_size, txt_col, bg_col)
+        #highlighted_img = create_text_surface(text, font_size * 1.3, txt_col, bg_hover)
+
+        self.images = unselected_img
+        self.rects = unselected_img.get_rect(center=pos)
+        super().__init__()
+
+    @property
+    def img(self):
+        return self.images
+
+    @property
+    def rect(self):
+        return self.rects
+
+    def moused_over(self, mouse_pos, mouse_down):
+        if self.rect.collidepoint(mouse_pos):
+            self.selected = False
+            #if mouse_down:
+                #return self.action
+      #  else:
+          #  self.selected = False
+
+    def draw(self, surface):
+        surface.blit(self.img, self.rect)
 # class for interactable elements that have text
 class DelegateButton(Sprite):
     def __init__(self, pos, text, font_size, txt_col, bg_col, bg_hover, action=None):
@@ -266,7 +327,24 @@ def playgame(screen):
                            bg_hover=buttonhover,
                            action=GameState.Loss)
 
-    buttons = [Home_Button, Delegate_Button, Resign_Button, End_Turn_Button, Rules_Button, Recall_Button]
+    Action_Counter = Action_Counttxt(pos=(WIDTH - 1100, 650),
+                           font_size=25,
+                           txt_col=BLACK,
+                           bg_col=buttoncolor,
+                           text="Action Count: ",
+                           bg_hover=buttonhover,
+                           action=GameState.Play)
+
+    Current_turn = WhosTurn(pos=(WIDTH - 1100, 700),
+                                     font_size=25,
+                                     txt_col=BLACK,
+                                     bg_col=buttoncolor,
+                                     text="Current Turn: ",
+                                     bg_hover=buttonhover,
+                                     action=GameState.Play)
+
+    buttons = [Home_Button, Delegate_Button, Resign_Button, End_Turn_Button, Rules_Button, Recall_Button, Action_Counter, Current_turn]
+
 
     current_square = None
     global action_count
@@ -403,3 +481,4 @@ def playgame(screen):
             b.draw(screen)
         pygame.display.flip()
         clock.tick(15)
+
