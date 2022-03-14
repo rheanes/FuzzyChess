@@ -35,6 +35,10 @@ color_matrix_rook = {Team.BLUE: './Images/blue_rook.png',
                 Team.GREEN: './Images/green_rook_d.png',
                 Team.PURPLE: './Images/purple_rook_d.png'}
 
+color_matrix_queen = {Team.BLUE: './Images/blue_queen.png',
+                Team.GREEN: './Images/green_queen.png',
+                Team.PURPLE: './Images/purple_queen.png'}
+
 delegation_mode = False
 
 def turnChange():
@@ -144,6 +148,8 @@ def delegate(chosen_square):
                 delegated_piece.switch_sprite(color_matrix_pawn[delegated_commander.leader.team])
             elif delegated_piece.type == Type.ROOK:
                 delegated_piece.switch_sprite(color_matrix_rook[delegated_commander.leader.team])
+            else:
+                delegated_piece.switch_sprite(color_matrix_queen[delegated_commander.leader.team])
             blue_commander.delegate(delegated_piece, delegated_commander)
             human_piece_delegated = True
             action_count += 1
