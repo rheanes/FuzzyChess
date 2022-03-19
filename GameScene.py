@@ -145,25 +145,64 @@ def delegate(chosen_square):
             # deligation_count += 1
             print('deligated commander selected')
         if (delegated_piece is not None) and (delegated_commander is not None):
-            if delegated_piece.type == Type.PAWN:
+            if (delegated_piece.type) == Type.PAWN and (delegated_piece.team == Team.BLUE):
                 delegated_piece.switch_sprite(color_matrix_pawn[delegated_commander.leader.team])
-            elif delegated_piece.type == Type.ROOK:
+            elif (delegated_piece.type == Type.ROOK) and (delegated_piece.team == Team.BLUE):
                 delegated_piece.switch_sprite(color_matrix_rook[delegated_commander.leader.team])
-            else:
+            elif (delegated_piece.type == Type.QUEEN) and (delegated_piece.team == Team.BLUE):
                 delegated_piece.switch_sprite(color_matrix_queen[delegated_commander.leader.team])
+            else:
+                print("Invalid piece type for delegation")
             blue_commander.delegate(delegated_piece, delegated_commander)
             human_piece_delegated = True
             action_count += 1
             reset_delegation()
             print('deligation completed')
 
+def recall(chosen_square):
+    global recalled_piece
+    global current_commander
+    global action_count
+    global human_piece_delegated
+    if (chosen_square.piece is not None) and (chosen_square.piece.team not in enemies[Team.BLUE]):
+        if(chosen_square.piece.type is not Type.BISHOP) and (chosen_square.piece.type is not Type.KING) and (chosen_square.piece.team is not Team.BLUE):
+            recalled_piece = chosen_square.piece
+
+    if recalled_piece is not None:
+        if recalled_piece.team is Team.GREEN:
+            current_commander = green_commander
+        elif recalled_piece.team is Team.PURPLE:
+            current_commander = purple_commander
+    if recalled_piece is not None:
+        if recalled_piece.type == Type.PAWN:
+            recalled_piece.switch_sprite(color_matrix_pawn[Team.BLUE])
+        elif recalled_piece.type == Type.ROOK:
+            recalled_piece.switch_sprite(color_matrix_rook[Team.BLUE])
+        elif recalled_piece.type == Type.QUEEN:
+            recalled_piece.switch_sprite(color_matrix_queen[Team.BLUE])
+        else:
+            print("Invalid piece type for recall")
+        blue_commander.recall(recalled_piece, current_commander)
+        human_piece_delegated = False
+        action_count += 1
+        reset_recall()
+        print('Recall complete')
+
 def reset_delegation():
     global delegated_piece
-    deligated_piece = None
+    delegated_piece = None
     global delegated_commander
-    deligated_commander = None
+    delegated_commander = None
     global delegation_mode
     delegation_mode = False
+
+def reset_recall():
+    global recalled_piece
+    recalled_piece = None
+    global current_commander
+    current_commander = None
+    global r
+    recall_mode = None
 
 def display_turn_count():
     pass
@@ -305,7 +344,7 @@ def playgame(screen):
                                      text="Delegate",
                                      bg_hover=buttonhover,
                                      action=GameState.Play)
-    Recall_Button = button(pos=(WIDTH-100, 450),
+    Recall_Button = DelegateButton(pos=(WIDTH-100, 450),
                            font_size=25,
                            txt_col=BLACK,
                            bg_col=buttoncolor,
@@ -364,11 +403,11 @@ def playgame(screen):
         pygame.mouse.get_pressed()
         #print('Delegation: ', Delegate_Button.selected)
         #print('Delegation remain selected: ', Delegate_Button.remain_selected)
-        print('Delegation Mode: ', delegation_mode)
-        print('action count', action_count)
+        #print('Delegation Mode: ', delegation_mode)
+        #print('action count', action_count)
 
         if turn:
-            print('human turn')
+            #print('human turn')
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -404,8 +443,9 @@ def playgame(screen):
                             result = delegate(chosen_square)
                             if result is not None:
                                 delegated_pieces.append(result)
-                        #elif Recall_Button.selected:
-
+                        elif Recall_Button.selected:
+                            recall(chosen_square)
+                            delegated_pieces.remove(result)
                         else:
                             # conditions for selected_square
                             if current_square is None:

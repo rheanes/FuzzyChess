@@ -91,15 +91,8 @@ class King(Commander):
 
     #sub refers to sub commander
     def delegate(self, piece, sub):
-        # if the piece has already been delegated
-        if piece.delegated == True and piece is not sub.leader:
-            piece.delegated = False
-            sub.troops.remove(piece)
-            self.troops.append(piece)
-
-            self.use_turn()
         # if the piece is not delegated
-        elif piece.delegated == False and piece is not self.leader and piece in self.troops:
+        if piece.delegated == False and piece is not self.leader and piece in self.troops:
             piece.delegated = True
             self.troops.remove(piece)
             sub.troops.append(piece)
@@ -107,7 +100,13 @@ class King(Commander):
         else:
             print("invalid target for delegation")
 
-
+    def recall(self, piece, sub):
+        # if the piece has already been delegated
+        if piece.delegated == True and piece is not sub.leader and piece in sub.troops:
+            piece.delegated = False
+            sub.troops.remove(piece)
+            self.troops.append(piece)
+            self.use_turn()
 """
 King commander must be able to delegate and undelegate pieces
 """
