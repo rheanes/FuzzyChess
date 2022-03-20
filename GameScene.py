@@ -557,7 +557,7 @@ def playgame(screen):
                                 delegated_pieces.append(result)
                         elif Recall_Button.selected:
                             recall(chosen_square)
-                            delegated_pieces.remove(result)
+                            #delegated_pieces.remove(result)
                         else:
                             # if chosen_square.piece.team in human_team:
                             # conditions for selected_square
