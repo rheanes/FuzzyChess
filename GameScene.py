@@ -624,7 +624,7 @@ def playgame(screen):
 
                                         if chosen_square.piece.type is Type.BISHOP:
                                             remove_team(chosen_square.piece.team)
-                                        elif chosen_square.piece.type is Type.KING:
+                                        elif (chosen_square.piece.type is Type.KING) and (chosen_square.piece.team is Team.RED):
                                             return GameState.Win
 
                                         chosen_square.piece = None
