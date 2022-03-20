@@ -551,8 +551,8 @@ def playgame(screen):
                             pass
                         else:
                         """
-
-                        if Delegate_Button.selected and (current_square.piece.team not in deployed_team):
+                    
+                        if Delegate_Button.selected and (chosen_square.piece.team not in deployed_team) :
                             # if (human_piece_deligated is not True):
                             # if not delegation_mode:
                             #    delegation_mode = True
