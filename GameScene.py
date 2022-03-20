@@ -571,8 +571,10 @@ def playgame(screen):
                                     remove_highlights()
                                     current_square = None
                                     action_count += 1
+                                    """
                                     if not knight_special_turn:
                                         end_commander_turn(current_square.piece.team)
+                                    """
                                 elif (chosen_square.color is BLACK) and (current_square.color not in deployed_team):
                                     if attack(current_square.piece.type.value, chosen_square.piece.type.value) is True:
                                         captured_pieces.append(chosen_square.piece)
