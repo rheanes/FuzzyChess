@@ -164,16 +164,20 @@ def recall(chosen_square):
     global current_commander
     global action_count
     global human_piece_delegated
+    #selects chosen piece for recall
     if (chosen_square.piece is not None) and (chosen_square.piece.team not in enemies[Team.BLUE]):
         if(chosen_square.piece.type is not Type.BISHOP) and (chosen_square.piece.type is not Type.KING) and (chosen_square.piece.team is not Team.BLUE):
             recalled_piece = chosen_square.piece
 
+    #checks for the commander of the currently delegated piece
     if recalled_piece is not None:
         if recalled_piece.team is Team.GREEN:
             current_commander = green_commander
         elif recalled_piece.team is Team.PURPLE:
             current_commander = purple_commander
-    if recalled_piece is not None:
+
+    #calls recall function and switches sprite back to blue
+    if (recalled_piece) is not None and (current_commander is not None):
         if recalled_piece.type == Type.PAWN:
             recalled_piece.switch_sprite(color_matrix_pawn[Team.BLUE])
         elif recalled_piece.type == Type.ROOK:
@@ -201,8 +205,8 @@ def reset_recall():
     recalled_piece = None
     global current_commander
     current_commander = None
-    global r
-    recall_mode = None
+    global delegation_mode
+    delegation_mode = False
 
 def display_turn_count():
     pass
@@ -455,7 +459,15 @@ def playgame(screen):
                                     current_square = chosen_square
                                     potential_piece_moves(chosen_square)
                                     if current_square.piece == blue_commander.leader:
+                                        print("Blue pieces")
                                         blue_commander.see_pieces()
+                                    elif current_square.piece == green_commander.leader:
+                                        print("Green pieces")
+                                        green_commander.see_pieces()
+                                    elif current_square.piece == purple_commander.leader:
+                                        print("Purple pieces")
+                                        purple_commander.see_pieces()
+
                             else:  # a piece is currently selected
                                 #global chosen_team
                                 """
