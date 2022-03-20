@@ -60,6 +60,7 @@ class Commander:
         self.troops = troops
         self.targets = []
         self.authority = True
+        self.action = True
         self.has_moved = False
 
     def see_pieces(self):
@@ -68,7 +69,7 @@ class Commander:
 
 
     def use_turn(self):
-        self.authority = False
+        self.action = False
 
     def commander_lost(self):
         if self.leader not in self.troops:
