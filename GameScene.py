@@ -518,14 +518,7 @@ def playgame(screen):
 
         if turn:
             # print('human turn')
-            if not blue_commander.authority:
-                return GameState.Loss
-            elif not green_commander.authority:
-                action_limit -= 1
-            elif not purple_commander.authority:
-                action_limit -= 1
-            else:
-                pass
+            action_limit = len(player_commanders)
             # print('enter pygame events')
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
