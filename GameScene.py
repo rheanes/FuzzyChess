@@ -686,6 +686,7 @@ def playgame(screen):
 
                                         if chosen_square.piece.type is Type.BISHOP:
                                             remove_team(chosen_square.piece.team)
+                                            #todo remove this piece from the ai_commanders
                                         elif (chosen_square.piece.type is Type.KING) and (chosen_square.piece.team is Team.RED):
                                             return GameState.Win
                                         elif (chosen_square.piece.type is Type.KING) and (chosen_square.piece.team is Team.BLUE):
