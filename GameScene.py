@@ -503,7 +503,7 @@ def playgame(screen):
                            bg_hover=buttonhover,
                            action=GameState.Loss)
 
-    Action_Counter = Action_Counttxt(pos=(WIDTH - 1100, 650),
+    Action_Counter = Action_Counttxt(pos=(WIDTH - 1090, 650),
                                      font_size=25,
                                      txt_col=BLACK,
                                      bg_col=buttoncolor,

@@ -198,11 +198,7 @@ class BoneP(Sprite):
     def moused_over(self, mouse_pos, mouse_down):
         if self.rect.collidepoint(mouse_pos):
             self.selected = False
-           #  if mouse_down:
-            #  return self.action
 
-       #   else:
-          #  self.selected = False
 
     def draw(self, surface):
         surface.blit(self.img, self.rect)
