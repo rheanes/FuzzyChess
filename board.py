@@ -190,55 +190,97 @@ def remove_highlights():
 #                         (pos - 1, pos)     |  CURR_POS      | (pos + 1, pos)              #
 #                         (pos - 1, pos - 1) | (pos, pos - 1) | (pos + 1, pos - 1)          #
 #############################################################################################
-def maxMovement(maxSpeed: int, iterations: int, position: tuple[int, int], startPos: tuple[int, int], positions=None):
+def maxMovement(maxSpeed: int, iterations: int, position: tuple[int, int], startPos: tuple[int, int], piece: int, positions=None):
 
     if positions is None:
         positions = []
-
     currRow = position[0]
     currCol = position[1]
 
     if (currRow < 0) or (currCol < 0):
         return
-
     if (currRow > 7) or (currCol > 7):
         return
-
     if iterations > maxSpeed:
         return
-
     if (board[currRow][currCol].piece is not None) and (position != startPos):
-        if(iterations <= 1):
+        if(piece != 4) and iterations <= 1:
             positions.append(position)
-        return
 
+        elif piece == 4 and iterations <= 2:
+            positions.append(position)
+
+            if iterations == 1:
+                if currCol+1 <= 7:
+                    if (board[currRow][currCol+1].piece is not None):
+                        newPosition = (currRow, currCol + 1)
+                        if newPosition not in positions:
+                            positions.append(newPosition)
+
+                if currRow + 1 <= 7 and currCol + 1 <= 7:
+                    if (board[currRow+1][currCol+1].piece is not None):
+                        newPosition = (currRow + 1, currCol + 1)
+                        if newPosition not in positions:
+                            positions.append(newPosition)
+
+                if currRow+1 <= 7:
+                    if (board[currRow+1][currCol].piece is not None):
+                        newPosition = (currRow + 1, currCol)
+                        if newPosition not in positions:
+                            positions.append(newPosition)
+
+                if currRow + 1 <= 7 and currCol - 1 >= 0:
+                    if (board[currRow+1][currCol-1].piece is not None):
+                        newPosition = (currRow + 1, currCol - 1)
+                        if newPosition not in positions:
+                            positions.append(newPosition)
+
+                if currCol-1 >= 0:
+                    if (board[currRow][currCol-1].piece is not None):
+                        newPosition = (currRow, currCol - 1)
+                        if newPosition not in positions:
+                            positions.append(newPosition)
+
+                if currCol-1 >= 0 and currRow-1 >= 0:
+                    if(board[currRow-1][currCol-1].piece is not None):
+                        newPosition = (currRow - 1, currCol - 1)
+                        if newPosition not in positions:
+                            positions.append(newPosition)
+
+                if(currRow - 1) >= 0:
+                    if (board[currRow][currCol].piece is not None):
+                        newPosition = (currRow - 1, currCol)
+                        if newPosition not in positions:
+                            positions.append(newPosition)
+
+                if(currRow - 1) >= 0 and currCol+1 <= 7:
+                    if (board[currRow][currCol].piece is not None):
+                        newPosition = (currRow - 1, currCol + 1)
+                        if newPosition not in positions:
+                            positions.append(newPosition)
+            elif iterations == 2:
+                positions.append(position)
+
+        return positions
     #Checks to the Right square
-    maxMovement(maxSpeed, iterations + 1, (currRow, currCol + 1), startPos, positions)
-
+    maxMovement(maxSpeed, iterations + 1, (currRow, currCol + 1), startPos, piece, positions)
     #Checks to the Down-Right square
-    maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol + 1), startPos, positions)
-
+    maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol + 1), startPos, piece, positions)
     #Checks to the Down square
-    maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol), startPos, positions)
-
+    maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol), startPos, piece, positions)
     #Checks to the Down-Left square
-    maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol - 1), startPos, positions)
-
+    maxMovement(maxSpeed, iterations + 1, (currRow + 1, currCol - 1), startPos, piece, positions)
     #Checks to the Left square
-    maxMovement(maxSpeed, iterations + 1, (currRow, currCol - 1), startPos, positions)
-
+    maxMovement(maxSpeed, iterations + 1, (currRow, currCol - 1), startPos, piece, positions)
     #Checks to the Up-Left square
-    maxMovement(maxSpeed, iterations + 1, (currRow - 1, currCol - 1), startPos, positions)
-
+    maxMovement(maxSpeed, iterations + 1, (currRow - 1, currCol - 1), startPos, piece, positions)
     #Checks to the Up Square
-    maxMovement(maxSpeed, iterations + 1, (currRow - 1, currCol), startPos, positions)
-
+    maxMovement(maxSpeed, iterations + 1, (currRow - 1, currCol), startPos, piece, positions)
     #Checks to the Up-Right square
-    maxMovement(maxSpeed, iterations + 1, (currRow - 1, currCol + 1), startPos, positions)
+    maxMovement(maxSpeed, iterations + 1, (currRow - 1, currCol + 1), startPos, piece, positions)
 
     if position in positions:
         return positions
-    elif(board[currRow][currCol].piece is None):
+    elif (board[currRow][currCol].piece is None):
         positions.append(position)
-
     return positions
