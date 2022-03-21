@@ -143,7 +143,7 @@ class DelegatedPiece:
 
 
 # TODO: don't allow delegated pieces to be delegated
-
+# TODO: currently pieces that have been moved cannot be delegated(i.e causes a bug where the piece activates the movement functions even when the delegation button has been pressed)
 def delegate(chosen_square):
     global delegated_piece
     global delegated_commander
@@ -570,6 +570,9 @@ def playgame(screen):
                                 else:
                                     current_square = chosen_square
                                     potential_piece_moves(chosen_square)
+                                    #if chosen_square.piece is purple_commander.leader:
+                                        #print("purple pieces")
+                                        #purple_commander.see_pieces
                                 
 
                             else:  # a piece is currently selected
