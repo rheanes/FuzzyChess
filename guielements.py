@@ -102,3 +102,72 @@ class GameState(Enum):
     Queen = 34
     Bishop = 35
     King = 36
+
+
+
+
+
+# ActionCount Text
+class Action_Counttxt(Sprite):
+    def __init__(self, pos, text, font_size, txt_col, bg_col, bg_hover, action=None):
+        self.action = action
+        # self.selected = False
+        unselected_img = create_text_surface(text, font_size, txt_col, bg_col)
+        # highlighted_img = create_text_surface(text, font_size * 1.3, txt_col, bg_hover)
+
+        self.images = unselected_img
+        self.rects = unselected_img.get_rect(center=pos)
+        super().__init__()
+
+    @property
+    def img(self):
+        return self.images
+
+    @property
+    def rect(self):
+        return self.rects
+
+    def moused_over(self, mouse_pos, mouse_down):
+        if self.rect.collidepoint(mouse_pos):
+            self.selected = False
+            # if mouse_down:
+            # return self.action
+
+    #  else:
+    #  self.selected = False
+
+    def draw(self, surface):
+        surface.blit(self.img, self.rect)
+
+
+# Current Turn Text
+class WhosTurn(Sprite):
+    def __init__(self, pos, text, font_size, txt_col, bg_col, bg_hover, action=None):
+        self.action = action
+        # self.selected = False
+        unselected_img = create_text_surface(text, font_size, txt_col, bg_col)
+        # highlighted_img = create_text_surface(text, font_size * 1.3, txt_col, bg_hover)
+
+        self.images = unselected_img
+        self.rects = unselected_img.get_rect(center=pos)
+        super().__init__()
+
+    @property
+    def img(self):
+        return self.images
+
+    @property
+    def rect(self):
+        return self.rects
+
+    def moused_over(self, mouse_pos, mouse_down):
+        if self.rect.collidepoint(mouse_pos):
+            self.selected = False
+            # if mouse_down:
+            # return self.action
+
+    #  else:
+    #  self.selected = False
+
+    def draw(self, surface):
+        surface.blit(self.img, self.rect)

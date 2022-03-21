@@ -40,7 +40,7 @@ color_matrix_queen = {Team.BLUE: './Images/blue_queen.png',
                       Team.PURPLE: './Images/purple_queen.png'}
 
 delegation_mode = False
-
+recall_mode= False
 
 def turnChange():
     global turn
@@ -113,6 +113,9 @@ human_piece_delegated = False
 action_count = 0
 turn = True  # True maeans human move
 delegation_mode = False
+recalled_piece = None
+current_commander = None
+recall_mode = False
 commander = Team.GREEN
 deployed_team = []
 
@@ -162,6 +165,7 @@ def delegate(chosen_square):
             human_piece_delegated = True
             action_count += 1
             reset_delegation()
+            blue_commander.see_pieces()
             print('deligation completed')
 
 def recall(chosen_square):
@@ -169,20 +173,21 @@ def recall(chosen_square):
     global current_commander
     global action_count
     global human_piece_delegated
+    global recall_mode
     #selects chosen piece for recall
     if (chosen_square.piece is not None) and (chosen_square.piece.team not in enemies[Team.BLUE]):
-        if(chosen_square.piece.type is not Type.BISHOP) and (chosen_square.piece.type is not Type.KING) and (chosen_square.piece.team is not Team.BLUE):
+        if(chosen_square.piece.type is not Type.BISHOP) and (chosen_square.piece.type is not Type.KING):
             recalled_piece = chosen_square.piece
 
     #checks for the commander of the currently delegated piece
     if recalled_piece is not None:
-        if recalled_piece.team is Team.GREEN:
+        if recalled_piece in green_commander.troops:
             current_commander = green_commander
-        elif recalled_piece.team is Team.PURPLE:
+        elif recalled_piece in purple_commander.troops:
             current_commander = purple_commander
 
     #calls recall function and switches sprite back to blue
-    if (recalled_piece) is not None and (current_commander is not None):
+    if (recalled_piece is not None) and (current_commander is not None):
         if recalled_piece.type == Type.PAWN:
             recalled_piece.switch_sprite(color_matrix_pawn[Team.BLUE])
         elif recalled_piece.type == Type.ROOK:
@@ -210,78 +215,13 @@ def reset_recall():
     recalled_piece = None
     global current_commander
     current_commander = None
-    global delegation_mode
-    delegation_mode = False
+    global recall_mode
+    recall_mode = False
 
 
 def display_turn_count():
     pass
 
-
-# ActionCount Text
-class Action_Counttxt(Sprite):
-    def __init__(self, pos, text, font_size, txt_col, bg_col, bg_hover, action=None):
-        self.action = action
-        # self.selected = False
-        unselected_img = create_text_surface(text, font_size, txt_col, bg_col)
-        # highlighted_img = create_text_surface(text, font_size * 1.3, txt_col, bg_hover)
-
-        self.images = unselected_img
-        self.rects = unselected_img.get_rect(center=pos)
-        super().__init__()
-
-    @property
-    def img(self):
-        return self.images
-
-    @property
-    def rect(self):
-        return self.rects
-
-    def moused_over(self, mouse_pos, mouse_down):
-        if self.rect.collidepoint(mouse_pos):
-            self.selected = False
-            # if mouse_down:
-            # return self.action
-
-    #  else:
-    #  self.selected = False
-
-    def draw(self, surface):
-        surface.blit(self.img, self.rect)
-
-
-# Current Turn Text
-class WhosTurn(Sprite):
-    def __init__(self, pos, text, font_size, txt_col, bg_col, bg_hover, action=None):
-        self.action = action
-        # self.selected = False
-        unselected_img = create_text_surface(text, font_size, txt_col, bg_col)
-        # highlighted_img = create_text_surface(text, font_size * 1.3, txt_col, bg_hover)
-
-        self.images = unselected_img
-        self.rects = unselected_img.get_rect(center=pos)
-        super().__init__()
-
-    @property
-    def img(self):
-        return self.images
-
-    @property
-    def rect(self):
-        return self.rects
-
-    def moused_over(self, mouse_pos, mouse_down):
-        if self.rect.collidepoint(mouse_pos):
-            self.selected = False
-            # if mouse_down:
-            # return self.action
-
-    #  else:
-    #  self.selected = False
-
-    def draw(self, surface):
-        surface.blit(self.img, self.rect)
 
 
 # class for interactable elements that have text
@@ -325,6 +265,46 @@ class DelegateButton(Sprite):
     def draw(self, surface):
         surface.blit(self.img, self.rect)
 
+
+class RecallButton(Sprite):
+    def __init__(self, pos, text, font_size, txt_col, bg_col, bg_hover, action=None):
+        self.action = action
+        self.selected = False
+        # self.remain_selected = False
+        unselected_img = create_text_surface(text, font_size, txt_col, bg_col)
+        highlighted_img = create_text_surface(text, font_size * 1.3, txt_col, bg_hover)
+
+        self.images = [unselected_img, highlighted_img]
+        self.rects = [unselected_img.get_rect(center=pos), highlighted_img.get_rect(center=pos)]
+
+        super().__init__()
+
+    @property
+    def img(self):
+        return self.images[1] if self.selected else self.images[0]
+
+    @property
+    def rect(self):
+        return self.rects[1] if self.selected else self.rects[0]
+
+    # selects different button images depending if the mouse is hovered over it
+    def moused_over(self, mouse_pos, mouse_down):
+        global recall_mode
+        if self.rect.collidepoint(mouse_pos):
+            self.selected = True
+            if mouse_down:
+                # self.remain_selected = True
+                recall_mode = True
+                print('!!!!!!!!!!!!!!!test!!!!!!!!!!!!!!!!!')
+                return self.action
+        else:
+            if recall_mode:
+                self.selected = True
+            else:
+                self.selected = False
+
+    def draw(self, surface):
+        surface.blit(self.img, self.rect)
 
 def end_commander_turn(team: Team):
     global deployed_team
@@ -448,7 +428,7 @@ def playgame(screen):
                                      text="Delegate",
                                      bg_hover=buttonhover,
                                      action=GameState.Play)
-    Recall_Button = DelegateButton(pos=(WIDTH-100, 450),
+    Recall_Button = RecallButton(pos=(WIDTH-100, 450),
                            font_size=25,
                            txt_col=BLACK,
                            bg_col=buttoncolor,
@@ -494,6 +474,7 @@ def playgame(screen):
     global turn
     delegated_pieces = []
     global delegation_mode
+    global recall_mode
     global commander
     global blue_commander
     global red_commander
@@ -555,6 +536,7 @@ def playgame(screen):
                             result = delegate(chosen_square)
                             if result is not None:
                                 delegated_pieces.append(result)
+                            
                         elif Recall_Button.selected:
                             recall(chosen_square)
                             #delegated_pieces.remove(result)
@@ -567,15 +549,7 @@ def playgame(screen):
                                 else:
                                     current_square = chosen_square
                                     potential_piece_moves(chosen_square)
-                                    if current_square.piece == blue_commander.leader:
-                                        print("Blue pieces")
-                                        blue_commander.see_pieces()
-                                    elif current_square.piece == green_commander.leader:
-                                        print("Green pieces")
-                                        green_commander.see_pieces()
-                                    elif current_square.piece == purple_commander.leader:
-                                        print("Purple pieces")
-                                        purple_commander.see_pieces()
+                                
 
                             else:  # a piece is currently selected
                                 """

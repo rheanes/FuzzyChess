@@ -100,6 +100,7 @@ class King(Commander):
             self.use_turn()
         else:
             print("invalid target for delegation")
+        self.see_pieces
 
     def recall(self, piece, sub):
         # if the piece has already been delegated
@@ -108,6 +109,7 @@ class King(Commander):
             sub.troops.remove(piece)
             self.troops.append(piece)
             self.use_turn()
+            self.see_pieces
 """
 King commander must be able to delegate and undelegate pieces
 """
