@@ -171,3 +171,38 @@ class WhosTurn(Sprite):
 
     def draw(self, surface):
         surface.blit(self.img, self.rect)
+
+    #BonePile
+class BoneP(Sprite):
+    def __init__(self, pos, text, font_size, txt_col, bg_col, bg_hover, action=None):
+        self.action = action
+        self.selected = False
+        # self.remain_selected = False
+        unselected_img = create_text_surface(text, font_size, txt_col, bg_col)
+        highlighted_img = create_text_surface(text, font_size * 1.3, txt_col, bg_hover)
+
+        self.images = [unselected_img, highlighted_img]
+        self.rects = [unselected_img.get_rect(center=pos), highlighted_img.get_rect(center=pos)]
+
+        super().__init__()
+
+    @property
+    def img(self):
+        return self.images[1] if self.selected else self.images[0]
+
+    @property
+    def rect(self):
+        return self.rects[1] if self.selected else self.rects[0]
+
+    # selects different button images depending if the mouse is hovered over it
+    def moused_over(self, mouse_pos, mouse_down):
+        if self.rect.collidepoint(mouse_pos):
+            self.selected = False
+           #  if mouse_down:
+            #  return self.action
+
+       #   else:
+          #  self.selected = False
+
+    def draw(self, surface):
+        surface.blit(self.img, self.rect)

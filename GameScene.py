@@ -479,8 +479,16 @@ def playgame(screen):
                             bg_hover=buttonhover,
                             action=GameState.Play)
 
+    Bone_Pile = BoneP(pos=(WIDTH - 1125, 750),
+                            font_size=25,
+                            txt_col=BLACK,
+                            bg_col=buttoncolor,
+                            text="Bone Pile",
+                            bg_hover=buttonhover,
+                            action=GameState.Play)
+
     buttons = [Home_Button, Delegate_Button, Resign_Button, End_Turn_Button, Rules_Button, Recall_Button,
-               Action_Counter, Current_turn]
+               Action_Counter, Current_turn, Bone_Pile]
 
     current_square = None
     global action_count
