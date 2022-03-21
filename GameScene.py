@@ -408,18 +408,19 @@ def remove_team(team):
 
 
 # TODO:
-def adjacent_enemies(pos: tuple[int, int], team: Team):
-    new_pos_list = [(pos.row - 1, pos.col - 1), (pos.row - 1, pos.col), (pos.row - 1, pos.col + 1),
-                    (pos.row, pos.col - 1), (pos.row, pos.col + 1),
-                    (pos.row + 1, pos.col - 1), (pos.row + 1, pos.col), (pos.row + 1, pos.col + 1)]
+def adjacent_enemies(pos: tuple[int, int],team: Team):
+    new_pos_list = [(pos[0] - 1, pos[1] - 1), (pos[0] - 1, pos[1]), (pos[0] - 1, pos[1] + 1),
+                    (pos[0], pos[1] - 1), (pos[0], pos[1] + 1),
+                    (pos[0] + 1, pos[1] - 1), (pos[0] + 1, pos[1]), (pos[0] + 1, pos[1] + 1)]
 
     for new_pos in new_pos_list:
         if not on_board(new_pos):
             new_pos_list.remove(new_pos[:])
 
     for new_pos in new_pos_list:
-        if board[new_pos[0]][new_pos[1]].team in enemies[team]:
-            return True
+        if board[new_pos[0]][new_pos[1]].piece is not None:
+            if board[new_pos[0]][new_pos[1]].piece.team in enemies[team]:
+                return True
 
 
 FirstRun = True
