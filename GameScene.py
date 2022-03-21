@@ -87,24 +87,24 @@ def potential_piece_moves(square: Square):
         if piece.type == Type.PAWN:
             highlight_moves(pawn_moves_top((square.row, square.col)), square.piece.team)
         elif (piece.type == Type.KING) or (piece.type == Type.QUEEN):
-            highlight_moves(maxMovement(3, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+            highlight_moves(maxMovement(3, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value), square.piece.team)
         elif piece.type == Type.ROOK:
-            highlight_moves(maxMovement(2, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+            highlight_moves(maxMovement(2, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value),square.piece.team)
         elif piece.type == Type.BISHOP:
-            highlight_moves(maxMovement(2, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+            highlight_moves(maxMovement(2, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value), square.piece.team)
         elif piece.type == Type.KNIGHT:
-            highlight_moves(maxMovement(4, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+            highlight_moves(maxMovement(4, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value), square.piece.team)
     elif (piece.team == Team.GREEN or piece.team == Team.BLUE or piece.team == Team.PURPLE):
         if piece.type == Type.PAWN:
             highlight_moves(pawn_moves_bottom((square.row, square.col)), square.piece.team)
         if (piece.type == Type.KING) or (piece.type == Type.QUEEN):
-            highlight_moves(maxMovement(3, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+            highlight_moves(maxMovement(3, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value), square.piece.team)
         elif piece.type == Type.ROOK:
-            highlight_moves(maxMovement(2, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+            highlight_moves(maxMovement(2, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value), square.piece.team)
         elif piece.type == Type.BISHOP:
-            highlight_moves(maxMovement(2, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+            highlight_moves(maxMovement(2, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value), square.piece.team)
         elif piece.type == Type.KNIGHT:
-            highlight_moves(maxMovement(4, 0, (square.row, square.col), (square.row, square.col)), square.piece.team)
+            highlight_moves(maxMovement(4, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value), square.piece.team)
 
 
 delegated_piece = None
@@ -388,18 +388,20 @@ def remove_team(team):
 
 
 # TODO:
-def adjacent_enemies(pos: tuple[int, int], team: Team):
-    new_pos_list = [(pos.row - 1, pos.col - 1), (pos.row - 1, pos.col), (pos.row - 1, pos.col + 1),
-                    (pos.row, pos.col - 1), (pos.row, pos.col + 1),
-                    (pos.row + 1, pos.col - 1), (pos.row + 1, pos.col), (pos.row + 1, pos.col + 1)]
+def adjacent_enemies(pos: tuple[int, int],team: Team):
+    new_pos_list = [(pos[0] - 1, pos[1] - 1), (pos[0] - 1, pos[1]), (pos[0] - 1, pos[1] + 1),
+                    (pos[0], pos[1] - 1), (pos[0], pos[1] + 1),
+                    (pos[0] + 1, pos[1] - 1), (pos[0] + 1, pos[1]), (pos[0] + 1, pos[1] + 1)]
 
     for new_pos in new_pos_list:
         if not on_board(new_pos):
             new_pos_list.remove(new_pos[:])
 
     for new_pos in new_pos_list:
-        if board[new_pos[0]][new_pos[1]].team in enemies[team]:
-            return True
+        if board[new_pos[0]][new_pos[1]].piece is not None:
+            if board[new_pos[0]][new_pos[1]].piece.team in enemies[team]:
+                return True
+    return False
 
 
 FirstRun = True
@@ -525,7 +527,7 @@ def playgame(screen):
                             pass
                         else:
                         """
-                    
+
                         if Delegate_Button.selected and (chosen_square.piece.team not in deployed_team) :
                             # if (human_piece_deligated is not True):
                             # if not delegation_mode:
