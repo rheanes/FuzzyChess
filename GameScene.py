@@ -239,7 +239,6 @@ def display_turn_count():
     pass
 
 
-
 # class for interactable elements that have text
 class DelegateButton(Sprite):
     def __init__(self, pos, text, font_size, txt_col, bg_col, bg_hover, action=None):
@@ -383,6 +382,7 @@ def remove_team(team):
             else:
                 pass
         blue_commander.troops.append(green_commander.troops)
+
     elif team == team.PURPLE:
         print("removing purple team")
         for troop in purple_commander.troops:
@@ -392,11 +392,10 @@ def remove_team(team):
             elif troop.type == Type.BISHOP:
                 troop.switch_sprite(color_matrix_pawn[Team.BLUE])
             elif troop.type == Type.KNIGHT:
-                    troop.switch_sprite(color_matrix_knight[Team.BLUE])
+                troop.switch_sprite(color_matrix_knight[Team.BLUE])
             else:
                 pass
         blue_commander.troops.append(purple_commander.troops)
-
 
 # TODO:
 def adjacent_enemies(pos: tuple[int, int],team: Team):
@@ -414,9 +413,7 @@ def adjacent_enemies(pos: tuple[int, int],team: Team):
                 return True
     return False
 
-
 FirstRun = True
-
 
 def playgame(screen):
     Home_Button = button(pos=(WIDTH - 100, 100),
@@ -613,7 +610,11 @@ def playgame(screen):
                                         end_commander_turn(chosen_square.piece.team)
 
                                         if chosen_square.piece.type is Type.BISHOP:
+                                            for p in yellow_commander.troops:
+                                                print(p.team)
                                             remove_team(chosen_square.piece.team)
+                                            for p in yellow_commander.troops:
+                                                print(p.team)
                                         elif (chosen_square.piece.type is Type.KING) and (chosen_square.piece.team is Team.RED):
                                             return GameState.Win
                                         elif (chosen_square.piece.type is Type.KING) and (chosen_square.piece.team is Team.BLUE):
