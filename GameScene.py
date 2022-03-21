@@ -421,6 +421,7 @@ def adjacent_enemies(pos: tuple[int, int],team: Team):
         if board[new_pos[0]][new_pos[1]].piece is not None:
             if board[new_pos[0]][new_pos[1]].piece.team in enemies[team]:
                 return True
+    return False
 
 
 FirstRun = True
