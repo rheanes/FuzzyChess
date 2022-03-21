@@ -29,18 +29,34 @@ ai_commanders = [orange_commander, red_commander, yellow_commander]
 
 color_matrix_pawn = {Team.BLUE: './Images/blue_pawn.png',
                      Team.GREEN: './Images/green_pawn_d.png',
-                     Team.PURPLE: './Images/purple_pawn_d.png'}
+                     Team.PURPLE: './Images/purple_pawn_d.png',
+                     Team.RED: './Images/red_pawn.png',
+                     Team.YELLOW: './Images/yellow_pawn.png',
+                     Team.ORANGE: './Images/orange_pawn.png'}
+
+color_matrix_knight = {Team.BLUE: './Images/blue_knight.png',
+                       Team.GREEN: './Images/green_knight.png',
+                       Team.PURPLE: './Images/purple_knight.png',
+                       Team.RED: './Images/red_knight.png',
+                       Team.YELLOW: './Images/yellow_knight.png',
+                       Team.ORANGE: './Images/orange_knight.png'
+                       }
+
+color_matrix_queen = {Team.BLUE: './Images/blue_queen.png',
+                        Team.GREEN: './Images/green_queen.png',
+                        Team.PURPLE: './Images/purple_queen.png',
+                        Team.RED: './Images/red_queen.png',
+                        Team.YELLOW: './Images/yellow_queen.png',
+                        Team.ORANGE: './Images/orange_queen.png'
+                       }
 
 color_matrix_rook = {Team.BLUE: './Images/blue_rook.png',
                      Team.GREEN: './Images/green_rook_d.png',
                      Team.PURPLE: './Images/purple_rook_d.png'}
 
-color_matrix_queen = {Team.BLUE: './Images/blue_queen.png',
-                      Team.GREEN: './Images/green_queen.png',
-                      Team.PURPLE: './Images/purple_queen.png'}
 
 delegation_mode = False
-recall_mode= False
+recall_mode = False
 
 def turnChange():
     global turn
@@ -323,68 +339,71 @@ def message_box(text):
 
 
 # new changes
+#TODO Update the sprites of the teams when they are captured
 def remove_team(team):
     old_troops = []
-    if team == Team.YELLOW or team == Team.ORANGE:
-        if team.YELLOW:
-            for troop in yellow_commander.troops:
-                if troop.type == Type.PAWN:
-                    troop[:].image = './Images/red_pawn.png'
-                    troop[:].team = Team.RED
-                elif troop.type == Type.BISHOP:
-                    troop[:].image = './Images/red_bishop.png'
-                    troop[:].team = Team.RED
-                elif troop.type == Type.KNIGHT:
-                    troop[:].image = './Images/red_knight.png'
-                    troop[:].team = Team.RED
-                else:
-                    pass
-            red_commander.troops.append(yellow_commander.troops)
-        elif team.ORANGE:
-            for troop in orange_commander.troops:
-                if troop.type == Type.PAWN:
-                    troop[:].image = './Images/orange_pawn.png'
-                    troop[:].team = Team.RED
-                elif troop.type == Type.BISHOP:
-                    troop[:].image = './Images/orange_bishop.png'
-                    troop[:].team = Team.RED
-                elif troop.type == Type.KNIGHT:
-                    troop[:].image = './Images/orange_knight.png'
-                    troop[:].team = Team.RED
-                else:
-                    pass
-            red_commander.troops.append(orange_commander.troops)
-        else:
-            pass
-    elif team == Team.GREEN or team == Team.PURPLE:
-        if team.GREEN:
-            for troop in green_commander.troops:
-                if troop.type == Type.PAWN:
-                    troop[:].image = './Images/green_pawn.png'
-                    troop[:].team = Team.BLUE
-                elif troop.type == Type.BISHOP:
-                    troop[:].image = './Images/green_bishop.png'
-                    troop[:].team = Team.BLUE
-                elif troop.type == Type.KNIGHT:
-                    troop[:].image = './Images/green_knight.png'
-                    troop[:].team = Team.BLUE
-                else:
-                    pass
-            red_commander.troops.append(yellow_commander.troops)
-        elif team.PURPLE:
-            for troop in purple_commander.troops:
-                if troop.type == Type.PAWN:
-                    troop[:].image = './Images/purple_pawn.png'
-                    troop[:].team = Team.BLUE
-                elif troop.type == Type.BISHOP:
-                    troop[:].image = './Images/purple_bishop.png'
-                    troop[:].team = Team.BLUE
-                elif troop.type == Type.KNIGHT:
-                    troop[:].image = './Images/purple_knight.png'
-                    troop[:].team = Team.BLUE
-                else:
-                    pass
-            red_commander.troops.append(orange_commander.troops)
+    if team == team.YELLOW:
+        print("removing yellow team")
+        for troop in yellow_commander.troops:
+            if troop.type == Type.PAWN:
+                troop.switch_sprite(color_matrix_pawn[Team.RED])
+                troop.team = Team.RED
+            elif troop.type == Type.BISHOP:
+                troop.switch_sprite(color_matrix_pawn[Team.RED])
+                troop.team = Team.RED
+            elif troop.type == Type.KNIGHT:
+                troop.switch_sprite(color_matrix_knight[Team.RED])
+                troop.team = Team.RED
+            else:
+                pass
+        red_commander.troops.append(yellow_commander.troops)
+
+    elif team == team.ORANGE:
+        print("removing orange team")
+        for troop in orange_commander.troops:
+            if troop.type == Type.PAWN:
+                troop.switch_sprite(color_matrix_pawn[Team.RED])
+                troop.team = Team.RED
+            elif troop.type == Type.BISHOP:
+                troop.switch_sprite(color_matrix_pawn[Team.RED])
+                troop.team = Team.RED
+            elif troop.type == Type.KNIGHT:
+                troop.switch_sprite(color_matrix_knight[Team.RED])
+                troop.team = Team.RED
+            else:
+                pass
+        red_commander.troops.append(orange_commander.troops)
+
+    elif team == team.GREEN:
+        print("removing green team")
+        for troop in green_commander.troops:
+            if troop.type == Type.PAWN:
+                troop.switch_sprite(color_matrix_pawn[Team.BLUE])
+                troop.team = Team.BLUE
+            elif troop.type == Type.BISHOP:
+                troop.switch_sprite(color_matrix_pawn[Team.BLUE])
+                troop.team = Team.BLUE
+            elif troop.type == Type.KNIGHT:
+                troop.switch_sprite(color_matrix_knight[Team.BLUE])
+                troop.team = Team.BLUE
+            else:
+                pass
+        blue_commander.troops.append(green_commander.troops)
+    elif team == team.PURPLE:
+        print("removing purple team")
+        for troop in purple_commander.troops:
+            if troop.type == Type.PAWN:
+                troop.switch_sprite(color_matrix_pawn[Team.BLUE])
+                troop.team = Team.BLUE
+            elif troop.type == Type.BISHOP:
+                troop.switch_sprite(color_matrix_pawn[Team.BLUE])
+                troop.team = Team.BLUE
+            elif troop.type == Type.KNIGHT:
+                    troop.switch_sprite(color_matrix_knight[Team.BLUE])
+                    troop.team = Team.BLUE
+            else:
+                pass
+        blue_commander.troops.append(purple_commander.troops)
 
 
 # TODO:
@@ -602,7 +621,8 @@ def playgame(screen):
                                             remove_team(chosen_square.piece.team)
                                         elif (chosen_square.piece.type is Type.KING) and (chosen_square.piece.team is Team.RED):
                                             return GameState.Win
-
+                                        elif (chosen_square.piece.type is Type.KING) and (chosen_square.piece.team is Team.BLUE):
+                                            return GameState.Loss
                                         chosen_square.piece = None
                                         move_piece(current_square, chosen_square)
                                         current_square = None

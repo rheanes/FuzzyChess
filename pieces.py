@@ -152,7 +152,7 @@ def on_board(position: tuple[int, int]):
     """
     if -1 < position[0] < 8 and position[1] > -1 and position[-1] < 8:
         return True
-    
+    deployed_team
     """
     if (-1 < x < 8) and (-1 < y < 8):
         return True
