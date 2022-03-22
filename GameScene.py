@@ -10,7 +10,7 @@ from guielements import *
 DEFAULT_IMAGE_SIZE = (GAME_WIDTH / 8, GAME_WIDTH / 8)
 SQUARE_WIDTH = SQUARE_HEIGHT = GAME_WIDTH / 8
 clock = pygame.time.Clock()
-
+#piece and commander declaration
 orange_pieces = [op1, op2, op3, ok, ob]
 orange_commander = Commander(orange_pieces, ob)
 red_pieces = [rr1, rr2, rp1, rp2, rq, rK]
@@ -27,6 +27,7 @@ purple_commander = Commander(purple_pieces, pb)
 player_commanders = [green_commander, blue_commander, purple_commander]
 ai_commanders = [orange_commander, red_commander, yellow_commander]
 
+#used for sprite switching
 color_matrix_pawn = {Team.BLUE: './Images/blue_pawn.png',
                      Team.GREEN: './Images/green_pawn_d.png',
                      Team.PURPLE: './Images/purple_pawn_d.png',
@@ -149,15 +150,19 @@ def delegate(chosen_square):
     global delegated_commander
     global action_count
     global human_piece_delegated
-    global delegation_mode
+    #determines whether the delegate button remains highlighted and therefore allows for delegation to be possible
+    global delegation_mode 
+    #event handles first click when user selects the piece to be delegated
+    #checks if the chosen square has a piece and that it is not on the enemy team
     if (chosen_square.piece is not None) and (chosen_square.piece.team not in enemies[Team.BLUE]):
         if (chosen_square.piece.type is not Type.KING) and \
                 (chosen_square.piece.type is not Type.BISHOP) and \
-                (chosen_square.piece.delegated is not True):
+                (chosen_square.piece.delegated is not True): #performs checks to see if the piece is valid for delegation
             delegated_piece = chosen_square.piece
             row, col = chosen_square.row, chosen_square.col
             return DelegatedPiece((row, col), chosen_square.piece.team)
             print('deligated piece selected')
+        #second clicks determines which commander the piece is transferred to
         elif (chosen_square.piece.type is Type.KING) or (chosen_square.piece.type is Type.BISHOP):
             if chosen_square.piece.team is Team.BLUE:
                 delegated_commander = blue_commander
@@ -168,6 +173,7 @@ def delegate(chosen_square):
             else:
                 pass
             print('deligated commander selected')
+        #swaps sprite based on the commander that the piece is being transferred to
         if (delegated_piece is not None) and (delegated_commander is not None):
             if (delegated_piece.type) == Type.PAWN and (delegated_piece.team == Team.BLUE):
                 delegated_piece.switch_sprite(color_matrix_pawn[delegated_commander.leader.team])
@@ -177,6 +183,7 @@ def delegate(chosen_square):
                 delegated_piece.switch_sprite(color_matrix_queen[delegated_commander.leader.team])
             else:
                 print("Invalid piece type for delegation")
+            #completes delegation
             blue_commander.delegate(delegated_piece, delegated_commander)
             human_piece_delegated = True
             action_count += 1
@@ -189,6 +196,7 @@ def recall(chosen_square):
     global current_commander
     global action_count
     global human_piece_delegated
+    #determines whether the recall button remains highlighted and therefore allows for recall to be possible
     global recall_mode
     #selects chosen piece for recall
     if (chosen_square.piece is not None) and (chosen_square.piece.team not in enemies[Team.BLUE]):
@@ -547,7 +555,7 @@ def playgame(screen):
     if FirstRun:
         create_board()
         FirstRun = False
-
+    #main game loop
     while True:
         mouse_down = False
         pygame.mouse.get_pressed()
@@ -555,7 +563,7 @@ def playgame(screen):
         # print('Delegation remain selected: ', Delegate_Button.remain_selected)
         # print('Delegation Mode: ', delegation_mode)
         # print('action count', action_count)
-
+        
         if turn:
             # print('human turn')
             action_limit = len(player_commanders)
@@ -585,7 +593,7 @@ def playgame(screen):
                             pass
                         else:
                         """
-
+                        #event handling for delegation
                         if Delegate_Button.selected and (chosen_square.piece.team not in deployed_team) :
                             # if (human_piece_deligated is not True):
                             # if not delegation_mode:
@@ -594,9 +602,10 @@ def playgame(screen):
                             # else:
                             # print('check point')
                             result = delegate(chosen_square)
+                            #stores delegated piece
                             if result is not None:
                                 delegated_pieces.append(result)
-                            
+                        #recall event handling
                         elif Recall_Button.selected:
                             recall(chosen_square)
                             #delegated_pieces.remove(result)
@@ -678,15 +687,17 @@ def playgame(screen):
                                     move_piece(current_square, chosen_square)
                                     remove_highlights()
                                     current_square = None
-
+                                #code for pieces attacking each other
                                 elif (chosen_square.color is BLACK) and (current_square.color not in deployed_team):
+                                    #upon successful attack, append the dead piece to captured_pieces, consume commanders action
                                     if attack(current_square.piece.type.value, chosen_square.piece.type.value) is True:
                                         captured_pieces.append(chosen_square.piece)
                                         end_commander_turn(chosen_square.piece.team)
-
+                                        #converts bishop's pieces to the king's corp upon bishop being captured
                                         if chosen_square.piece.type is Type.BISHOP:
                                             remove_team(chosen_square.piece.team)
                                             #todo remove this piece from the ai_commanders
+                                        #end game conditions for when kings are captured
                                         elif (chosen_square.piece.type is Type.KING) and (chosen_square.piece.team is Team.RED):
                                             return GameState.Win
                                         elif (chosen_square.piece.type is Type.KING) and (chosen_square.piece.team is Team.BLUE):
