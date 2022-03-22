@@ -322,3 +322,35 @@ def maxMovement(maxSpeed: int, iterations: int, position: tuple[int, int], start
     elif (board[currRow][currCol].piece is None):
         positions.append(position)
     return positions
+
+#Is only called when the knight is attacking after moving. It highlights *enemy* pieces around the knight
+#Functions almost the same as the pathfinding
+def knightAttackPieces(position: tuple[int, int], startPos: tuple[int, int], positions = None):
+    if positions is None:
+        positions = []
+
+    currRow = position[0]
+    currCol = position[1]
+
+    if (currRow < 0) or (currCol < 0):
+        return
+
+    if (currRow > 7) or (currCol > 7):
+        return
+
+    if(board[currRow][currCol].piece is not None) and position != startPos:
+        positions.append(position)
+        return positions
+    if(board[currRow][currCol].piece is None):
+        return
+
+    knightAttackPieces((currRow - 1, currCol - 1), startPos, positions)
+    knightAttackPieces((currRow - 1, currCol), startPos, positions)
+    knightAttackPieces((currRow - 1, currCol + 1), startPos, positions)
+    knightAttackPieces((currRow, currCol + 1), startPos, positions)
+    knightAttackPieces((currRow + 1, currCol + 1), startPos, positions)
+    knightAttackPieces((currRow + 1, currCol), startPos, positions)
+    knightAttackPieces((currRow + 1, currCol - 1), startPos, positions)
+    knightAttackPieces((currRow, currCol - 1), startPos, positions)
+
+    return positions
