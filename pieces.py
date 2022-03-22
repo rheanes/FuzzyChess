@@ -30,12 +30,12 @@ class Action(enum.Enum):
     ATTACK = 1
 
 class Value(enum.Enum):
-    KING = 20
-    QUEEN = 18
-    BISHOP = 15
-    KNIGHT = 13
-    ROOK = 10
-    PAWN = 5
+    KING = 1000
+    QUEEN = 200
+    BISHOP = 400
+    KNIGHT = 200
+    ROOK = 200
+    PAWN = 50
 
 #creates a chess piece class that shows:
 #team, attackable, and color
