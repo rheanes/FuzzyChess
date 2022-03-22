@@ -237,17 +237,20 @@ def maxMovement(maxSpeed: int, iterations: int, position: tuple[int, int], start
 
     if (currRow < 0) or (currCol < 0):
         return
+
     if (currRow > 7) or (currCol > 7):
         return
+
     if iterations > maxSpeed:
         return
+
     if (board[currRow][currCol].piece is not None) and (position != startPos):
-        if(piece != 4) and iterations <= 1:
+        if iterations <= 1:
             positions.append(position)
+        if (piece != 4):
+            return positions
 
-        elif piece == 4 and iterations <= 2:
-            positions.append(position)
-
+        elif piece == 4:
             if iterations == 1:
                 if currCol+1 <= 7:
                     if (board[currRow][currCol+1].piece is not None):
@@ -286,20 +289,26 @@ def maxMovement(maxSpeed: int, iterations: int, position: tuple[int, int], start
                             positions.append(newPosition)
 
                 if(currRow - 1) >= 0:
-                    if (board[currRow][currCol].piece is not None):
+                    if (board[currRow - 1][currCol].piece is not None):
                         newPosition = (currRow - 1, currCol)
                         if newPosition not in positions:
                             positions.append(newPosition)
 
                 if(currRow - 1) >= 0 and currCol+1 <= 7:
-                    if (board[currRow][currCol].piece is not None):
+                    if (board[currRow - 1][currCol + 1].piece is not None):
                         newPosition = (currRow - 1, currCol + 1)
                         if newPosition not in positions:
                             positions.append(newPosition)
+                return positions
             elif iterations == 2:
                 positions.append(position)
-
+                return positions
+            return positions
         return positions
+
+    if (board[currRow][currCol].piece is not None) and (position != startPos):
+        return positions
+
     #Checks to the Right square
     maxMovement(maxSpeed, iterations + 1, (currRow, currCol + 1), startPos, piece, positions)
     #Checks to the Down-Right square
@@ -319,7 +328,7 @@ def maxMovement(maxSpeed: int, iterations: int, position: tuple[int, int], start
 
     if position in positions:
         return positions
-    elif (board[currRow][currCol].piece is None):
+    elif board[currRow][currCol].piece is None:
         positions.append(position)
     return positions
 

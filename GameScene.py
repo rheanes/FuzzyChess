@@ -98,6 +98,7 @@ def update_display(screen):
     # print('testing')
 
 
+#These are the potential moves
 def potential_piece_moves(square: Square):
     piece = square.piece
     if (piece.team == Team.YELLOW or (piece.team == Team.RED) or piece.team == Team.ORANGE):
