@@ -608,7 +608,7 @@ def playgame(screen):
                             if current_square is None:
                                 if chosen_square.piece is None:
                                     pass
-                                elif checkCommanderTurn(chosen_square.piece.team) or chosen_square.piece.type is Type.KNIGHT:
+                                elif (checkCommanderTurn(chosen_square.piece.team) or chosen_square.piece.type is Type.KNIGHT) and (chosen_square.piece.team not in enemies[Team.BLUE]):
                                     if chosen_square.piece.type is Type.KNIGHT:
                                         if knight_special_turn:
                                             current_square = chosen_square
@@ -633,7 +633,7 @@ def playgame(screen):
                                 """
                                 #This check ensures that the chosen corp hasn't worked. If a knight is selected, then
                                 #we bypass this condition if the knight's special turn is enabled.
-                                if checkCommanderTurn(current_square.piece.team) or current_square.piece.type is Type.KNIGHT:
+                                if (checkCommanderTurn(current_square.piece.team) or current_square.piece.type is Type.KNIGHT) and (current_square.piece.team not in enemies[Team.BLUE]):
                                     if (chosen_square.color is WHITE) or (
                                             chosen_square.color is GREY):  # lets you unselect current piece
                                         remove_highlights()

@@ -46,6 +46,7 @@ class Piece:
         self.action = None
         self.image = image
         self.value = value
+        self.targets = []
         self.delegated = False
 
     def switch_sprite(self, new_img):
