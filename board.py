@@ -146,19 +146,12 @@ def remove_team(team):
         for troop in yellow_commander.troops:
             troop.team = Team.RED
             if troop.type == Type.PAWN:
-                print('pawn')
-                troop.switch_sprite(color_matrix_pawn[Team.RED])
-            elif troop.type == Type.BISHOP:
-                print('bishop')
                 troop.switch_sprite(color_matrix_pawn[Team.RED])
             elif troop.type == Type.KNIGHT:
-                print('knight')
                 troop.switch_sprite(color_matrix_knight[Team.RED])
             elif troop.type == Type.ROOK:
-                print('rook')
                 troop.switch_sprite(color_matrix_rook[Team.RED])
             elif troop.type == Type.QUEEN:
-                print('queen')
                 troop.switch_sprite(color_matrix_queen[Team.RED])
             else:
                 pass
@@ -170,10 +163,12 @@ def remove_team(team):
             troop.team = Team.RED
             if troop.type == Type.PAWN:
                 troop.switch_sprite(color_matrix_pawn[Team.RED])
-            elif troop.type == Type.BISHOP:
-                troop.switch_sprite(color_matrix_pawn[Team.RED])
             elif troop.type == Type.KNIGHT:
                 troop.switch_sprite(color_matrix_knight[Team.RED])
+            elif troop.type == Type.ROOK:
+                troop.switch_sprite(color_matrix_rook[Team.RED])
+            elif troop.type == Type.QUEEN:
+                troop.switch_sprite(color_matrix_queen[Team.RED])
             else:
                 pass
         red_commander.troops.append(orange_commander.troops)
@@ -184,10 +179,12 @@ def remove_team(team):
             troop.team = Team.BLUE
             if troop.type == Type.PAWN:
                 troop.switch_sprite(color_matrix_pawn[Team.BLUE])
-            elif troop.type == Type.BISHOP:
-                troop.switch_sprite(color_matrix_pawn[Team.BLUE])
             elif troop.type == Type.KNIGHT:
                 troop.switch_sprite(color_matrix_knight[Team.BLUE])
+            elif troop.type == Type.ROOK:
+                troop.switch_sprite(color_matrix_rook[Team.BLUE])
+            elif troop.type == Type.QUEEN:
+                troop.switch_sprite(color_matrix_queen[Team.BLUE])
             else:
                 pass
         blue_commander.troops.append(green_commander.troops)
@@ -198,10 +195,12 @@ def remove_team(team):
             troop.team = Team.BLUE
             if troop.type == Type.PAWN:
                 troop.switch_sprite(color_matrix_pawn[Team.BLUE])
-            elif troop.type == Type.BISHOP:
-                troop.switch_sprite(color_matrix_pawn[Team.BLUE])
             elif troop.type == Type.KNIGHT:
                 troop.switch_sprite(color_matrix_knight[Team.BLUE])
+            elif troop.type == Type.ROOK:
+                troop.switch_sprite(color_matrix_rook[Team.BLUE])
+            elif troop.type == Type.QUEEN:
+                troop.switch_sprite(color_matrix_queen[Team.BLUE])
             else:
                 pass
         blue_commander.troops.append(purple_commander.troops)
