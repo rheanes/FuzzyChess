@@ -5,58 +5,12 @@ import time
 from GameFunctions import attack
 from common import *
 from board import *
-from pieces import *
+
 from guielements import *
 
 DEFAULT_IMAGE_SIZE = (GAME_WIDTH / 8, GAME_WIDTH / 8)
 SQUARE_WIDTH = SQUARE_HEIGHT = GAME_WIDTH / 8
 clock = pygame.time.Clock()
-
-#list of all orange pieces at the start of the game
-orange_pieces = [op1, op2, op3, ok, ob]
-
-orange_commander = Commander(orange_pieces, ob)
-red_pieces = [rr1, rr2, rp1, rp2, rq, rK]
-red_commander = King(red_pieces, rK)
-yellow_pieces = [yp1, yp2, yp3, yk, yb]
-yellow_commander = Commander(yellow_pieces, yb)
-blue_pieces = [br1, br2, bp1, bp2, bq, bK]
-blue_commander = King(blue_pieces, bK)
-green_pieces = [gp1, gp2, gp3, gk, gb]
-green_commander = Commander(green_pieces, gb)
-purple_pieces = [pp1, pp2, pp3, pk, pb]
-purple_commander = Commander(purple_pieces, pb)
-
-player_commanders = [green_commander, blue_commander, purple_commander]
-ai_commanders = [orange_commander, red_commander, yellow_commander]
-
-color_matrix_pawn = {Team.BLUE: './Images/blue_pawn.png',
-                     Team.GREEN: './Images/green_pawn_d.png',
-                     Team.PURPLE: './Images/purple_pawn_d.png',
-                     Team.RED: './Images/red_pawn.png',
-                     Team.YELLOW: './Images/yellow_pawn.png',
-                     Team.ORANGE: './Images/orange_pawn.png'}
-
-color_matrix_knight = {Team.BLUE: './Images/blue_knight.png',
-                       Team.GREEN: './Images/green_knight.png',
-                       Team.PURPLE: './Images/purple_knight.png',
-                       Team.RED: './Images/red_knight.png',
-                       Team.YELLOW: './Images/yellow_knight.png',
-                       Team.ORANGE: './Images/orange_knight.png'
-                       }
-
-color_matrix_queen = {Team.BLUE: './Images/blue_queen.png',
-                      Team.GREEN: './Images/green_queen.png',
-                      Team.PURPLE: './Images/purple_queen.png',
-                      Team.RED: './Images/red_queen.png',
-                      Team.YELLOW: './Images/yellow_queen.png',
-                      Team.ORANGE: './Images/orange_queen.png'
-                      }
-
-color_matrix_rook = {Team.BLUE: './Images/blue_rook.png',
-                     Team.GREEN: './Images/green_rook_d.png',
-                     Team.PURPLE: './Images/purple_rook_d.png'}
-
 
 delegation_mode = False
 recall_mode = False
@@ -197,11 +151,11 @@ def delegate(chosen_square):
             print('deligated commander selected')
         if (delegated_piece is not None) and (delegated_commander is not None):
             if (delegated_piece.type) == Type.PAWN and (delegated_piece.team == Team.BLUE):
-                delegated_piece.switch_sprite(color_matrix_pawn[delegated_commander.leader.team])
+                delegated_piece.switch_sprite(del_matrix_pawn[delegated_commander.leader.team])
             elif (delegated_piece.type == Type.ROOK) and (delegated_piece.team == Team.BLUE):
-                delegated_piece.switch_sprite(color_matrix_rook[delegated_commander.leader.team])
+                delegated_piece.switch_sprite(del_matrix_rook[delegated_commander.leader.team])
             elif (delegated_piece.type == Type.QUEEN) and (delegated_piece.team == Team.BLUE):
-                delegated_piece.switch_sprite(color_matrix_queen[delegated_commander.leader.team])
+                delegated_piece.switch_sprite(del_matrix_queen[delegated_commander.leader.team])
             else:
                 print("Invalid piece type for delegation")
             blue_commander.delegate(delegated_piece, delegated_commander)
@@ -420,6 +374,7 @@ def checkCommanderTurn(team: Team):
 # Removes the commander from their list (used for AI and determining action count)
 def removeCommander(team: Team):
     global player_commanders
+    global ai_commanders
     if team is Team.GREEN:
         player_commanders.remove(green_commander)
     elif team is Team.PURPLE:
@@ -450,75 +405,6 @@ def reset_turn():
 def message_box(text):
     print(text)
 
-
-# new changes
-# TODO add in queen, and rooks.
-def remove_team(team):
-    old_troops = []
-    if team == team.YELLOW:
-        print("removing yellow team")
-        for troop in yellow_commander.troops:
-            troop.team = Team.RED
-            if troop.type == Type.PAWN:
-                print('pawn')
-                troop.switch_sprite(color_matrix_pawn[Team.RED])
-            elif troop.type == Type.BISHOP:
-                print('bishop')
-                troop.switch_sprite(color_matrix_pawn[Team.RED])
-            elif troop.type == Type.KNIGHT:
-                print('knight')
-                troop.switch_sprite(color_matrix_knight[Team.RED])
-            elif troop.type == Type.ROOK:
-                print('rook')
-                troop.switch_sprite(color_matrix_rook[Team.RED])
-            elif troop.type == Type.QUEEN:
-                print('queen')
-                troop.switch_sprite(color_matrix_queen[Team.RED])
-            else:
-                pass
-        red_commander.troops.append(yellow_commander.troops)
-
-    elif team == team.ORANGE:
-        print("removing orange team")
-        for troop in orange_commander.troops:
-            troop.team = Team.RED
-            if troop.type == Type.PAWN:
-                troop.switch_sprite(color_matrix_pawn[Team.RED])
-            elif troop.type == Type.BISHOP:
-                troop.switch_sprite(color_matrix_pawn[Team.RED])
-            elif troop.type == Type.KNIGHT:
-                troop.switch_sprite(color_matrix_knight[Team.RED])
-            else:
-                pass
-        red_commander.troops.append(orange_commander.troops)
-
-    elif team == team.GREEN:
-        print("removing green team")
-        for troop in green_commander.troops:
-            troop.team = Team.BLUE
-            if troop.type == Type.PAWN:
-                troop.switch_sprite(color_matrix_pawn[Team.BLUE])
-            elif troop.type == Type.BISHOP:
-                troop.switch_sprite(color_matrix_pawn[Team.BLUE])
-            elif troop.type == Type.KNIGHT:
-                troop.switch_sprite(color_matrix_knight[Team.BLUE])
-            else:
-                pass
-        blue_commander.troops.append(green_commander.troops)
-
-    elif team == team.PURPLE:
-        print("removing purple team")
-        for troop in purple_commander.troops:
-            troop.team = Team.BLUE
-            if troop.type == Type.PAWN:
-                troop.switch_sprite(color_matrix_pawn[Team.BLUE])
-            elif troop.type == Type.BISHOP:
-                troop.switch_sprite(color_matrix_pawn[Team.BLUE])
-            elif troop.type == Type.KNIGHT:
-                troop.switch_sprite(color_matrix_knight[Team.BLUE])
-            else:
-                pass
-        blue_commander.troops.append(purple_commander.troops)
 
 # TODO:
 def adjacent_enemies(pos: tuple[int, int], team: Team):
