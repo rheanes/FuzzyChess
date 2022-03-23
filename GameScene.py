@@ -12,7 +12,9 @@ DEFAULT_IMAGE_SIZE = (GAME_WIDTH / 8, GAME_WIDTH / 8)
 SQUARE_WIDTH = SQUARE_HEIGHT = GAME_WIDTH / 8
 clock = pygame.time.Clock()
 
+#list of all orange pieces at the start of the game
 orange_pieces = [op1, op2, op3, ok, ob]
+
 orange_commander = Commander(orange_pieces, ob)
 red_pieces = [rr1, rr2, rp1, rp2, rq, rK]
 red_commander = King(red_pieces, rK)
@@ -450,7 +452,7 @@ def message_box(text):
 
 
 # new changes
-# TODO Update the sprites of the teams when they are captured
+# TODO add in queen, and rooks.
 def remove_team(team):
     old_troops = []
     if team == team.YELLOW:
@@ -458,11 +460,20 @@ def remove_team(team):
         for troop in yellow_commander.troops:
             troop.team = Team.RED
             if troop.type == Type.PAWN:
+                print('pawn')
                 troop.switch_sprite(color_matrix_pawn[Team.RED])
             elif troop.type == Type.BISHOP:
+                print('bishop')
                 troop.switch_sprite(color_matrix_pawn[Team.RED])
             elif troop.type == Type.KNIGHT:
+                print('knight')
                 troop.switch_sprite(color_matrix_knight[Team.RED])
+            elif troop.type == Type.ROOK:
+                print('rook')
+                troop.switch_sprite(color_matrix_rook[Team.RED])
+            elif troop.type == Type.QUEEN:
+                print('queen')
+                troop.switch_sprite(color_matrix_queen[Team.RED])
             else:
                 pass
         red_commander.troops.append(yellow_commander.troops)
@@ -532,6 +543,30 @@ def adjacent_enemies(pos: tuple[int, int], team: Team):
 
 FirstRun = True
 
+#This will take in a piece and the current team.
+#Then it will remove the
+def remove_piece(piece):
+    print('removing piece.')
+    team = piece.team
+    if team == team.RED:
+        red_commander.troops.remove(piece)
+
+    elif team == team.YELLOW:
+        yellow_commander.troops.remove(piece)
+
+    elif team == team.ORANGE:
+        orange_commander.troops.remove(piece)
+
+    elif piece.team == team.BLUE:
+        blue_commander.troops.remove(piece)
+
+    elif piece.team == team.PURPLE:
+        purple_commander.troops.remove(piece)
+
+    elif piece.team == team.GREEN:
+        green_commander.troops.remove(piece)
+
+    return
 
 def playgame(screen):
     Home_Button = button(pos=(WIDTH - 100, 100),
@@ -637,8 +672,6 @@ def playgame(screen):
         if action_count == 0:
             turnChange()
             reset_turn()
-
-
 
         if turn:
             # print('human turn')
@@ -776,9 +809,10 @@ def playgame(screen):
                                         if not knight_special_turn:
                                             end_commander_turn(current_square.piece.team)
                                             action_count -= 1
-                                            print('action count increased')
+                                            #print('action count increased')
                                         else:
-                                            print('action count not increased')
+                                            #print('action count not increased')
+                                            return
 
                                         move_piece(current_square, chosen_square)
                                         remove_highlights()
@@ -788,6 +822,7 @@ def playgame(screen):
                                         if attack(current_square.piece.type.value,
                                                   chosen_square.piece.type.value) is True:
                                             captured_pieces.append(chosen_square.piece)
+                                            remove_piece(chosen_square.piece)
                                             end_commander_turn(chosen_square.piece.team)
 
                                             if chosen_square.piece.type is Type.BISHOP:
