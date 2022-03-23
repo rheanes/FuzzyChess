@@ -1,5 +1,4 @@
 import enum
-import board as bd
 import pygame
 """
     ATTENTION: Fix the piece moves to return all highlighted squares
@@ -137,7 +136,49 @@ enemies = {
     Team.ORANGE : [Team.BLUE, Team.GREEN, Team.PURPLE],
     Team.YELLOW : [Team.BLUE, Team.GREEN, Team.PURPLE]
 }
+color_matrix_pawn = {Team.BLUE: './Images/blue_pawn.png',
+                     Team.GREEN: './Images/green_pawn.png',
+                     Team.PURPLE: './Images/purple_pawn.png',
+                     Team.RED: './Images/red_pawn.png',
+                     Team.YELLOW: './Images/yellow_pawn.png',
+                     Team.ORANGE: './Images/orange_pawn.png'}
 
+color_matrix_knight = {Team.BLUE: './Images/blue_knight.png',
+                       Team.GREEN: './Images/green_knight.png',
+                       Team.PURPLE: './Images/purple_knight.png',
+                       Team.RED: './Images/red_knight.png',
+                       Team.YELLOW: './Images/yellow_knight.png',
+                       Team.ORANGE: './Images/orange_knight.png'
+                       }
+
+color_matrix_queen = {Team.BLUE: './Images/blue_queen.png',
+                      Team.GREEN: './Images/green_queen.png',
+                      Team.PURPLE: './Images/purple_queen.png',
+                      Team.RED: './Images/red_queen.png',
+                      Team.YELLOW: './Images/yellow_queen.png',
+                      Team.ORANGE: './Images/orange_queen.png'
+                      }
+
+color_matrix_rook = {Team.BLUE: './Images/blue_rook.png',
+                     Team.GREEN: './Images/green_rook.png',
+                     Team.PURPLE: './Images/purple_rook.png',
+                     Team.RED: './Images/red_rook.png',
+                     Team.ORANGE: './Images/orange_rook.png',
+                     Team.YELLOW: './Images/yellow_rook.png'}
+
+del_matrix_pawn = {Team.GREEN: './Images/green_pawn_d.png',
+                     Team.PURPLE: './Images/purple_pawn_d.png'}
+
+del_matrix_rook = {Team.GREEN: './Images/green_rook_d.png',
+                     Team.PURPLE: './Images/purple_rook_d.png'}
+
+del_matrix_queen = {Team.BLUE: './Images/blue_queen.png',
+                      Team.GREEN: './Images/green_queen.png',
+                      Team.PURPLE: './Images/purple_queen.png',
+                      Team.RED: './Images/red_queen.png',
+                      Team.YELLOW: './Images/yellow_queen.png',
+                      Team.ORANGE: './Images/orange_queen.png'
+                      }
 """
     Create instances of pieces.
     Only the original instances of pieces is required. 
@@ -145,6 +186,62 @@ enemies = {
 """
 
 coordinates = []
+
+#declare all of the pieces here
+rr1 = Piece(Team.RED, Type.ROOK, pygame.image.load('./Images/red_rook.png'), Value.ROOK, False)
+ok = Piece(Team.ORANGE, Type.KNIGHT, pygame.image.load('./Images/orange_knight.png'), Value.KNIGHT, False)
+ob = Piece(Team.ORANGE, Type.BISHOP, pygame.image.load('./Images/orange_bishop.png'), Value.BISHOP, False)
+rK = Piece(Team.RED, Type.KING, pygame.image.load('./Images/red_king.png'), Value.KING, False)
+rq = Piece(Team.RED, Type.QUEEN, pygame.image.load('./Images/red_queen.png'), Value.QUEEN, False)
+yk = Piece(Team.YELLOW, Type.KNIGHT, pygame.image.load('./Images/yellow_knight.png'), Value.KNIGHT, False)
+yb = Piece(Team.YELLOW, Type.BISHOP, pygame.image.load('./Images/yellow_bishop.png'), Value.BISHOP, False)
+rr2 = Piece(Team.RED, Type.ROOK, pygame.image.load('./Images/red_rook.png'), Value.ROOK, False)
+
+rp1 = Piece(Team.RED, Type.PAWN, pygame.image.load('./Images/red_pawn.png'), Value.PAWN, False)
+rp2 = Piece(Team.RED, Type.PAWN, pygame.image.load('./Images/red_pawn.png'), Value.PAWN, False)
+op1 = Piece(Team.ORANGE, Type.PAWN, pygame.image.load('./Images/orange_pawn.png'), Value.PAWN, False)
+op2 = Piece(Team.ORANGE, Type.PAWN, pygame.image.load('./Images/orange_pawn.png'), Value.PAWN, False)
+op3 = Piece(Team.ORANGE, Type.PAWN, pygame.image.load('./Images/orange_pawn.png'), Value.PAWN, False)
+yp1 = Piece(Team.YELLOW, Type.PAWN, pygame.image.load('./Images/yellow_pawn.png'), Value.PAWN, False)
+yp2 = Piece(Team.YELLOW, Type.PAWN, pygame.image.load('./Images/yellow_pawn.png'), Value.PAWN, False)
+yp3 = Piece(Team.YELLOW, Type.PAWN, pygame.image.load('./Images/yellow_pawn.png'), Value.PAWN, False)
+
+br1 = Piece(Team.BLUE, Type.ROOK, pygame.image.load('./Images/blue_rook.png'), Value.ROOK, False)
+gk = Piece(Team.GREEN, Type.KNIGHT, pygame.image.load('./Images/green_knight.png'), Value.KNIGHT, False)
+gb = Piece(Team.GREEN, Type.BISHOP, pygame.image.load('./Images/green_bishop.png'), Value.BISHOP, False)
+bq = Piece(Team.BLUE, Type.QUEEN, pygame.image.load('./Images/blue_queen.png'), Value.QUEEN, False)
+bK = Piece(Team.BLUE, Type.KING, pygame.image.load('./Images/blue_king.png'), Value.KING, False)
+pb = Piece(Team.PURPLE, Type.BISHOP, pygame.image.load('./Images/purple_bishop.png'), Value.BISHOP, False)
+pk = Piece(Team.PURPLE, Type.KNIGHT, pygame.image.load('./Images/purple_knight.png'), Value.KNIGHT, False)
+br2 = Piece(Team.BLUE, Type.ROOK, pygame.image.load('./Images/blue_rook.png'), Value.ROOK, False)
+
+bp1 = Piece(Team.BLUE, Type.PAWN, pygame.image.load('./Images/blue_pawn.png'), Value.PAWN, False)
+bp2 = Piece(Team.BLUE, Type.PAWN, pygame.image.load('./Images/blue_pawn.png'), Value.PAWN, False)
+gp1 = Piece(Team.GREEN, Type.PAWN, pygame.image.load('./Images/green_pawn.png'), Value.PAWN, False)
+gp2 = Piece(Team.GREEN, Type.PAWN, pygame.image.load('./Images/green_pawn.png'), Value.PAWN, False)
+gp3 = Piece(Team.GREEN, Type.PAWN, pygame.image.load('./Images/green_pawn.png'), Value.PAWN, False)
+pp1 = Piece(Team.PURPLE, Type.PAWN, pygame.image.load('./Images/purple_pawn.png'), Value.PAWN, False)
+pp2 = Piece(Team.PURPLE, Type.PAWN, pygame.image.load('./Images/purple_pawn.png'), Value.PAWN, False)
+pp3 = Piece(Team.PURPLE, Type.PAWN, pygame.image.load('./Images/purple_pawn.png'), Value.PAWN, False)
+
+#declare teams here
+orange_pieces = []
+red_pieces = []
+yellow_pieces = []
+blue_pieces = []
+green_pieces = []
+purple_pieces = []
+
+#declare commanders here
+orange_commander = Commander(orange_pieces, ob)
+red_commander = King(red_pieces, rK)
+yellow_commander = Commander(yellow_pieces, yb)
+blue_commander = King(blue_pieces, bK)
+green_commander = Commander(green_pieces, gb)
+purple_commander = Commander(purple_pieces, pb)
+
+player_commanders = [green_commander, blue_commander, purple_commander]
+ai_commanders = [orange_commander, red_commander, yellow_commander]
 
 # returns input if it is within the boundries on the board
 def on_board(position: tuple[int, int]):
