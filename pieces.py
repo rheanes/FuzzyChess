@@ -148,7 +148,8 @@ coordinates = []
 
 # returns input if it is within the boundries on the board
 def on_board(position: tuple[int, int]):
-    x, y = position
+    x = position[0]
+    y = position[1]
     """
     if -1 < position[0] < 8 and position[1] > -1 and position[-1] < 8:
         return True

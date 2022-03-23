@@ -44,12 +44,12 @@ color_matrix_knight = {Team.BLUE: './Images/blue_knight.png',
                        }
 
 color_matrix_queen = {Team.BLUE: './Images/blue_queen.png',
-                        Team.GREEN: './Images/green_queen.png',
-                        Team.PURPLE: './Images/purple_queen.png',
-                        Team.RED: './Images/red_queen.png',
-                        Team.YELLOW: './Images/yellow_queen.png',
-                        Team.ORANGE: './Images/orange_queen.png'
-                       }
+                      Team.GREEN: './Images/green_queen.png',
+                      Team.PURPLE: './Images/purple_queen.png',
+                      Team.RED: './Images/red_queen.png',
+                      Team.YELLOW: './Images/yellow_queen.png',
+                      Team.ORANGE: './Images/orange_queen.png'
+                      }
 
 color_matrix_rook = {Team.BLUE: './Images/blue_rook.png',
                      Team.GREEN: './Images/green_rook_d.png',
@@ -98,33 +98,50 @@ def update_display(screen):
     # print('testing')
 
 
-#These are the potential moves
+# These are the potential moves
 def potential_piece_moves(square: Square):
     piece = square.piece
     if (piece.team == Team.YELLOW or (piece.team == Team.RED) or piece.team == Team.ORANGE):
         if piece.type == Type.PAWN:
             highlight_moves(pawn_moves_top((square.row, square.col)), square.piece.team)
         elif (piece.type == Type.KING) or (piece.type == Type.QUEEN):
-            highlight_moves(maxMovement(3, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value), square.piece.team)
+            highlight_moves(
+                maxMovement(3, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value),
+                square.piece.team)
         elif piece.type == Type.ROOK:
-            highlight_moves(maxMovement(2, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value),square.piece.team)
+            highlight_moves(
+                maxMovement(2, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value),
+                square.piece.team)
         elif piece.type == Type.BISHOP:
-            highlight_moves(maxMovement(2, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value), square.piece.team)
+            highlight_moves(
+                maxMovement(2, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value),
+                square.piece.team)
         elif piece.type == Type.KNIGHT:
-            highlight_moves(maxMovement(4, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value), square.piece.team)
+            highlight_moves(
+                maxMovement(4, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value),
+                square.piece.team)
     elif (piece.team == Team.GREEN or piece.team == Team.BLUE or piece.team == Team.PURPLE):
         if piece.type == Type.PAWN:
             highlight_moves(pawn_moves_bottom((square.row, square.col)), square.piece.team)
         if (piece.type == Type.KING) or (piece.type == Type.QUEEN):
-            highlight_moves(maxMovement(3, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value), square.piece.team)
+            highlight_moves(
+                maxMovement(3, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value),
+                square.piece.team)
         elif piece.type == Type.ROOK:
-            highlight_moves(maxMovement(2, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value), square.piece.team)
+            highlight_moves(
+                maxMovement(2, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value),
+                square.piece.team)
         elif piece.type == Type.BISHOP:
-            highlight_moves(maxMovement(2, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value), square.piece.team)
+            highlight_moves(
+                maxMovement(2, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value),
+                square.piece.team)
         elif piece.type == Type.KNIGHT:
-            highlight_moves(maxMovement(4, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value), square.piece.team)
+            highlight_moves(
+                maxMovement(4, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value),
+                square.piece.team)
 
-#Only called after a Knight moves. Is used to highlight enemies in the general area
+
+# Only called after a Knight moves. Is used to highlight enemies in the general area
 def knightAttack(square: Square):
     highlight_moves(knightAttackPieces((square.row, square.col), (square.row, square.col)), square.piece.team)
 
@@ -197,7 +214,7 @@ def recall(chosen_square):
     global action_count
     global human_piece_delegated
     global recall_mode
-    #selects chosen piece for recall
+    # selects chosen piece for recall
     if (chosen_square.piece is not None) and (chosen_square.piece.team not in enemies[Team.BLUE]):
         if(chosen_square.piece.type is not Type.BISHOP) and (chosen_square.piece.type is not Type.KING):
             recalled_piece = chosen_square.piece
@@ -250,13 +267,14 @@ class Action_Counttxt(Sprite):
         self.font_size = font_size
         self.txt_col = txt_col
         self.bg_col = bg_col
-        #unselected_img = create_text_surface(self.text, font_size, txt_col, bg_col)
-        #highlighted_img = create_text_surface(text, font_size * 1.3, txt_col, bg_hover)
+        # unselected_img = create_text_surface(self.text, font_size, txt_col, bg_col)
+        # highlighted_img = create_text_surface(text, font_size * 1.3, txt_col, bg_hover)
 
-        #self.images = unselected_img
-        #self.rects = unselected_img.get_rect(center=pos)
+        # self.images = unselected_img
+        # self.rects = unselected_img.get_rect(center=pos)
         super().__init__()
-    #def update_count(self, count):
+
+    # def update_count(self, count):
     #    self.text = count
 
     @property
@@ -362,24 +380,26 @@ class RecallButton(Sprite):
     def draw(self, surface):
         surface.blit(self.img, self.rect)
 
-#Sets the commanders turns to False to prevent their corp from making another action
+
+# Sets the commanders turns to False to prevent their corp from making another action
 def end_commander_turn(team: Team):
     global deployed_team
     deployed_team.append(team)
-    if(team is Team.BLUE):
+    if (team is Team.BLUE):
         blue_commander.action = False
-    elif(team is Team.GREEN):
+    elif (team is Team.GREEN):
         green_commander.action = False
-    elif(team is Team.PURPLE):
+    elif (team is Team.PURPLE):
         purple_commander.action = False
-    elif(team is Team.RED):
+    elif (team is Team.RED):
         red_commander.action = False
-    elif(team is Team.YELLOW):
+    elif (team is Team.YELLOW):
         yellow_commander.action = False
-    elif(team is Team.ORANGE):
+    elif (team is Team.ORANGE):
         orange_commander.action = False
 
-#Checks to see if a given corp has acted on a given turn. False means they have, true means they haven't
+
+# Checks to see if a given corp has acted on a given turn. False means they have, true means they haven't
 def checkCommanderTurn(team: Team):
     if (team is Team.BLUE):
         return blue_commander.action
@@ -394,33 +414,33 @@ def checkCommanderTurn(team: Team):
     elif (team is Team.ORANGE):
         return orange_commander.action
 
-#Decrements the number of commanders a side has
+
+# Removes the commander from their list (used for AI and determining action count)
 def removeCommander(team: Team):
-    global humanComms
-    global aiComms
+    global player_commanders
     if team is Team.GREEN:
-        humanComms -= 1
+        player_commanders.remove(green_commander)
     elif team is Team.PURPLE:
-        humanComms -= 1
+        player_commanders.remove(purple_commander)
     elif team is Team.YELLOW:
-        aiComms -= 1
+        ai_commanders.remove(yellow_commander)
     elif team is Team.ORANGE:
-        aiComms -= 1
+        ai_commanders.remove(orange_commander)
 
 
-#Resets the turns, including any corp actions
+# Resets the turns, including any corp actions
 def reset_turn():
     global human_piece_deligated
     human_piece_deligated = False
     global action_count
-    global humanComms
-    global aiComms
+    global player_commanders
+    global ai_commanders
     if turn is True:
-        action_count = humanComms
+        action_count = len(player_commanders)
         for x in player_commanders:
             x.action = True
     elif turn is False:
-        action_count = aiComms
+        action_count = len(ai_commanders)
         for x in ai_commanders:
             x.action = True
 
@@ -430,7 +450,7 @@ def message_box(text):
 
 
 # new changes
-#TODO Update the sprites of the teams when they are captured
+# TODO Update the sprites of the teams when they are captured
 def remove_team(team):
     old_troops = []
     if team == team.YELLOW:
@@ -497,18 +517,21 @@ def adjacent_enemies(pos: tuple[int, int], team: Team):
                     (row, col - 1), (row, col + 1),
                     (row + 1, col - 1), (row + 1, col), (row + 1, col + 1)]
 
-
     consensus = False
 
     for new_pos in new_pos_list:
-        if (new_pos) is on_board(new_pos):
+        print(new_pos)
+        if on_board(new_pos):
+            print(new_pos)
             if (board[new_pos[0]][new_pos[1]].piece is not None) and \
                     (board[new_pos[0]][new_pos[1]].piece.team in enemies[team]):
-                        return True
+                return True
 
     return consensus
 
+
 FirstRun = True
+
 
 def playgame(screen):
     Home_Button = button(pos=(WIDTH - 100, 100),
@@ -656,7 +679,7 @@ def playgame(screen):
                             result = delegate(chosen_square)
                             if result is not None:
                                 delegated_pieces.append(result)
-                            
+
                         elif Recall_Button.selected and human_piece_delegated is not True:
                             recall(chosen_square)
                             #delegated_pieces.remove(result)
@@ -666,20 +689,21 @@ def playgame(screen):
                             if current_square is None:
                                 if chosen_square.piece is None:
                                     pass
-                                elif checkCommanderTurn(chosen_square.piece.team):
-                                    if not knight_special_turn:
-                                        current_square = chosen_square
-                                        potential_piece_moves(chosen_square)
-                                        #if chosen_square.piece is purple_commander.leader:
-                                            #print("purple pieces")
-                                            #purple_commander.see_pieces
-                                    elif knight_special_turn:
-                                        if chosen_square.piece.type is Type.KNIGHT:
+                                elif checkCommanderTurn(chosen_square.piece.team) or chosen_square.piece.type is Type.KNIGHT:
+                                    if chosen_square.piece.type is Type.KNIGHT:
+                                        if knight_special_turn:
                                             current_square = chosen_square
                                             knightAttack(chosen_square)
-                                        else:
+
+                                        elif not knight_special_turn and checkCommanderTurn(chosen_square.piece.team):
                                             current_square = chosen_square
                                             potential_piece_moves(chosen_square)
+                                    elif not knight_special_turn:
+                                        current_square = chosen_square
+                                        potential_piece_moves(chosen_square)
+                                        # if chosen_square.piece is purple_commander.leader:
+                                        # print("purple pieces")
+                                        # purple_commander.see_pieces
 
                             else:  # a piece is currently selected
                                 """
@@ -688,8 +712,11 @@ def playgame(screen):
                                     current_square = chosen_square
                                     potential_piece_moves(chosen_square)
                                 """
-                                if checkCommanderTurn(current_square.piece.team):
-                                    if (chosen_square.color is WHITE) or (chosen_square.color is GREY):  # lets you unselect current piece
+                                #This check ensures that the chosen corp hasn't worked. If a knight is selected, then
+                                #we bypass this condition if the knight's special turn is enabled.
+                                if checkCommanderTurn(current_square.piece.team) or current_square.piece.type is Type.KNIGHT:
+                                    if (chosen_square.color is WHITE) or (
+                                            chosen_square.color is GREY):  # lets you unselect current piece
                                         remove_highlights()
                                         current_square = None
                                     elif knight_special_turn:
@@ -700,6 +727,7 @@ def playgame(screen):
                                                 end_commander_turn(chosen_square.piece.team)
 
                                                 if chosen_square.piece.type is Type.BISHOP:
+                                                    removeCommander(chosen_square.piece)
                                                     remove_team(chosen_square.piece.team)
                                                 elif (chosen_square.piece.type is Type.KING) and \
                                                         (chosen_square.piece.team is Team.RED):
@@ -721,7 +749,8 @@ def playgame(screen):
 
                                     elif (chosen_square.color is BLUE) and \
                                             (current_square.color not in deployed_team) and \
-                                        (chosen_square.piece is None):  # deals with movement
+                                            (chosen_square.piece is None):  # deals with movement
+
                                         """
                                             current_square = None
                                             remove_highlights()
@@ -729,11 +758,9 @@ def playgame(screen):
                                             action_count -= 1
                                         else:
                                         """
-                                        if current_square.piece.type == Type.KNIGHT and \
-                                                adjacent_enemies((chosen_square.row, chosen_square.col),
-                                                                 current_square.piece.team):
-                                            #action_count -= 1
-                                            #print('action count decreased')
+                                        if current_square.piece.type == Type.KNIGHT and adjacent_enemies((chosen_square.row, chosen_square.col), current_square.piece.team):
+                                            # action_count -= 1
+                                            # print('action count decreased')
                                             knight_team = current_square.piece.team
                                             if knight_team == Team.GREEN:
                                                 green_commander.has_moved = True
@@ -743,6 +770,7 @@ def playgame(screen):
                                                 blue_commander.has_moved = True
                                             else:
                                                 pass
+                                            end_commander_turn(current_square.piece.team)
                                             knight_special_turn = True
 
                                         if not knight_special_turn:
@@ -757,20 +785,24 @@ def playgame(screen):
                                         current_square = None
 
                                     elif (chosen_square.color is BLACK) and (current_square.color not in deployed_team):
-                                        if attack(current_square.piece.type.value, chosen_square.piece.type.value) is True:
+                                        if attack(current_square.piece.type.value,
+                                                  chosen_square.piece.type.value) is True:
                                             captured_pieces.append(chosen_square.piece)
                                             end_commander_turn(chosen_square.piece.team)
 
                                             if chosen_square.piece.type is Type.BISHOP:
-                                                remove_team(chosen_square.piece.team)
+                                                #We decrement the counter to ensure the actions done by a human are limited based on the number of commanders we have
                                                 removeCommander(chosen_square.piece.team)
-                                            elif (chosen_square.piece.type is Type.KING) and (chosen_square.piece.team is Team.RED):
+                                                remove_team(chosen_square.piece.team)
+                                            elif (chosen_square.piece.type is Type.KING) and (
+                                                    chosen_square.piece.team is Team.RED):
                                                 return GameState.Win
-                                            elif (chosen_square.piece.type is Type.KING) and (chosen_square.piece.team is Team.BLUE):
+                                            elif (chosen_square.piece.type is Type.KING) and (
+                                                    chosen_square.piece.team is Team.BLUE):
                                                 return GameState.Loss
 
                                             chosen_square.piece = None
-                                            if(current_square.piece.type is not Type.ROOK):
+                                            if (current_square.piece.type is not Type.ROOK):
                                                 move_piece(current_square, chosen_square)
                                                 end_commander_turn(chosen_square.piece.team)
                                             else:
@@ -796,13 +828,13 @@ def playgame(screen):
             # print('hello from computer')
             # after AI is done enable next line
             action_count -= 1
-           # time.sleep(3)
+            # time.sleep(3)
 
             action_count -= 1
-            #time.sleep(3)
+            # time.sleep(3)
 
             action_count -= 1
-           # time.sleep(3)
+        # time.sleep(3)
 
         update_display(screen)
         for b in buttons:
