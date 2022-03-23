@@ -173,7 +173,7 @@ def find_square_coordinates(position: tuple[int, int]):
 def move_piece(curr_pos: Square, new_pos: Square):
     board[new_pos.row][new_pos.col].piece = board[curr_pos.row][curr_pos.col].piece
     board[curr_pos.row][curr_pos.col].piece = None
-    print('pieced moved')
+    #print('pieced moved')
 
 #--------------__SQUARE HIGHLIGHTING AND UNHIGHLIGHTING------------------
 
@@ -200,7 +200,7 @@ def highlight_moves(positions: tuple[int, int], team: Team):
             elif type is Action.ATTACK:
                 board[row][col].color = RED
             """
-    print('finished highlighting')
+    #print('finished highlighting')
 
 def remove_highlights():
     for row in range(8):
@@ -209,7 +209,7 @@ def remove_highlights():
                 board[row][col].color = GREY
             else:
                 board[row][col].color = WHITE
-    print('removed highlights')
+    #print('removed highlights')
 
 
 #------------------_PATHFINDING STUFF-------------
