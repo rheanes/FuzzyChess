@@ -1,7 +1,6 @@
-import pygame
-
 from common import *
-from pieces import Piece, Team, Type, Value, enemies, pawn_moves_top, pawn_moves_bottom
+from pieces import *
+
 
 #----------------BOARD CREATING AND SQUATE CLASS ------------
 class Square:
@@ -17,82 +16,60 @@ class Square:
 
 board = [[Square(None) for _ in range(8)] for _ in range(8)]
 
-rr1 = Piece(Team.RED, Type.ROOK, pygame.image.load('./Images/red_rook.png'), Value.ROOK, False)
-ok = Piece(Team.ORANGE, Type.KNIGHT, pygame.image.load('./Images/orange_knight.png'), Value.KNIGHT, False)
-ob = Piece(Team.ORANGE, Type.BISHOP, pygame.image.load('./Images/orange_bishop.png'), Value.BISHOP, False)
-rK = Piece(Team.RED, Type.KING, pygame.image.load('./Images/red_king.png'), Value.KING, False)
-rq = Piece(Team.RED, Type.QUEEN, pygame.image.load('./Images/red_queen.png'), Value.QUEEN, False)
-yk = Piece(Team.YELLOW, Type.KNIGHT, pygame.image.load('./Images/yellow_knight.png'), Value.KNIGHT, False)
-yb = Piece(Team.YELLOW, Type.BISHOP, pygame.image.load('./Images/yellow_bishop.png'), Value.BISHOP, False)
-rr2 = Piece(Team.RED, Type.ROOK, pygame.image.load('./Images/red_rook.png'), Value.ROOK, False)
 
-rp1 = Piece(Team.RED, Type.PAWN, pygame.image.load('./Images/red_pawn.png'), Value.PAWN, False)
-rp2 = Piece(Team.RED, Type.PAWN, pygame.image.load('./Images/red_pawn.png'), Value.PAWN, False)
-op1 = Piece(Team.ORANGE, Type.PAWN, pygame.image.load('./Images/orange_pawn.png'), Value.PAWN, False)
-op2 = Piece(Team.ORANGE, Type.PAWN, pygame.image.load('./Images/orange_pawn.png'), Value.PAWN, False)
-op3 = Piece(Team.ORANGE, Type.PAWN, pygame.image.load('./Images/orange_pawn.png'), Value.PAWN, False)
-yp1 = Piece(Team.YELLOW, Type.PAWN, pygame.image.load('./Images/yellow_pawn.png'), Value.PAWN, False)
-yp2 = Piece(Team.YELLOW, Type.PAWN, pygame.image.load('./Images/yellow_pawn.png'), Value.PAWN, False)
-yp3 = Piece(Team.YELLOW, Type.PAWN, pygame.image.load('./Images/yellow_pawn.png'), Value.PAWN, False)
+#assign the proper troops to each commander
+def default_troops():
+    orange_commander.troops = [op1, op2, op3, ok, ob]
+    red_commander.troops = [rr1, rr2, rp1, rp2, rq, rK]
+    yellow_commander.troops = [yp1, yp2, yp3, yk, yb]
+    blue_commander.troops = [br1, br2, bp1, bp2, bq, bK]
+    green_commander.troops = [gp1, gp2, gp3, gk, gb]
+    purple_commander.troops = [pp1, pp2, pp3, pk, pb]
+    return
 
-br1 = Piece(Team.BLUE, Type.ROOK, pygame.image.load('./Images/blue_rook.png'), Value.ROOK, False)
-gk = Piece(Team.GREEN, Type.KNIGHT, pygame.image.load('./Images/green_knight.png'), Value.KNIGHT, False)
-gb = Piece(Team.GREEN, Type.BISHOP, pygame.image.load('./Images/green_bishop.png'), Value.BISHOP, False)
-bq = Piece(Team.BLUE, Type.QUEEN, pygame.image.load('./Images/blue_queen.png'), Value.QUEEN, False)
-bK = Piece(Team.BLUE, Type.KING, pygame.image.load('./Images/blue_king.png'), Value.KING, False)
-pb = Piece(Team.PURPLE, Type.BISHOP, pygame.image.load('./Images/purple_bishop.png'), Value.BISHOP, False)
-pk = Piece(Team.PURPLE, Type.KNIGHT, pygame.image.load('./Images/purple_knight.png'), Value.KNIGHT, False)
-br2 = Piece(Team.BLUE, Type.ROOK, pygame.image.load('./Images/blue_rook.png'), Value.ROOK, False)
+def default_colors():
+    for p in red_commander.troops:
+        p.team = Team.RED
+    for p in yellow_commander.troops:
+        p.team = Team.YELLOW
+    for p in blue_commander.troops:
+        p.team = Team.BLUE
+    for p in green_commander.troops:
+        p.team = Team.GREEN
+    for p in purple_commander.troops:
+        p.team = Team.PURPLE
 
-bp1 = Piece(Team.BLUE, Type.PAWN, pygame.image.load('./Images/blue_pawn.png'), Value.PAWN, False)
-bp2 = Piece(Team.BLUE, Type.PAWN, pygame.image.load('./Images/blue_pawn.png'), Value.PAWN, False)
-gp1 = Piece(Team.GREEN, Type.PAWN, pygame.image.load('./Images/green_pawn.png'), Value.PAWN, False)
-gp2 = Piece(Team.GREEN, Type.PAWN, pygame.image.load('./Images/green_pawn.png'), Value.PAWN, False)
-gp3 = Piece(Team.GREEN, Type.PAWN, pygame.image.load('./Images/green_pawn.png'), Value.PAWN, False)
-pp1 = Piece(Team.PURPLE, Type.PAWN, pygame.image.load('./Images/purple_pawn.png'), Value.PAWN, False)
-pp2 = Piece(Team.PURPLE, Type.PAWN, pygame.image.load('./Images/purple_pawn.png'), Value.PAWN, False)
-pp3 = Piece(Team.PURPLE, Type.PAWN, pygame.image.load('./Images/purple_pawn.png'), Value.PAWN, False)
-
+#Change all sprites to default color
+#This is executed right after default_colors, so all Piece.Team is correct.
+def default_sprites():
+    for c in player_commanders:
+        for t in c.troops:
+            if t.type == Type.PAWN:
+                t.switch_sprite(color_matrix_pawn[t.team])
+            elif t.type == Type.ROOK:
+                t.switch_sprite(color_matrix_rook[t.team])
+            elif t.type == Type.KNIGHT:
+                t.switch_sprite(color_matrix_knight[t.team])
+            elif t.type == Type.QUEEN:
+                t.switch_sprite(color_matrix_queen[t.team])
+    for c in ai_commanders:
+        for t in c.troops:
+            if t.type == Type.PAWN:
+                t.switch_sprite(color_matrix_pawn[t.team])
+            elif t.type == Type.ROOK:
+                t.switch_sprite(color_matrix_rook[t.team])
+            elif t.type == Type.KNIGHT:
+                t.switch_sprite(color_matrix_knight[t.team])
+            elif t.type == Type.QUEEN:
+                t.switch_sprite(color_matrix_queen[t.team])
+    return
+#if troop.type == Type.PAWN:
 # creates the board
 
 def create_board():
-    '''
-    rr1 = Piece(Team.RED, Type.ROOK, pygame.image.load('./Images/red_rook.png'), Value.ROOK, False)
-    ok = Piece(Team.ORANGE, Type.KNIGHT, pygame.image.load('./Images/orange_knight.png'), Value.KNIGHT, False)
-    ob = Piece(Team.ORANGE, Type.BISHOP, pygame.image.load('./Images/orange_bishop.png'), Value.BISHOP, False)
-    rK = Piece(Team.RED, Type.KING, pygame.image.load('./Images/red_king.png'), Value.KING, False)
-    rq = Piece(Team.RED, Type.QUEEN, pygame.image.load('./Images/red_queen.png'), Value.QUEEN, False)
-    yk = Piece(Team.YELLOW, Type.KNIGHT, pygame.image.load('./Images/yellow_knight.png'), Value.KNIGHT, False)
-    yb = Piece(Team.YELLOW, Type.BISHOP, pygame.image.load('./Images/yellow_bishop.png'), Value.BISHOP, False)
-    rr2 = Piece(Team.RED, Type.ROOK, pygame.image.load('./Images/red_rook.png'), Value.ROOK, False)
-    
-    rp1 = Piece(Team.RED, Type.PAWN, pygame.image.load('./Images/red_pawn.png'), Value.PAWN, False)
-    rp2 = Piece(Team.RED, Type.PAWN, pygame.image.load('./Images/red_pawn.png'), Value.PAWN, False)
-    op1 = Piece(Team.ORANGE, Type.PAWN, pygame.image.load('./Images/orange_pawn.png'), Value.PAWN, False)
-    op2 = Piece(Team.ORANGE, Type.PAWN, pygame.image.load('./Images/orange_pawn.png'), Value.PAWN, False)
-    op3 = Piece(Team.ORANGE, Type.PAWN, pygame.image.load('./Images/orange_pawn.png'), Value.PAWN, False)
-    yp1 = Piece(Team.YELLOW, Type.PAWN, pygame.image.load('./Images/yellow_pawn.png'), Value.PAWN, False)
-    yp2 = Piece(Team.YELLOW, Type.PAWN, pygame.image.load('./Images/yellow_pawn.png'), Value.PAWN, False)
-    yp3 = Piece(Team.YELLOW, Type.PAWN, pygame.image.load('./Images/yellow_pawn.png'), Value.PAWN, False)
-    
-    br1 = Piece(Team.BLUE, Type.ROOK, pygame.image.load('./Images/blue_rook.png'), Value.ROOK, False)
-    gk = Piece(Team.GREEN, Type.KNIGHT, pygame.image.load('./Images/green_knight.png'), Value.KNIGHT, False)
-    gb = Piece(Team.GREEN, Type.BISHOP, pygame.image.load('./Images/green_bishop.png'), Value.BISHOP, False)
-    bq = Piece(Team.BLUE, Type.QUEEN, pygame.image.load('./Images/blue_queen.png'), Value.QUEEN, False)
-    bK = Piece(Team.BLUE, Type.KING, pygame.image.load('./Images/blue_king.png'), Value.KING, False)
-    pb = Piece(Team.PURPLE, Type.BISHOP, pygame.image.load('./Images/purple_bishop.png'), Value.BISHOP, False)
-    pk = Piece(Team.PURPLE, Type.KNIGHT, pygame.image.load('./Images/purple_knight.png'), Value.KNIGHT, False)
-    br2 = Piece(Team.BLUE, Type.ROOK, pygame.image.load('./Images/blue_rook.png'), Value.ROOK, False)
-    
-    bp1 = Piece(Team.BLUE, Type.PAWN, pygame.image.load('./Images/blue_pawn.png'), Value.PAWN, False)
-    bp2 = Piece(Team.BLUE, Type.PAWN, pygame.image.load('./Images/blue_pawn.png'), Value.PAWN, False)
-    gp1 = Piece(Team.GREEN, Type.PAWN, pygame.image.load('./Images/green_pawn.png'), Value.PAWN, False)
-    gp2 = Piece(Team.GREEN, Type.PAWN, pygame.image.load('./Images/green_pawn.png'), Value.PAWN, False)
-    gp3 = Piece(Team.GREEN, Type.PAWN, pygame.image.load('./Images/green_pawn.png'), Value.PAWN, False)
-    pp1 = Piece(Team.PURPLE, Type.PAWN, pygame.image.load('./Images/purple_pawn.png'), Value.PAWN, False)
-    pp2 = Piece(Team.PURPLE, Type.PAWN, pygame.image.load('./Images/purple_pawn.png'), Value.PAWN, False)
-    pp3 = Piece(Team.PURPLE, Type.PAWN, pygame.image.load('./Images/purple_pawn.png'), Value.PAWN, False)
-    '''
+    default_troops()
+    default_colors()
+    default_sprites()
     board[0] = [Square(rr1),
                 Square(ok),
                 Square(ob),
@@ -160,6 +137,73 @@ def clear_board():
             board[row][col].y_pos = row * (WIDTH // 8)
             """
 
+    # new changes
+    # TODO add in queen, and rooks.
+def remove_team(team):
+    old_troops = []
+    if team == team.YELLOW:
+        print("removing yellow team")
+        for troop in yellow_commander.troops:
+            troop.team = Team.RED
+            if troop.type == Type.PAWN:
+                troop.switch_sprite(color_matrix_pawn[Team.RED])
+            elif troop.type == Type.KNIGHT:
+                troop.switch_sprite(color_matrix_knight[Team.RED])
+            elif troop.type == Type.ROOK:
+                troop.switch_sprite(color_matrix_rook[Team.RED])
+            elif troop.type == Type.QUEEN:
+                troop.switch_sprite(color_matrix_queen[Team.RED])
+            else:
+                pass
+        red_commander.troops.append(yellow_commander.troops)
+
+    elif team == team.ORANGE:
+        print("removing orange team")
+        for troop in orange_commander.troops:
+            troop.team = Team.RED
+            if troop.type == Type.PAWN:
+                troop.switch_sprite(color_matrix_pawn[Team.RED])
+            elif troop.type == Type.KNIGHT:
+                troop.switch_sprite(color_matrix_knight[Team.RED])
+            elif troop.type == Type.ROOK:
+                troop.switch_sprite(color_matrix_rook[Team.RED])
+            elif troop.type == Type.QUEEN:
+                troop.switch_sprite(color_matrix_queen[Team.RED])
+            else:
+                pass
+        red_commander.troops.append(orange_commander.troops)
+
+    elif team == team.GREEN:
+        print("removing green team")
+        for troop in green_commander.troops:
+            troop.team = Team.BLUE
+            if troop.type == Type.PAWN:
+                troop.switch_sprite(color_matrix_pawn[Team.BLUE])
+            elif troop.type == Type.KNIGHT:
+                troop.switch_sprite(color_matrix_knight[Team.BLUE])
+            elif troop.type == Type.ROOK:
+                troop.switch_sprite(color_matrix_rook[Team.BLUE])
+            elif troop.type == Type.QUEEN:
+                troop.switch_sprite(color_matrix_queen[Team.BLUE])
+            else:
+                pass
+        blue_commander.troops.append(green_commander.troops)
+
+    elif team == team.PURPLE:
+        print("removing purple team")
+        for troop in purple_commander.troops:
+            troop.team = Team.BLUE
+            if troop.type == Type.PAWN:
+                troop.switch_sprite(color_matrix_pawn[Team.BLUE])
+            elif troop.type == Type.KNIGHT:
+                troop.switch_sprite(color_matrix_knight[Team.BLUE])
+            elif troop.type == Type.ROOK:
+                troop.switch_sprite(color_matrix_rook[Team.BLUE])
+            elif troop.type == Type.QUEEN:
+                troop.switch_sprite(color_matrix_queen[Team.BLUE])
+            else:
+                pass
+        blue_commander.troops.append(purple_commander.troops)
 
     #_----------_SQUARE UTILITY-------------
 
@@ -173,7 +217,7 @@ def find_square_coordinates(position: tuple[int, int]):
 def move_piece(curr_pos: Square, new_pos: Square):
     board[new_pos.row][new_pos.col].piece = board[curr_pos.row][curr_pos.col].piece
     board[curr_pos.row][curr_pos.col].piece = None
-    print('pieced moved')
+    #print('pieced moved')
 
 #--------------__SQUARE HIGHLIGHTING AND UNHIGHLIGHTING------------------
 
@@ -200,7 +244,7 @@ def highlight_moves(positions: tuple[int, int], team: Team):
             elif type is Action.ATTACK:
                 board[row][col].color = RED
             """
-    print('finished highlighting')
+    #print('finished highlighting')
 
 def remove_highlights():
     for row in range(8):
@@ -209,7 +253,7 @@ def remove_highlights():
                 board[row][col].color = GREY
             else:
                 board[row][col].color = WHITE
-    print('removed highlights')
+    #print('removed highlights')
 
 
 #------------------_PATHFINDING STUFF-------------
