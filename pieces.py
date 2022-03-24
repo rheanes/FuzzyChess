@@ -168,10 +168,19 @@ color_matrix_rook = {Team.BLUE: './Images/blue_rook.png',
                      Team.YELLOW: './Images/yellow_rook.png'}
 
 del_matrix_pawn = {Team.GREEN: './Images/green_pawn_d.png',
-                     Team.PURPLE: './Images/purple_pawn_d.png'}
+                     Team.PURPLE: './Images/purple_pawn_d.png',
+                     Team.ORANGE: './Images/orange_pawn_d.png',
+                     Team.YELLOW: './Images/yellow_pawn_d.png'}
+
+del_matrix_knight = {Team.GREEN: './Images/green_knight_d.png',
+                     Team.PURPLE: './Images/purple_knight_d.png',
+                     Team.ORANGE: './Images/orange_knight_d.png',
+                     Team.YELLOW: './Images/yellow_knight_d.png'}
 
 del_matrix_rook = {Team.GREEN: './Images/green_rook_d.png',
-                     Team.PURPLE: './Images/purple_rook_d.png'}
+                     Team.PURPLE: './Images/purple_rook_d.png',
+                     Team.ORANGE: './Images/orange_rook_d.png',
+                     Team.YELLOW: './Images/yellow_rook_d.png'}
 
 del_matrix_queen = {Team.BLUE: './Images/blue_queen.png',
                       Team.GREEN: './Images/green_queen.png',
