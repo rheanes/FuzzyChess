@@ -566,7 +566,10 @@ def playgame(screen):
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     exit()
-                if event.type == MOUSEBUTTONDOWN and event.button == 1:
+                elif(event.type == KEYDOWN):
+                    if event.key == K_ESCAPE:
+                        return GameState.Escape
+                elif event.type == MOUSEBUTTONDOWN and event.button == 1:
                     mouse_down = True
 
                     x, y = pygame.mouse.get_pos()

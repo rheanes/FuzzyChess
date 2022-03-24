@@ -67,6 +67,8 @@ def default_sprites():
 # creates the board
 
 def create_board():
+    print(len(ai_commanders))
+    ReCommand()
     default_troops()
     default_colors()
     default_sprites()

@@ -83,6 +83,7 @@ class GameState(Enum):
     Quit = -1
     Home = 0
     Play = 1
+    Escape = 2
     Load1 = 4
     Load2 = 5
     Load3 = 6
