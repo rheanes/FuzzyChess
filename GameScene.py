@@ -608,7 +608,7 @@ def playgame(screen):
         # print('action count', action_count)
         Action_Counter.text = 'Action Count: ' + str(action_count)
 
-        if action_count == 0:
+        if action_count <= 0:
             turnChange()
             reset_turn()
 
