@@ -312,7 +312,7 @@ class DelegateButton(Sprite):
         global human_piece_delegated
         if self.rect.collidepoint(mouse_pos):
             self.selected = True
-            if mouse_down and human_piece_delegated is False and recall_mode is False:
+            if mouse_down and human_piece_delegated is False and checkCommanderTurn(Team.BLUE) and recall_mode is False:
                 # self.remain_selected = True
                 delegation_mode = True
                 print('!!!!!!!!!!!!!!!test!!!!!!!!!!!!!!!!!')
@@ -353,7 +353,7 @@ class RecallButton(Sprite):
         global recall_mode
         if self.rect.collidepoint(mouse_pos):
             self.selected = True
-            if mouse_down and human_piece_delegated is False and delegation_mode is False:
+            if mouse_down and human_piece_delegated is False and checkCommanderTurn(Team.BLUE) and delegation_mode is False:
                 # self.remain_selected = True
                 recall_mode = True
                 print('!!!!!!!!!!!!!!!test!!!!!!!!!!!!!!!!!')
@@ -636,12 +636,12 @@ def playgame(screen):
                         else:
                         """
 
-                        if delegation_mode and human_piece_delegated is not True:
+                        if delegation_mode and human_piece_delegated is not True and checkCommanderTurn(Team.BLUE):
                                 result = delegate(chosen_square)
                                 if result is not None:
                                     delegated_pieces.append(result)
 
-                        elif recall_mode and human_piece_delegated is not True:
+                        elif recall_mode and human_piece_delegated is not True and checkCommanderTurn(Team.BLUE):
                             recall(chosen_square)
                         else:
                             # if chosen_square.piece.team in human_team:
