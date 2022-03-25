@@ -97,7 +97,6 @@ class King(Commander):
             piece.delegated = True
             self.troops.remove(piece)
             sub.troops.append(piece)
-            self.use_turn()
         else:
             print("invalid target for delegation")
         #self.see_pieces
@@ -108,7 +107,6 @@ class King(Commander):
             piece.delegated = False
             sub.troops.remove(piece)
             self.troops.append(piece)
-            self.use_turn()
             #self.see_pieces
 """
 King commander must be able to delegate and undelegate pieces

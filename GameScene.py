@@ -133,12 +133,18 @@ def delegate(chosen_square):
     global delegation_mode
     if (chosen_square.piece is not None) and (chosen_square.piece.team not in enemies[Team.BLUE]):
         if (chosen_square.piece.type is not Type.KING) and \
-                (chosen_square.piece.type is not Type.BISHOP) and \
-                (chosen_square.piece.delegated is not True):
-            delegated_piece = chosen_square.piece
-            row, col = chosen_square.row, chosen_square.col
-            return DelegatedPiece((row, col), chosen_square.piece.team)
-            print('deligated piece selected')
+                (chosen_square.piece.type is not Type.BISHOP):
+            #Modified here to include the check later on. THis is to provide an exit condition if we don't select a valid piece
+                if (chosen_square.piece.delegated is not True):
+                    delegated_piece = chosen_square.piece
+                    row, col = chosen_square.row, chosen_square.col
+                    print('deligated piece selected')
+                    return DelegatedPiece((row, col), chosen_square.piece.team)
+                else:
+                    reset_delegation()
+                    print("Invalid choice")
+                    return
+
         elif (chosen_square.piece.type is Type.KING) or (chosen_square.piece.type is Type.BISHOP):
             if chosen_square.piece.team is Team.BLUE:
                 delegated_commander = blue_commander
@@ -156,13 +162,27 @@ def delegate(chosen_square):
                 delegated_piece.switch_sprite(del_matrix_rook[delegated_commander.leader.team])
             elif (delegated_piece.type == Type.QUEEN) and (delegated_piece.team == Team.BLUE):
                 delegated_piece.switch_sprite(del_matrix_queen[delegated_commander.leader.team])
+
+                #Added to deal with delegation of knights if and when a Bishop dies
+            elif (delegated_piece.type == Type.KNIGHT) and (delegated_piece.team == Team.BLUE):
+                delegated_piece.switch_sprite(del_matrix_queen[delegated_commander.leader.team])
             else:
                 print("Invalid piece type for delegation")
+                #If we don't select a valid piece, we want to reset everything
+                reset_delegation()
+                return
             blue_commander.delegate(delegated_piece, delegated_commander)
+
+            #Sets the given pieces to the team they are going to.
+            if delegated_commander is green_commander:
+                delegated_piece.team = Team.GREEN
+            elif delegated_commander is purple_commander:
+                delegated_piece.team = Team.PURPLE
             human_piece_delegated = True
             reset_delegation()
             blue_commander.see_pieces()
             print('deligation completed')
+
 
 def recall(chosen_square):
     global recalled_piece
@@ -172,8 +192,17 @@ def recall(chosen_square):
     global recall_mode
     # selects chosen piece for recall
     if (chosen_square.piece is not None) and (chosen_square.piece.team not in enemies[Team.BLUE]):
-        if(chosen_square.piece.type is not Type.BISHOP) and (chosen_square.piece.type is not Type.KING):
+        if(chosen_square.piece.type is not Type.BISHOP) and (chosen_square.piece.type is not Type.KING) and chosen_square.piece.delegated is True:
             recalled_piece = chosen_square.piece
+            print("Recalling " + str(recalled_piece))
+        else:
+            reset_recall()
+            print("Invalid choice")
+            return
+    else:
+        reset_recall()
+        print("Invalid choice")
+        return
 
     #checks for the commander of the currently delegated piece
     if recalled_piece is not None:
@@ -193,7 +222,8 @@ def recall(chosen_square):
         else:
             print("Invalid piece type for recall")
         blue_commander.recall(recalled_piece, current_commander)
-        human_piece_delegated = False
+        recalled_piece.team = Team.BLUE
+        human_piece_delegated = True
         reset_recall()
         print('Recall complete')
 
@@ -279,9 +309,10 @@ class DelegateButton(Sprite):
     # selects different button images depending if the mouse is hovered over it
     def moused_over(self, mouse_pos, mouse_down):
         global delegation_mode
+        global human_piece_delegated
         if self.rect.collidepoint(mouse_pos):
             self.selected = True
-            if mouse_down:
+            if mouse_down and human_piece_delegated is False and recall_mode is False:
                 # self.remain_selected = True
                 delegation_mode = True
                 print('!!!!!!!!!!!!!!!test!!!!!!!!!!!!!!!!!')
@@ -322,7 +353,7 @@ class RecallButton(Sprite):
         global recall_mode
         if self.rect.collidepoint(mouse_pos):
             self.selected = True
-            if mouse_down:
+            if mouse_down and human_piece_delegated is False and delegation_mode is False:
                 # self.remain_selected = True
                 recall_mode = True
                 print('!!!!!!!!!!!!!!!test!!!!!!!!!!!!!!!!!')
@@ -340,7 +371,7 @@ class RecallButton(Sprite):
 # Sets the commanders turns to False to prevent their corp from making another action
 def end_commander_turn(team: Team):
     global deployed_team
-    deployed_team.append(team)
+    #deployed_team.append(team)
     if (team is Team.BLUE):
         blue_commander.action = False
     elif (team is Team.GREEN):
@@ -370,6 +401,20 @@ def checkCommanderTurn(team: Team):
     elif (team is Team.ORANGE):
         return orange_commander.action
 
+def checkCommanderHasMoved(team: Team):
+    if (team is Team.BLUE):
+        return blue_commander.has_moved
+    elif (team is Team.GREEN):
+        return green_commander.has_moved
+    elif (team is Team.PURPLE):
+        return purple_commander.has_moved
+    elif (team is Team.RED):
+        return red_commander.has_moved
+    elif (team is Team.YELLOW):
+        return yellow_commander.has_moved
+    elif (team is Team.ORANGE):
+        return orange_commander.has_moved
+
 
 # Removes the commander from their list (used for AI and determining action count)
 def removeCommander(team: Team):
@@ -387,8 +432,8 @@ def removeCommander(team: Team):
 
 # Resets the turns, including any corp actions
 def reset_turn():
-    global human_piece_deligated
-    human_piece_deligated = False
+    global human_piece_delegated
+    human_piece_delegated = False
     global action_count
     global player_commanders
     global ai_commanders
@@ -396,10 +441,12 @@ def reset_turn():
         action_count = len(player_commanders)
         for x in player_commanders:
             x.action = True
+            x.has_moved = False
     elif turn is False:
         action_count = len(ai_commanders)
         for x in ai_commanders:
             x.action = True
+            x.has_moved = False
 
 
 def message_box(text):
@@ -417,9 +464,7 @@ def adjacent_enemies(pos: tuple[int, int], team: Team):
     consensus = False
 
     for new_pos in new_pos_list:
-        print(new_pos)
         if on_board(new_pos):
-            print(new_pos)
             if (board[new_pos[0]][new_pos[1]].piece is not None) and \
                     (board[new_pos[0]][new_pos[1]].piece.team in enemies[team]):
                 return True
@@ -591,20 +636,13 @@ def playgame(screen):
                         else:
                         """
 
-                        if Delegate_Button.selected and (chosen_square.piece.team not in deployed_team) and human_piece_delegated is not True:
-                            # if (human_piece_deligated is not True):
-                            # if not delegation_mode:
-                            #    delegation_mode = True
-                            # print('!!!!!!!!!!!!!!!!!!!check point!!!!!!!!!!!!!!!!!!!!!!!!')
-                            # else:
-                            # print('check point')
-                            result = delegate(chosen_square)
-                            if result is not None:
-                                delegated_pieces.append(result)
+                        if delegation_mode and human_piece_delegated is not True:
+                                result = delegate(chosen_square)
+                                if result is not None:
+                                    delegated_pieces.append(result)
 
-                        elif Recall_Button.selected and human_piece_delegated is not True:
+                        elif recall_mode and human_piece_delegated is not True:
                             recall(chosen_square)
-                            #delegated_pieces.remove(result)
                         else:
                             # if chosen_square.piece.team in human_team:
                             # conditions for selected_square
@@ -644,7 +682,7 @@ def playgame(screen):
                                     elif knight_special_turn:
                                         if current_square.piece.type is Type.KNIGHT and chosen_square.color is BLACK:
                                             if attack(current_square.piece.type.value,
-                                                      chosen_square.piece.type.value) is True:
+                                                      chosen_square.piece.type.value, checkCommanderHasMoved(current_square.piece.team)) is True:
                                                 captured_pieces.append(chosen_square.piece)
                                                 end_commander_turn(chosen_square.piece.team)
 
@@ -662,7 +700,7 @@ def playgame(screen):
                                                 remove_highlights()
                                                 knight_special_turn = False
                                             else:
-                                                end_commander_turn(current_square.team)
+                                                end_commander_turn(current_square.piece.team)
                                                 chosen_square = None
                                                 current_square = None
                                                 remove_highlights()
@@ -670,7 +708,6 @@ def playgame(screen):
                                                 knight_special_turn = False
 
                                     elif (chosen_square.color is BLUE) and \
-                                            (current_square.color not in deployed_team) and \
                                             (chosen_square.piece is None):  # deals with movement
 
                                         """
@@ -699,15 +736,15 @@ def playgame(screen):
                                             end_commander_turn(current_square.piece.team)
                                             action_count -= 1
                                             #print('action count increased')
-                                        else:
+                                        """else:
                                             #print('action count not increased')
-                                            return
+                                            return"""
 
                                         move_piece(current_square, chosen_square)
                                         remove_highlights()
                                         current_square = None
 
-                                    elif (chosen_square.color is BLACK) and (current_square.color not in deployed_team):
+                                    elif (chosen_square.color is BLACK):
                                         if attack(current_square.piece.type.value,
                                                   chosen_square.piece.type.value) is True:
                                             captured_pieces.append(chosen_square.piece)
