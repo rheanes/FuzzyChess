@@ -154,7 +154,14 @@ def delegate(chosen_square):
                 delegated_commander = purple_commander
             else:
                 pass
-            print('deligated commander selected')
+
+        #A Bishop may delegate no more than 6 troops at a given time
+        if(len(delegated_commander.troops) >= 6):
+            reset_delegation()
+            print("Max delegation reached")
+            return
+
+        print('deligated commander selected')
         if (delegated_piece is not None) and (delegated_commander is not None):
             if (delegated_piece.type) == Type.PAWN and (delegated_piece.team == Team.BLUE):
                 delegated_piece.switch_sprite(del_matrix_pawn[delegated_commander.leader.team])
