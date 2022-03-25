@@ -445,6 +445,7 @@ def reset_turn():
     global player_commanders
     global ai_commanders
     if turn is True:
+        print(player_commanders)
         action_count = len(player_commanders)
         for x in player_commanders:
             x.action = True
@@ -694,7 +695,7 @@ def playgame(screen):
                                                 end_commander_turn(chosen_square.piece.team)
 
                                                 if chosen_square.piece.type is Type.BISHOP:
-                                                    removeCommander(chosen_square.piece)
+                                                    removeCommander(chosen_square.piece.team)
                                                     remove_team(chosen_square.piece.team)
                                                 elif (chosen_square.piece.type is Type.KING) and \
                                                         (chosen_square.piece.team is Team.RED):
