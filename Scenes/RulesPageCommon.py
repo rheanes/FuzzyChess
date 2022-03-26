@@ -73,16 +73,10 @@ King_Button = button(pos=(70, 10* HEIGHT/12 ),
                  text="Kings" ,
                  bg_hover= buttonhover,
                  action=GameState.King)
-Back_To_Game = button(pos=(WIDTH-150, HEIGHT/10),
-                 font_size=25,
-                 txt_col=BLACK,
-                 bg_col = BACKGROUND,
-                 text="Back to game" ,
-                 bg_hover= buttonhover,
-                 action=GameState.Play)
+
 
 tabs = [Home_Button, Rules_Button, HowTo_Button, Pieces_Button,
-        Pawn_Button, Rook_button, Knight_Button, Queen_Button, Bishop_Button, King_Button, Back_To_Game]
+        Pawn_Button, Rook_button, Knight_Button, Queen_Button, Bishop_Button, King_Button]
 
 positions3 = [(3/8*WIDTH, 5/8*HEIGHT),
               (5/8*WIDTH, 5/8*HEIGHT),
