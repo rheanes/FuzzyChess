@@ -37,6 +37,15 @@ class Value(enum.Enum):
     ROOK = 200
     PAWN = 50
 
+enemies = {
+    Team.BLUE : [Team.RED, Team.ORANGE, Team.YELLOW],
+    Team.GREEN : [Team.RED, Team.ORANGE, Team.YELLOW],
+    Team.PURPLE : [Team.RED, Team.ORANGE, Team.YELLOW],
+    Team.RED : [Team.BLUE, Team.GREEN, Team.PURPLE],
+    Team.ORANGE : [Team.BLUE, Team.GREEN, Team.PURPLE],
+    Team.YELLOW : [Team.BLUE, Team.GREEN, Team.PURPLE]
+}
+
 #creates a chess piece class that shows:
 #team, attackable, and color
 class Piece:
@@ -49,20 +58,24 @@ class Piece:
         self.value = value
         self.targets = []
         self.delegated = False
+        self.pos = None
 
     def switch_sprite(self, new_img):
         self.image = pygame.image.load(new_img)
-    #for ai, checks to see if there are enemies in the pieces attack range. If there are, add them to targets and return targets
-    def detect_targets(self, positions: tuple[int, int], team: Team):
+
+    # for ai, checks to see if there are enemies in the pieces attack range. If there are, add them to targets and return targets
+    def detect_targets(self, board, positions: tuple[int, int], team: Team):
         for row, col in positions:
-            #if board[row][col].piece is not None:
-                #if board[row][col].piece.team in enemies[team]:
-                    #self.targets.append(board[row][col].piece)
+            if board[row][col].piece is not None:
+                if board[row][col].piece.team in enemies[team]:
+                    self.targets.append(board[row][col].piece)
                     print("hi")
         return self.targets
 
 #-------------COMMANDER STUFF IS HERE ------------
-
+# TODO:
+#  1) check if troop are being attacked
+#  2) is 1) is true then
 class Commander:
     def __init__(self, troops, leader) -> None:
         self.leader = leader
@@ -83,6 +96,39 @@ class Commander:
     def commander_lost(self):
         if self.leader not in self.troops:
             self.authority = False
+
+    # for ai, scans entire board for enemies
+    def board_scan(self, board):
+        for square in board:
+            # scan enemies
+            if square.piece is not None:
+                if enemies[square.piece.team] is Team.RED or \
+                    enemies[square.piece.team] is Team.ORANGE or \
+                        enemies[square.piece.team] is Team.YELLOW:
+                    square[:].piece.pos = (square.row, square.col)
+                    self.targets.append(square[:].piece)
+
+                if square.piece.team is self.leader.team:
+                    square[:].piece.pos = ()
+        return self.targets
+    """
+    def find_troop_position(self, board):
+        for square in board:
+            if square.piece.team is self.leader.
+    """
+    # the commander shoudl chec
+    def make_decision(self, board, positions):
+        # get troops enemies
+        for troop in self.troops:
+            for pos in positions:
+                self.targets.append(troop[:].detect_targets(board, (pos[0], pos[1]), board[pos[0]][pos[1]].piece.team))
+
+        # get all enemies
+        self.targets.append(self.board_scan(board))
+
+        # get troop position
+
+
 
 
 
@@ -136,14 +182,7 @@ purple_commander = Commander(yellow_pieces, board[7][5].piece)
 orange_commander.see_pieces()
 '''
 
-enemies = {
-    Team.BLUE : [Team.RED, Team.ORANGE, Team.YELLOW],
-    Team.GREEN : [Team.RED, Team.ORANGE, Team.YELLOW],
-    Team.PURPLE : [Team.RED, Team.ORANGE, Team.YELLOW],
-    Team.RED : [Team.BLUE, Team.GREEN, Team.PURPLE],
-    Team.ORANGE : [Team.BLUE, Team.GREEN, Team.PURPLE],
-    Team.YELLOW : [Team.BLUE, Team.GREEN, Team.PURPLE]
-}
+
 color_matrix_pawn = {Team.BLUE: './Images/blue_pawn.png',
                      Team.GREEN: './Images/green_pawn.png',
                      Team.PURPLE: './Images/purple_pawn.png',

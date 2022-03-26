@@ -15,8 +15,8 @@ from Scenes.KingScene import KingScene
 from Scenes.winLossScreen import winLossScreen
 from board import remove_highlights
 
-pygame.mixer.music.load("Ciara's First Beat.mp3")
-pygame.mixer.music.play(-1)
+#pygame.mixer.music.load("Ciara's First Beat.mp3")
+#pygame.mixer.music.play(-1)
 
 def main():
     pygame.init()

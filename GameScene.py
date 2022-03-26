@@ -7,6 +7,7 @@ from common import *
 from board import *
 
 from guielements import *
+from ai import *
 
 DEFAULT_IMAGE_SIZE = (GAME_WIDTH / 8, GAME_WIDTH / 8)
 SQUARE_WIDTH = SQUARE_HEIGHT = GAME_WIDTH / 8
@@ -597,6 +598,8 @@ def playgame(screen):
         create_board()
         FirstRun = False
 
+    ai = AI
+
     while True:
         mouse_down = False
         pygame.mouse.get_pressed()
@@ -790,6 +793,8 @@ def playgame(screen):
                 else:
                     pass
         elif not turn:  # AI starts
+            # captured_commander = check_commanders()
+            #ai.decision()
             Action_Counter.text = 'Action Count: ' + str(action_count)
             Current_turn.text = 'Current Turn: AI'
             # print('hello from computer')
