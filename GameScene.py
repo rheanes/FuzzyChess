@@ -110,6 +110,7 @@ humanComms = len(player_commanders)
 aiComms = len(ai_commanders)
 turn = True  # True maeans human move
 delegation_mode = False
+commMoveMode = False
 recalled_piece = None
 current_commander = None
 recall_mode = False
@@ -373,6 +374,47 @@ class RecallButton(Sprite):
     def draw(self, surface):
         surface.blit(self.img, self.rect)
 
+#This class is for use of the Commander's Free Movement. They are able to move a small amont depending
+#on the piece. Kings can move 2 spaces, and Bishops can move one space.
+class CommFreeMove(Sprite):
+    def __init__(self, pos, text, font_size, txt_col, bg_col, bg_hover, action=None):
+        self.action = action
+        self.selected = False
+        # self.remain_selected = False
+        unselected_img = create_text_surface(text, font_size, txt_col, bg_col)
+        highlighted_img = create_text_surface(text, font_size * 1.3, txt_col, bg_hover)
+
+        self.images = [unselected_img, highlighted_img]
+        self.rects = [unselected_img.get_rect(center=pos), highlighted_img.get_rect(center=pos)]
+
+        super().__init__()
+
+    @property
+    def img(self):
+        return self.images[1] if self.selected else self.images[0]
+
+    @property
+    def rect(self):
+        return self.rects[1] if self.selected else self.rects[0]
+
+    # selects different button images depending if the mouse is hovered over it
+    def moused_over(self, mouse_pos, mouse_down):
+        global commMoveMode
+        if self.rect.collidepoint(mouse_pos):
+            self.selected = True
+            if mouse_down and delegation_mode is False and recall_mode is False:
+                # self.remain_selected = True
+                commMoveMode = True
+                print('Commander Movement Initiating')
+                return self.action
+        else:
+            if commMoveMode:
+                self.selected = True
+            else:
+                self.selected = False
+
+    def draw(self, surface):
+        surface.blit(self.img, self.rect)
 
 # Sets the commanders turns to False to prevent their corp from making another action
 def end_commander_turn(team: Team):
@@ -448,11 +490,13 @@ def reset_turn():
         for x in player_commanders:
             x.action = True
             x.has_moved = False
+            x.authority = True
     elif not turn:
         action_count = len(ai_commanders)
         for x in ai_commanders:
             x.action = True
             x.has_moved = False
+            x.authority = True
 
 
 def message_box(text):
@@ -502,8 +546,39 @@ def remove_piece(piece):
 
     elif piece.team == team.GREEN:
         green_commander.troops.remove(piece)
-
     return
+
+#This checks the commanders authority and returns it's value. If we don't have a piece,
+#or the selected piece isn't a commander, we return false
+def commAuth(square: Square):
+    global commMoveMode
+    chosen_piece = square.piece
+
+    if chosen_piece is not None:
+        if chosen_piece.type is Type.KING or chosen_piece.type is Type.BISHOP:
+            if chosen_piece.team is Team.BLUE:
+                return blue_commander.authority
+            elif chosen_piece.team is Team.PURPLE:
+                return purple_commander.authority
+            elif chosen_piece.team is Team.GREEN:
+                return green_commander.authority
+            elif chosen_piece.team is Team.RED:
+                return red_commander.authority
+            elif chosen_piece.team is Team.ORANGE:
+                return orange_commander.authority
+            elif chosen_piece.team is Team.YELLOW:
+                return yellow_commander.authority
+        else:
+            commMoveMode = False
+            return False
+    else:
+        commMoveMode = False
+        return False
+
+#Does special highlights for commander authority. They cannot capture while performing this movement.
+def commMove(square: Square):
+    piece = square.piece
+    highlight_moves(commAuthMovement(1, 0, (square.row, square.col), (square.row, square.col),piece.value.value), piece.team)
 
 def playgame(screen):
     Home_Button = button(pos=(WIDTH - 100, 100),
@@ -521,28 +596,38 @@ def playgame(screen):
                           text="Rules",
                           bg_hover=buttonhover,
                           action=GameState.Rules)
-    Delegate_Button = DelegateButton(pos=(WIDTH - 100, 350),
+
+    #Button handles the free move commanders can make each turn
+    Command_Move_Button = CommFreeMove(pos=(WIDTH - 150, 300),
+                                     font_size=25,
+                                     txt_col=BLACK,
+                                     bg_col=buttoncolor,
+                                     text="Commander Free Move",
+                                     bg_hover=buttonhover,
+                                     action=GameState.Play)
+
+    Delegate_Button = DelegateButton(pos=(WIDTH - 100, 400),
                                      font_size=25,
                                      txt_col=BLACK,
                                      bg_col=buttoncolor,
                                      text="Delegate",
                                      bg_hover=buttonhover,
                                      action=GameState.Play)
-    Recall_Button = RecallButton(pos=(WIDTH-100, 450),
+    Recall_Button = RecallButton(pos=(WIDTH-100, 500),
                            font_size=25,
                            txt_col=BLACK,
                            bg_col=buttoncolor,
                            text="Recall",
                            bg_hover=buttonhover,
                            action=GameState.Play)
-    End_Turn_Button = button(pos=(WIDTH - 100, 550),
+    End_Turn_Button = button(pos=(WIDTH - 100, 600),
                              font_size=25,
                              txt_col=BLACK,
                              bg_col=buttoncolor,
                              text="End Turn",
                              bg_hover=buttonhover,
                              action=GameState.EndTurn)
-    Resign_Button = button(pos=(WIDTH - 100, 650),
+    Resign_Button = button(pos=(WIDTH - 100, 700),
                            font_size=25,
                            txt_col=BLACK,
                            bg_col=buttoncolor,
@@ -575,7 +660,7 @@ def playgame(screen):
                             action=GameState.Play)
 
     buttons = [Home_Button, Delegate_Button, Resign_Button, End_Turn_Button, Rules_Button, Recall_Button,
-               Action_Counter, Current_turn, Bone_Pile]
+               Action_Counter, Current_turn, Bone_Pile, Command_Move_Button]
 
     current_square = None
     global action_count
@@ -649,12 +734,24 @@ def playgame(screen):
 
                         elif recall_mode and human_piece_delegated is not True and checkCommanderTurn(Team.BLUE):
                             recall(chosen_square)
+
+                        #Defines the free movement the commander can make without expending its corp turn
+                        #This only occurs if the button is pressed
                         else:
+                            global commMoveMode
                             # if chosen_square.piece.team in human_team:
                             # conditions for selected_square
                             if current_square is None:
                                 if chosen_square.piece is None:
                                     pass
+
+                                elif commMoveMode:
+                                    if (commAuth(chosen_square)):
+                                        current_square = chosen_square
+                                        commMove(chosen_square)
+                                    else:
+                                        commMoveMode = False
+
                                 elif (checkCommanderTurn(chosen_square.piece.team) or chosen_square.piece.type is Type.KNIGHT) and (chosen_square.piece.team not in enemies[Team.BLUE]):
                                     if chosen_square.piece.type is Type.KNIGHT:
                                         if knight_special_turn:
@@ -680,11 +777,14 @@ def playgame(screen):
                                 """
                                 #This check ensures that the chosen corp hasn't worked. If a knight is selected, then
                                 #we bypass this condition if the knight's special turn is enabled.
-                                if (checkCommanderTurn(current_square.piece.team) or current_square.piece.type is Type.KNIGHT) and (current_square.piece.team not in enemies[Team.BLUE]):
+                                if (checkCommanderTurn(current_square.piece.team) or current_square.piece.type is Type.KNIGHT or commMoveMode) and (current_square.piece.team not in enemies[Team.BLUE]):
                                     if (chosen_square.color is WHITE) or (
                                             chosen_square.color is GREY):  # lets you unselect current piece
                                         remove_highlights()
                                         current_square = None
+                                        if commMoveMode:
+                                            commMoveMode = False
+
                                     elif knight_special_turn:
                                         if current_square.piece.type is Type.KNIGHT and chosen_square.color is BLACK:
                                             if attack(current_square.piece.type.value,
@@ -738,14 +838,23 @@ def playgame(screen):
                                             end_commander_turn(current_square.piece.team)
                                             knight_special_turn = True
 
-                                        if not knight_special_turn:
+                                        if not knight_special_turn and not commMoveMode:
                                             end_commander_turn(current_square.piece.team)
                                             action_count -= 1
                                             #print('action count increased')
                                         """else:
                                             #print('action count not increased')
                                             return"""
-
+                                        #We only end turn and reduce action count if we aren't performing a commander move.
+                                        #If we are, then we can ignore the above and just set the commanders authority to false
+                                        if (commMoveMode):
+                                            commMoveMode = False
+                                            if current_square.piece.team is Team.BLUE:
+                                                blue_commander.authority = False
+                                            elif current_square.piece.team is Team.GREEN:
+                                                green_commander.authority = False
+                                            elif current_square.piece.team is Team.PURPLE:
+                                                purple_commander.authority = False
                                         move_piece(current_square, chosen_square)
                                         remove_highlights()
                                         current_square = None
