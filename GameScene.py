@@ -761,7 +761,7 @@ def playgame(screen):
                                         elif not knight_special_turn and checkCommanderTurn(chosen_square.piece.team):
                                             current_square = chosen_square
                                             potential_piece_moves(chosen_square)
-                                    elif not knight_special_turn:
+                                    elif not knight_special_turn or chosen_square.piece.type is not Type.KNIGHT:
                                         current_square = chosen_square
                                         potential_piece_moves(chosen_square)
                                         # if chosen_square.piece is purple_commander.leader:
@@ -785,8 +785,8 @@ def playgame(screen):
                                         if commMoveMode:
                                             commMoveMode = False
 
-                                    elif knight_special_turn:
-                                        if current_square.piece.type is Type.KNIGHT and chosen_square.color is BLACK:
+                                    elif knight_special_turn and current_square.piece.type is Type.KNIGHT:
+                                        if chosen_square.color is BLACK:
                                             if attack(current_square.piece.type.value,
                                                       chosen_square.piece.type.value, checkCommanderHasMoved(current_square.piece.team)) is True:
                                                 captured_pieces.append(chosen_square.piece)
@@ -812,6 +812,7 @@ def playgame(screen):
                                                 remove_highlights()
                                                 action_count -= 1
                                                 knight_special_turn = False
+
 
                                     elif (chosen_square.color is BLUE) and \
                                             (chosen_square.piece is None):  # deals with movement
@@ -841,10 +842,13 @@ def playgame(screen):
                                         if not knight_special_turn and not commMoveMode:
                                             end_commander_turn(current_square.piece.team)
                                             action_count -= 1
-                                            #print('action count increased')
-                                        """else:
-                                            #print('action count not increased')
-                                            return"""
+
+                                        #Extra check so that the user can choose to not attack with the Knight and make another action
+                                        #that affects the turn count
+                                        elif knight_special_turn and not commMoveMode and current_square.piece.type != Type.KNIGHT:
+                                            end_commander_turn(current_square.piece.team)
+                                            action_count -= 1
+
                                         #We only end turn and reduce action count if we aren't performing a commander move.
                                         #If we are, then we can ignore the above and just set the commanders authority to false
                                         if (commMoveMode):
