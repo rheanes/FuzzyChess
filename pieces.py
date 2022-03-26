@@ -252,16 +252,13 @@ player_commanders = [green_commander, blue_commander, purple_commander]
 ai_commanders = [orange_commander, red_commander, yellow_commander]
 
 def ReCommand():
-    print('Hellow from Recommand')
     if orange_commander not in ai_commanders:
-        print('from orange commander')
         ai_commanders.append(orange_commander)
-    elif yellow_commander not in ai_commanders:
-        print('from yellow commander')
+    if yellow_commander not in ai_commanders:
         ai_commanders.append(yellow_commander)
-    elif green_commander not in player_commanders:
+    if green_commander not in player_commanders:
         player_commanders.append(green_commander)
-    elif purple_commander not in player_commanders:
+    if purple_commander not in player_commanders:
         player_commanders.append(purple_commander)
 
 

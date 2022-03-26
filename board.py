@@ -38,6 +38,8 @@ def default_colors():
         p.team = Team.GREEN
     for p in purple_commander.troops:
         p.team = Team.PURPLE
+    for p in orange_commander.troops:
+        p.team = Team.ORANGE
 
 #Change all sprites to default color
 #This is executed right after default_colors, so all Piece.Team is correct.
@@ -53,6 +55,7 @@ def default_sprites():
             elif t.type == Type.QUEEN:
                 t.switch_sprite(color_matrix_queen[t.team])
     for c in ai_commanders:
+        print(c.see_pieces())
         for t in c.troops:
             if t.type == Type.PAWN:
                 t.switch_sprite(color_matrix_pawn[t.team])
@@ -147,6 +150,7 @@ def remove_team(team):
         print("removing yellow team")
         for troop in yellow_commander.troops:
             troop.team = Team.RED
+            red_commander.troops.append(troop)
             if troop.type == Type.PAWN:
                 troop.switch_sprite(color_matrix_pawn[Team.RED])
             elif troop.type == Type.KNIGHT:
@@ -157,12 +161,12 @@ def remove_team(team):
                 troop.switch_sprite(color_matrix_queen[Team.RED])
             else:
                 pass
-        red_commander.troops.append(yellow_commander.troops)
 
     elif team == team.ORANGE:
         print("removing orange team")
         for troop in orange_commander.troops:
             troop.team = Team.RED
+            red_commander.troops.append(troop)
             if troop.type == Type.PAWN:
                 troop.switch_sprite(color_matrix_pawn[Team.RED])
             elif troop.type == Type.KNIGHT:
@@ -173,12 +177,13 @@ def remove_team(team):
                 troop.switch_sprite(color_matrix_queen[Team.RED])
             else:
                 pass
-        red_commander.troops.append(orange_commander.troops)
+
 
     elif team == team.GREEN:
         print("removing green team")
         for troop in green_commander.troops:
             troop.team = Team.BLUE
+            blue_commander.troops.append(troop)
             if troop.type == Type.PAWN:
                 troop.switch_sprite(color_matrix_pawn[Team.BLUE])
             elif troop.type == Type.KNIGHT:
@@ -189,12 +194,12 @@ def remove_team(team):
                 troop.switch_sprite(color_matrix_queen[Team.BLUE])
             else:
                 pass
-        blue_commander.troops.append(green_commander.troops)
 
     elif team == team.PURPLE:
         print("removing purple team")
         for troop in purple_commander.troops:
             troop.team = Team.BLUE
+            blue_commander.troops.append(troop)
             if troop.type == Type.PAWN:
                 troop.switch_sprite(color_matrix_pawn[Team.BLUE])
             elif troop.type == Type.KNIGHT:
@@ -205,7 +210,6 @@ def remove_team(team):
                 troop.switch_sprite(color_matrix_queen[Team.BLUE])
             else:
                 pass
-        blue_commander.troops.append(purple_commander.troops)
 
     #_----------_SQUARE UTILITY-------------
 
