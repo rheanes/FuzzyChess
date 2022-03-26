@@ -1,6 +1,6 @@
 import enum
 import pygame
-from board import board
+#from board import board
 """
     ATTENTION: Fix the piece moves to return all highlighted squares
 """
@@ -55,9 +55,9 @@ class Piece:
     #for ai, checks to see if there are enemies in the pieces attack range. If there are, add them to targets and return targets
     def detect_targets(self, positions: tuple[int, int], team: Team):
         for row, col in positions:
-            if board[row][col].piece is not None:
-                if board[row][col].piece.team in enemies[team]:
-                    self.targets.append(board[row][col].piece)
+            #if board[row][col].piece is not None:
+                #if board[row][col].piece.team in enemies[team]:
+                    #self.targets.append(board[row][col].piece)
                     print("hi")
         return self.targets
 
