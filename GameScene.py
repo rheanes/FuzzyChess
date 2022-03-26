@@ -316,7 +316,6 @@ class DelegateButton(Sprite):
     # selects different button images depending if the mouse is hovered over it
     def moused_over(self, mouse_pos, mouse_down):
         global delegation_mode
-        global human_piece_delegated
         if self.rect.collidepoint(mouse_pos):
             self.selected = True
             if mouse_down and human_piece_delegated is False and checkCommanderTurn(Team.BLUE) and recall_mode is False:
@@ -444,13 +443,12 @@ def reset_turn():
     global action_count
     global player_commanders
     global ai_commanders
-    if turn is True:
-        print(player_commanders)
+    if turn:
         action_count = len(player_commanders)
         for x in player_commanders:
             x.action = True
             x.has_moved = False
-    elif turn is False:
+    elif not turn:
         action_count = len(ai_commanders)
         for x in ai_commanders:
             x.action = True
@@ -608,9 +606,9 @@ def playgame(screen):
         # print('action count', action_count)
         Action_Counter.text = 'Action Count: ' + str(action_count)
 
-        if action_count <= 0:
+        """if action_count <= 0:
             turnChange()
-            reset_turn()
+            reset_turn()"""
 
         if turn:
             # print('human turn')
@@ -797,13 +795,19 @@ def playgame(screen):
             # print('hello from computer')
             # after AI is done enable next line
             action_count -= 1
-            # time.sleep(3)
+            Action_Counter.text = 'Action Count: ' + str(action_count)
+            #time.sleep(2)
 
             action_count -= 1
-            # time.sleep(3)
+            Action_Counter.text = 'Action Count: ' + str(action_count)
+            #time.sleep(2)
 
             action_count -= 1
-        # time.sleep(3)
+            Action_Counter.text = 'Action Count: ' + str(action_count)
+            #time.sleep(2)
+
+            turnChange()
+            reset_turn()
 
         update_display(screen)
         for b in buttons:
