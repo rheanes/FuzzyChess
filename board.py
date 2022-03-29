@@ -284,6 +284,7 @@ def maxMovement(maxSpeed: int, iterations: int, position: tuple[int, int], start
     currRow = position[0]
     currCol = position[1]
 
+    #Return conditions
     if (currRow < 0) or (currCol < 0):
         return
 
@@ -299,7 +300,11 @@ def maxMovement(maxSpeed: int, iterations: int, position: tuple[int, int], start
         if (piece != 4):
             return positions
 
+        #Case of the rook trying to find adjacent pieces. It checks in a one square radius about the piece that was found.
         elif piece == 4:
+
+            #In the event the Rook has found it's first piece, then we check the 1-square radius about the piece found for
+            #more enemy pieces.
             if iterations == 1:
                 if currCol+1 <= 7:
                     if (board[currRow][currCol+1].piece is not None):

@@ -746,6 +746,7 @@ def playgame(screen):
                             # conditions for selected_square
                             if current_square is None:
                                 if chosen_square.piece is None:
+                                    remove_highlights()
                                     pass
 
                                 elif commMoveMode:
@@ -757,9 +758,22 @@ def playgame(screen):
 
                                 elif (checkCommanderTurn(chosen_square.piece.team) or chosen_square.piece.type is Type.KNIGHT) and (chosen_square.piece.team not in enemies[Team.BLUE]):
                                     if chosen_square.piece.type is Type.KNIGHT:
-                                        if knight_special_turn:
+                                        if knight_special_turn and adjacent_enemies((chosen_square.row, chosen_square.col), chosen_square.piece.team):
+                                            if(chosen_square.piece.team is Team.BLUE):
+                                                if(blue_commander.has_moved):
+                                                    current_square = chosen_square
+                                                    knightAttack(chosen_square)
+                                            elif(chosen_square.piece.team is Team.GREEN):
+                                                if(green_commander.has_moved):
+                                                    current_square = chosen_square
+                                                    knightAttack(chosen_square)
+                                            elif(chosen_square.piece.team is Team.PURPLE):
+                                                if(purple_commander.has_moved):
+                                                    current_square = chosen_square
+                                                    knightAttack(chosen_square)
+                                        elif knight_special_turn and not adjacent_enemies((chosen_square.row, chosen_square.col), chosen_square.piece.team):
                                             current_square = chosen_square
-                                            knightAttack(chosen_square)
+                                            potential_piece_moves(chosen_square)
 
                                         elif not knight_special_turn and checkCommanderTurn(chosen_square.piece.team):
                                             current_square = chosen_square
@@ -788,7 +802,7 @@ def playgame(screen):
                                         if commMoveMode:
                                             commMoveMode = False
 
-                                    elif knight_special_turn and current_square.piece.type is Type.KNIGHT:
+                                    elif knight_special_turn and current_square.piece.type is Type.KNIGHT and adjacent_enemies((current_square.row, current_square.col), current_square.piece.team):
                                         if chosen_square.color is BLACK:
                                             if attack(current_square.piece.type.value,
                                                       chosen_square.piece.type.value, checkCommanderHasMoved(current_square.piece.team)) is True:
@@ -807,14 +821,24 @@ def playgame(screen):
                                                 current_square = None
                                                 action_count -= 1
                                                 remove_highlights()
-                                                knight_special_turn = False
+                                                if (chosen_square.piece.team is Team.BLUE):
+                                                    blue_commander.has_moved = False
+                                                elif (chosen_square.piece.team is Team.GREEN):
+                                                    green_commander.has_moved = False
+                                                elif (chosen_square.piece.team is Team.PURPLE):
+                                                    purple_commander.has_moved = False
                                             else:
                                                 end_commander_turn(current_square.piece.team)
                                                 chosen_square = None
                                                 current_square = None
                                                 remove_highlights()
                                                 action_count -= 1
-                                                knight_special_turn = False
+                                                if (chosen_square.piece.team is Team.BLUE):
+                                                    blue_commander.has_moved = False
+                                                elif (chosen_square.piece.team is Team.GREEN):
+                                                    green_commander.has_moved = False
+                                                elif (chosen_square.piece.team is Team.PURPLE):
+                                                    purple_commander.has_moved = False
 
 
                                     elif (chosen_square.color is BLUE) and \
