@@ -55,7 +55,6 @@ def default_sprites():
             elif t.type == Type.QUEEN:
                 t.switch_sprite(color_matrix_queen[t.team])
     for c in ai_commanders:
-        print(c.see_pieces())
         for t in c.troops:
             if t.type == Type.PAWN:
                 t.switch_sprite(color_matrix_pawn[t.team])
@@ -414,6 +413,48 @@ def knightAttackPieces(position: tuple[int, int], startPos: tuple[int, int], pos
 
     return positions
 
+#Variant of the floodfill which ignores pieces. Allows commanders to move freely up to their alotted spaces (1 space each)
+def commAuthMovement(maxSpeed: int, iterations: int, position: tuple[int, int], startPos: tuple[int, int], piece: int, positions=None):
+
+    if positions is None:
+        positions = []
+    currRow = position[0]
+    currCol = position[1]
+
+    if (currRow < 0) or (currCol < 0):
+        return
+
+    if (currRow > 7) or (currCol > 7):
+        return
+
+    if iterations > maxSpeed:
+        return
+
+    if (board[currRow][currCol].piece is not None) and (position != startPos):
+        return positions
+
+    #Checks to the Right square
+    commAuthMovement(maxSpeed, iterations + 1, (currRow, currCol + 1), startPos, piece, positions)
+    #Checks to the Down-Right square
+    commAuthMovement(maxSpeed, iterations + 1, (currRow + 1, currCol + 1), startPos, piece, positions)
+    #Checks to the Down square
+    commAuthMovement(maxSpeed, iterations + 1, (currRow + 1, currCol), startPos, piece, positions)
+    #Checks to the Down-Left square
+    commAuthMovement(maxSpeed, iterations + 1, (currRow + 1, currCol - 1), startPos, piece, positions)
+    #Checks to the Left square
+    commAuthMovement(maxSpeed, iterations + 1, (currRow, currCol - 1), startPos, piece, positions)
+    #Checks to the Up-Left square
+    commAuthMovement(maxSpeed, iterations + 1, (currRow - 1, currCol - 1), startPos, piece, positions)
+    #Checks to the Up Square
+    commAuthMovement(maxSpeed, iterations + 1, (currRow - 1, currCol), startPos, piece, positions)
+    #Checks to the Up-Right square
+    commAuthMovement(maxSpeed, iterations + 1, (currRow - 1, currCol + 1), startPos, piece, positions)
+
+    if position in positions:
+        return positions
+    elif board[currRow][currCol].piece is None:
+        positions.append(position)
+    return positions
 
 #----------START LOAD AND SAVE PROCESSING HERE---------------
 

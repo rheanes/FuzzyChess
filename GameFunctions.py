@@ -31,7 +31,7 @@ def attack(attacker: int,
            hasMoved: bool = False) -> bool:
     num = attackRoll()
     if hasMoved:
-        if attackMatrix[attacker][defender] >= num + 1:
+        if num + 1 >= attackMatrix[attacker][defender]:
             return True
         else:
             return False
