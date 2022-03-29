@@ -1,6 +1,6 @@
 from common import *
 from pieces import *
-
+import pickle
 
 #----------------BOARD CREATING AND SQUATE CLASS ------------
 class Square:
@@ -413,3 +413,32 @@ def knightAttackPieces(position: tuple[int, int], startPos: tuple[int, int], pos
     knightAttackPieces((currRow, currCol - 1), startPos, positions)
 
     return positions
+
+
+#----------START LOAD AND SAVE PROCESSING HERE---------------
+
+
+def SaveGame(state):
+    if state == 1:
+        #code to save board in slot 1
+        return
+    if state == 2:
+        #code to save board in slot 2
+        return
+    if state == 3:
+        #code to save board in slot 3
+        return
+    return
+
+
+def LoadGame(state):
+    if state == 1:
+        #code to save board in slot 1
+        return
+    if state == 2:
+        #code to save board in slot 2
+        return
+    if state == 3:
+        #code to save board in slot 3
+        return
+    return

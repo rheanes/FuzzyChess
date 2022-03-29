@@ -9,7 +9,7 @@ def winLossScreen(screen, win):
     homeButton = button(pos=(WIDTH * 0.2, 0.8 * HEIGHT), font_size=50, txt_col=BLACK, bg_col=buttoncolor,
                         text="Main Menu", bg_hover=buttonhover, action=GameState.Home)
     playButton = button(pos=(WIDTH * 0.8, 0.8 * HEIGHT), font_size=50, txt_col=BLACK, bg_col=buttoncolor,
-                        text="Play again", bg_hover=buttonhover, action=GameState.Play)
+                        text="Play again", bg_hover=buttonhover, action=GameState.NewGame)
     buttons = [homeButton, playButton]
     while True:
         #for event in pygame.event.get():

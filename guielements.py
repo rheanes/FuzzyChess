@@ -80,10 +80,13 @@ class button(Sprite):
 
 
 class GameState(Enum):
+    ContinueGame = -3
+    NewGame = -2
     Quit = -1
     Home = 0
     Play = 1
     Escape = 2
+    NewOrLoad = 3
     Load1 = 4
     Load2 = 5
     Load3 = 6

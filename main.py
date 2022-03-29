@@ -1,7 +1,7 @@
 from guielements import *
 
 from GameScene import playgame, delegation_mode, turnChange, create_board, reset_turn
-from board import clear_board
+from board import *
 from Scenes.MainMenuScene import MenuScene
 from Scenes.RulesPageScene import RulesPageScene
 from Scenes.HowToPlay import HowToPlayScene
@@ -13,10 +13,12 @@ from Scenes.QueenScene import QueenScene
 from Scenes.BishopScene import BishopScene
 from Scenes.KingScene import KingScene
 from Scenes.winLossScreen import winLossScreen
+from Scenes.EscapeScene import escapeScene
+from Scenes.NewOrLoadScene import NewOrLoadScene
 from board import remove_highlights
 
-pygame.mixer.music.load("Ciara's First Beat.mp3")
-pygame.mixer.music.play(-1)
+#pygame.mixer.music.load("Ciara's First Beat.mp3")
+#pygame.mixer.music.play(-1)
 
 def main():
     pygame.init()
@@ -37,27 +39,50 @@ def main():
         #remove_highlights()
         if game_state == GameState.Play:
             print('playing game')
+            game_state == playgame(screen)
+
+        if game_state == GameState.NewOrLoad:
+            game_state = NewOrLoadScene(screen)
+
+        if game_state == GameState.NewGame:
+            reset_turn()
+            clear_board()
+            create_board()
             game_state = playgame(screen)
 
         #Win Game
         #remove_highlights()
-        global FirstRun
         if game_state == GameState.Win:
-            reset_turn()
-            clear_board()
-            create_board()
             game_state = winLossScreen(screen, True)
             #game_state = playgame(screen)
         #Lose Game (ALSO OCCURS ON RESIGN)
         if game_state == GameState.Loss:
             #remove_highlights()
-            reset_turn()
-            clear_board()
-            create_board()
             game_state = winLossScreen(screen, False)
             #game_state = playgame(screen)
         if game_state == GameState.Escape:
-            escapeScene(screen)
+            game_state = escapeScene(screen)
+
+#---------GAME SAVE---------------
+        if game_state == GameState.Save1:
+            SaveGame(1)
+            game_state = playgame(screen)
+        if game_state == GameState.Save2:
+            SaveGame(2)
+            game_state = playgame(screen)
+        if game_state == GameState.Save3:
+            SaveGame(3)
+            game_state = playgame(screen)
+# ---------GAME LOAD---------------
+        if game_state == GameState.Load1:
+            LoadGame(1)
+            game_state = playgame(screen)
+        if game_state == GameState.Load2:
+            LoadGame(2)
+            game_state = playgame(screen)
+        if game_state == GameState.Load3:
+            LoadGame(3)
+            game_state = playgame(screen)
 
 #-----------START RULES PAGEE STUFF ------------------
         #Rules Page

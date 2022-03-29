@@ -12,7 +12,7 @@ def MenuScene(screen):
                          bg_col=buttoncolor,
                          text="Play",
                          bg_hover=buttonhover,
-                         action=GameState.Play)
+                         action=GameState.NewOrLoad)
     rules_button = button(pos=(WIDTH * 0.75, HEIGHT * 0.5),
                           font_size=65,
                           txt_col=BLACK,
