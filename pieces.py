@@ -182,7 +182,14 @@ purple_commander = Commander(yellow_pieces, board[7][5].piece)
 orange_commander.see_pieces()
 '''
 
-
+color_matrix_bishop = {Team.GREEN: './Images/green_bishop.png',
+                       Team.PURPLE: './Images/purple_bishop.png',
+                       Team.ORANGE: './Images/orange_bishop.png',
+                       Team.YELLOW: './Images/yellow_bishop.png'
+}
+color_matrix_king = {Team.BLUE: './Images/blue_king.png',
+                     Team.RED: './Images/red_king.png'
+}
 color_matrix_pawn = {Team.BLUE: './Images/blue_pawn.png',
                      Team.GREEN: './Images/green_pawn.png',
                      Team.PURPLE: './Images/purple_pawn.png',
