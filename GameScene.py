@@ -40,7 +40,7 @@ def update_display(screen):
             # if :
             #    pass
             # if starting_order[(square.row, square.col)] is not None:
-            if square.piece is not None:
+            if square.piece is not None and square.piece.image is not None:
                 screen.blit(pygame.transform.scale(square.piece.image, DEFAULT_IMAGE_SIZE), (x_pos, y_pos))
                 # screen.blit(pygame.transform.scale(starting_order[(square.row, square.col)], DEFAULT_IMAGE_SIZE), (square.x_pos, square.y_pos))
     """ Draw board lines """
@@ -582,22 +582,6 @@ def commMove(square: Square):
     highlight_moves(commAuthMovement(1, 0, (square.row, square.col), (square.row, square.col),piece.value.value), piece.team)
 
 def playgame(screen):
-    Home_Button = button(pos=(WIDTH - 100, 100),
-                         font_size=25,
-                         txt_col=BLACK,
-                         bg_col=buttoncolor,
-                         text="Home",
-                         bg_hover=buttonhover,
-                         action=GameState.Home)
-
-    Rules_Button = button(pos=(WIDTH - 100, 200),
-                          font_size=25,
-                          txt_col=BLACK,
-                          bg_col=buttoncolor,
-                          text="Rules",
-                          bg_hover=buttonhover,
-                          action=GameState.Rules)
-
     #Button handles the free move commanders can make each turn
     Command_Move_Button = CommFreeMove(pos=(WIDTH - 150, 300),
                                      font_size=25,
@@ -660,7 +644,7 @@ def playgame(screen):
                             bg_hover=buttonhover,
                             action=GameState.Play)
 
-    buttons = [Home_Button, Delegate_Button, Resign_Button, End_Turn_Button, Rules_Button, Recall_Button,
+    buttons = [Delegate_Button, Resign_Button, End_Turn_Button, Recall_Button,
                Action_Counter, Current_turn, Bone_Pile, Command_Move_Button]
 
     current_square = None
@@ -677,11 +661,6 @@ def playgame(screen):
     action_limit = 3
     knight_special_turn = False
     human_team = [Team.GREEN, Team.BLUE, Team.PURPLE]
-
-    global FirstRun
-    if FirstRun:
-        create_board()
-        FirstRun = False
 
     ai = AI
 

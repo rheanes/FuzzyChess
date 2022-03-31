@@ -27,6 +27,7 @@ def default_troops():
     purple_commander.troops = [pp1, pp2, pp3, pk, pb]
     return
 
+#assigns the proper color to everything in each commander's troops
 def default_colors():
     for p in red_commander.troops:
         p.team = Team.RED
@@ -46,27 +47,27 @@ def default_colors():
 def default_sprites():
     for c in player_commanders:
         for t in c.troops:
-            if t.type == Type.PAWN:
-                t.switch_sprite(color_matrix_pawn[t.team])
-            elif t.type == Type.ROOK:
-                t.switch_sprite(color_matrix_rook[t.team])
-            elif t.type == Type.KNIGHT:
-                t.switch_sprite(color_matrix_knight[t.team])
-            elif t.type == Type.QUEEN:
-                t.switch_sprite(color_matrix_queen[t.team])
+            ReturnPieceSprite(t)
     for c in ai_commanders:
         for t in c.troops:
-            if t.type == Type.PAWN:
-                t.switch_sprite(color_matrix_pawn[t.team])
-            elif t.type == Type.ROOK:
-                t.switch_sprite(color_matrix_rook[t.team])
-            elif t.type == Type.KNIGHT:
-                t.switch_sprite(color_matrix_knight[t.team])
-            elif t.type == Type.QUEEN:
-                t.switch_sprite(color_matrix_queen[t.team])
+            ReturnPieceSprite(t)
+
     return
-#if troop.type == Type.PAWN:
-# creates the board
+
+#takes in a piece and returns the sprite that is the same as the color
+def ReturnPieceSprite(t):
+    if t.type == Type.PAWN:
+        t.switch_sprite(color_matrix_pawn[t.team])
+    elif t.type == Type.ROOK:
+        t.switch_sprite(color_matrix_rook[t.team])
+    elif t.type == Type.KNIGHT:
+        t.switch_sprite(color_matrix_knight[t.team])
+    elif t.type == Type.QUEEN:
+        t.switch_sprite(color_matrix_queen[t.team])
+    elif t.type == Type.BISHOP:
+        t.switch_sprite(color_matrix_bishop[t.team])
+    elif t.type == Type.KING:
+        t.switch_sprite(color_matrix_king[t.team])
 
 def create_board():
     print(len(ai_commanders))
@@ -142,7 +143,10 @@ def clear_board():
             """
 
     # new changes
-    # TODO add in queen, and rooks.
+
+
+#removes all the pieces from the team that is passed in and appends them to the king.
+#this is called when a bishop is captured.
 def remove_team(team):
     old_troops = []
     if team == team.YELLOW:
@@ -458,28 +462,61 @@ def commAuthMovement(maxSpeed: int, iterations: int, position: tuple[int, int], 
 
 #----------START LOAD AND SAVE PROCESSING HERE---------------
 
-
+#This removes all the sprites from the pieces, because they cant be pickled.
+#It then pickles the board and adds the sprites back, so game can resume.
 def SaveGame(state):
-    if state == 1:
-        #code to save board in slot 1
-        return
-    if state == 2:
-        #code to save board in slot 2
-        return
-    if state == 3:
-        #code to save board in slot 3
-        return
+    for row in range(8):
+        for col in range(8):
+            if board[row][col].piece:
+                board[row][col].piece.image = None
+
+    SaveBoard(state)
+    default_sprites()
     return
 
 
+#Does the actual saving of the board.
+def SaveBoard(state):
+    if state == 1:
+        with open('Save1.pickle', 'wb') as f:
+            pickle.dump(board, f)
+            return
+    if state == 2:
+        with open('Save2.pickle', 'wb') as f:
+            pickle.dump(board, f)
+            return
+    if state == 3:
+        with open('Save3.pickle', 'wb') as f:
+            pickle.dump(board, f)
+            return
+
+
+#Loads the save file into the board.
+#Then re-sets up the game with setBoard()
 def LoadGame(state):
     if state == 1:
-        #code to save board in slot 1
-        return
+        with open('Save1.pickle', 'rb') as f:
+            item = pickle.load(f)
     if state == 2:
-        #code to save board in slot 2
-        return
+        with open('Save2.pickle', 'rb') as f:
+            item = pickle.load(f)
     if state == 3:
-        #code to save board in slot 3
-        return
+        with open('Save3.pickle', 'rb') as f:
+            item = pickle.load(f)
+    setBoard(item)
+    return
+
+
+
+def setBoard(item):
+    #add back sprites to the pieces.
+    for row in range(8):
+        for col in range(8):
+            board[row][col] = item[row][col]
+            if item[row][col].piece:
+                #code here to change the sprite to the correct sprite
+                ReturnPieceSprite(board[row][col].piece)
+
+    #now
+
     return

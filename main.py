@@ -1,6 +1,6 @@
 from guielements import *
 
-from GameScene import playgame, delegation_mode, turnChange, create_board, reset_turn
+from GameScene import playgame, delegation_mode, turnChange, create_board, reset_turn, update_display
 from board import *
 from Scenes.MainMenuScene import MenuScene
 from Scenes.RulesPageScene import RulesPageScene
@@ -20,10 +20,16 @@ from board import remove_highlights
 #pygame.mixer.music.load("Ciara's First Beat.mp3")
 #pygame.mixer.music.play(-1)
 
+#TODO add some functionality for continue game. This entails adding a game exists button
+#I need to make buttons not appear if they cant be called.
+#So if there is no current game, then save should not be an option. If there is no current game then continue should
+#not be an option
+#for the rules page make the button in the top right take you back to where it brought you.
+
 def main():
     pygame.init()
-
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    ExistingGame = False
     pygame.display.set_caption('Medieval Fuzzy Logic Chess')
     game_state = GameState.Home
     while True:
@@ -37,51 +43,61 @@ def main():
             game_state = MenuScene(screen)
         #play Game
         #remove_highlights()
-        if game_state == GameState.Play:
+        if (game_state == GameState.Play) and (ExistingGame):
             print('playing game')
-            game_state == playgame(screen)
+            game_state = playgame(screen)
+        elif (game_state == GameState.Play) and not (ExistingGame):
+            print('No Game exists yet')
+            game_state = GameState.NewOrLoad
 
         if game_state == GameState.NewOrLoad:
             game_state = NewOrLoadScene(screen)
 
         if game_state == GameState.NewGame:
-            reset_turn()
             clear_board()
             create_board()
+            reset_turn()
+            ExistingGame = True
             game_state = playgame(screen)
 
         #Win Game
         #remove_highlights()
         if game_state == GameState.Win:
+            ExistingGame = False
             game_state = winLossScreen(screen, True)
-            #game_state = playgame(screen)
-        #Lose Game (ALSO OCCURS ON RESIGN)
+        #Lose Game
         if game_state == GameState.Loss:
-            #remove_highlights()
+            ExistingGame = False
             game_state = winLossScreen(screen, False)
             #game_state = playgame(screen)
         if game_state == GameState.Escape:
             game_state = escapeScene(screen)
 
 #---------GAME SAVE---------------
-        if game_state == GameState.Save1:
+        if game_state == GameState.Save1 and ExistingGame:
             SaveGame(1)
-            game_state = playgame(screen)
-        if game_state == GameState.Save2:
+            game_state = escapeScene(screen)
+        if game_state == GameState.Save2 and ExistingGame:
             SaveGame(2)
-            game_state = playgame(screen)
-        if game_state == GameState.Save3:
+            game_state = escapeScene(screen)
+        if game_state == GameState.Save3 and ExistingGame:
             SaveGame(3)
-            game_state = playgame(screen)
+            game_state = escapeScene(screen)
 # ---------GAME LOAD---------------
         if game_state == GameState.Load1:
+            ExistingGame = True
             LoadGame(1)
+            update_display(screen)
             game_state = playgame(screen)
         if game_state == GameState.Load2:
+            ExistingGame = True
             LoadGame(2)
+            update_display(screen)
             game_state = playgame(screen)
         if game_state == GameState.Load3:
+            ExistingGame = True
             LoadGame(3)
+            update_display(screen)
             game_state = playgame(screen)
 
 #-----------START RULES PAGEE STUFF ------------------
