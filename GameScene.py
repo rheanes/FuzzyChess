@@ -583,7 +583,7 @@ def commMove(square: Square):
 
 def playgame(screen):
     #Button handles the free move commanders can make each turn
-    Command_Move_Button = CommFreeMove(pos=(WIDTH - 300, 50),
+    Command_Move_Button = CommFreeMove(pos=(WIDTH - 300, 200),
                                      font_size=40,
                                      txt_col=BLACK,
                                      bg_col=buttoncolor,
@@ -591,7 +591,7 @@ def playgame(screen):
                                      bg_hover=buttonhover,
                                      action=GameState.Play)
 
-    Delegate_Button = DelegateButton(pos=(WIDTH - 300, 125),
+    Delegate_Button = DelegateButton(pos=(WIDTH - 300, 275),
                                      font_size=50,
                                      txt_col=BLACK,
                                      bg_col=buttoncolor,
@@ -599,14 +599,14 @@ def playgame(screen):
                                      bg_hover=buttonhover,
                                      action=GameState.Play)
 
-    Recall_Button = RecallButton(pos=(WIDTH - 300, 200),
+    Recall_Button = RecallButton(pos=(WIDTH - 300, 350),
                            font_size=50,
                            txt_col=BLACK,
                            bg_col=buttoncolor,
                            text="Recall",
                            bg_hover=buttonhover,
                            action=GameState.Play)
-    End_Turn_Button = button(pos=(WIDTH - 300, 275),
+    End_Turn_Button = button(pos=(WIDTH - 300, 425),
                              font_size=50,
                              txt_col=BLACK,
                              bg_col=buttoncolor,
@@ -614,7 +614,7 @@ def playgame(screen):
                              bg_hover=buttonhover,
                              action=GameState.EndTurn)
 
-    Resign_Button = button(pos=(WIDTH - 300, 350),
+    Resign_Button = button(pos=(WIDTH - 300, 500),
                            font_size=50,
                            txt_col=BLACK,
                            bg_col=buttoncolor,
@@ -622,24 +622,24 @@ def playgame(screen):
                            bg_hover=buttonhover,
                            action=GameState.Loss)
 
-    Action_Counter = Action_Counttxt(pos=(WIDTH - 1090, 650),
-                                     font_size=25,
+    Action_Counter = Action_Counttxt(pos=(WIDTH - 300, 125),
+                                     font_size=50,
                                      txt_col=BLACK,
                                      bg_col=buttoncolor,
                                      text="Action Count: ",
                                      bg_hover=buttonhover,
                                      action=GameState.Play)
 
-    Current_turn = WhosTurn(pos=(WIDTH - 1060, 700),
-                            font_size=25,
+    Current_turn = WhosTurn(pos=(WIDTH - 300, 50),
+                            font_size=50,
                             txt_col=BLACK,
                             bg_col=buttoncolor,
                             text="Current Turn: Human",
                             bg_hover=buttonhover,
                             action=GameState.Play)
 
-    Bone_Pile = BoneP(pos=(WIDTH - 1125, 750),
-                            font_size=25,
+    Bone_Pile = BoneP(pos=(WIDTH - 1075, 650),
+                            font_size=50,
                             txt_col=BLACK,
                             bg_col=buttoncolor,
                             text="Bone Pile",

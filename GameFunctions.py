@@ -11,7 +11,7 @@ attackMatrix = [[4, 4, 4, 4, 5, 0],
                 [6, 6, 5, 6, 6, 4]]
 
 
-# ------------------------------ACTUAL DICE ROLL ---------------------
+# ------------------------------ACTUAL DICE ROLL --------------------- #
 def attackRoll():
     minRoll = 1
     maxRoll = 6
@@ -26,9 +26,7 @@ def attackRoll():
 # an optional parameter (hasMoved) as well in the event a knight is the attacker.
 # The knight tells the attack function it has moved, and gets a bonus to its move.
 
-def attack(attacker: int,
-           defender: int,
-           hasMoved: bool = False) -> bool:
+def attack(attacker: int, defender: int, hasMoved: bool = False) -> bool:
     num = attackRoll()
     if hasMoved:
         if num + 1 >= attackMatrix[attacker][defender]:
