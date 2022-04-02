@@ -1,9 +1,28 @@
 import enum
 import pygame
+
 #from board import board
 """
     ATTENTION: Fix the piece moves to return all highlighted squares
 """
+
+pawn_pos_table = [[-5, 0, 0, 0, 0, 0, 0, -5],
+                  [-10, -20, -10, -15, -5, -10, -20, -10],
+                  [15, 15, 5, 10, 5, 5, 15, 15],
+                  [10, 10, 0, 0, -5, 0, 10, 10],
+                  [-5, -5, -5, -5, -5, -5, -5, -5],
+                  [-5, -5, -5, -5, -5, -5, -5, -5],
+                  [-5, -5, -5, -5, -5, -5, -5, -5],
+                  [0, 0, 0, 0, 0, 0, 0, 0]]
+
+rook_pos_table = [[0, 0, 0, 0, 0, 0, 0, 0],
+                  [15, 10, 5, 10, -5, -10, -20, -10],
+                  [15, 15, 5, 10, 5, 5, 15, 15],
+                  [10, 10, 0, 0, -5, 0, 10, 10],
+                  [-5, -5, -5, -5, -5, -5, -5, -5],
+                  [-5, -5, -5, -5, -5, -5, -5, -5],
+                  [-5, -5, -5, -5, -5, -5, -5, -5],
+                  [0, 0, 0, 0, 0, 0, 0, 0]]
 
 class Team(enum.Enum):
     # Player AI
@@ -116,6 +135,13 @@ class Commander:
         for square in board:
             if square.piece.team is self.leader.
     """
+    #evaluation function for determining best position
+    def evaluation(self):
+        return 
+    #alpha-beta search
+    def search(self, piece, alpha, beta, maxPlayer):
+        return
+
     # the commander shoudl chec
     def make_decision(self, board, positions):
         # get troops enemies
@@ -125,8 +151,10 @@ class Commander:
 
         # get all enemies
         self.targets.append(self.board_scan(board))
-
+        
         # get troop position
+        for troop in self.troops:
+            print("hi")
 
 
 
