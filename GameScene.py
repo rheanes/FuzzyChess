@@ -785,7 +785,7 @@ def playgame(screen):
 
                                     elif knight_special_turn and current_square.piece.type is Type.KNIGHT and adjacent_enemies((current_square.row, current_square.col), current_square.piece.team):
                                         if chosen_square.color is BLACK:
-                                            if attack(current_square.piece.type.value,
+                                            if attack(screen, current_square.piece.type.value,
                                                       chosen_square.piece.type.value, checkCommanderHasMoved(current_square.piece.team)) is True:
                                                 captured_pieces.append(chosen_square.piece)
                                                 end_commander_turn(chosen_square.piece.team)
@@ -872,7 +872,7 @@ def playgame(screen):
                                         current_square = None
 
                                     elif (chosen_square.color is BLACK):
-                                        if attack(current_square.piece.type.value,
+                                        if attack(screen, current_square.piece.type.value,
                                                   chosen_square.piece.type.value) is True:
                                             captured_pieces.append(chosen_square.piece)
                                             remove_piece(chosen_square.piece)
