@@ -652,7 +652,6 @@ def playgame(screen):
     current_square = None
     global action_count
     global turn
-    delegated_pieces = []
     global delegation_mode
     global recall_mode
     global commander
@@ -714,7 +713,7 @@ def playgame(screen):
                         if delegation_mode and human_piece_delegated is not True and checkCommanderTurn(Team.BLUE):
                                 result = delegate(chosen_square)
                                 if result is not None:
-                                    delegated_pieces.append(result)
+                                    player_delegated_pieces.append(result)
 
                         elif recall_mode and human_piece_delegated is not True and checkCommanderTurn(Team.BLUE):
                             recall(chosen_square)
@@ -911,12 +910,7 @@ def playgame(screen):
                 else:
                     pass
         elif not turn:  # AI starts
-            # captured_commander = check_commanders()
-            #ai.decision()
-            print("Ai Action " + str(action_count))
-            # print('hello from computer')
-            # after AI is done enable next line
-            action_count -= 1
+            return GameState.AiPlay
 
         update_display(screen)
         for b in buttons:

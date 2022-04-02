@@ -80,6 +80,7 @@ class button(Sprite):
 
 
 class GameState(Enum):
+    AiPlay = -4
     ContinueGame = -3
     NewGame = -2
     Quit = -1

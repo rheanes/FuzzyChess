@@ -16,8 +16,8 @@ pawn_pos_table = [[-5, 0, 0, 0, 0, 0, 0, -5],
                   [0, 0, 0, 0, 0, 0, 0, 0]]
 
 rook_pos_table = [[0, 0, 0, 0, 0, 0, 0, 0],
-                  [15, 10, 5, 10, -5, -10, -20, -10],
-                  [15, 15, 5, 10, 5, 5, 15, 15],
+                  [15, 10, 5, 10, 5, 5, 10, 15],
+                  [10, 5, 3, 3, 3, 3, 5, 10],
                   [10, 10, 0, 0, -5, 0, 10, 10],
                   [-5, -5, -5, -5, -5, -5, -5, -5],
                   [-5, -5, -5, -5, -5, -5, -5, -5],
@@ -322,7 +322,8 @@ yellow_pieces = []
 blue_pieces = []
 green_pieces = []
 purple_pieces = []
-
+player_delegated_pieces = []
+ai_delegated_pieces = []
 #declare commanders here
 orange_commander = Commander(orange_pieces, ob)
 red_commander = King(red_pieces, rK)
