@@ -15,6 +15,7 @@ from Scenes.KingScene import KingScene
 from Scenes.winLossScreen import winLossScreen
 from Scenes.EscapeScene import escapeScene
 from Scenes.NewOrLoadScene import NewOrLoadScene
+from AiScene import aigame
 from board import remove_highlights
 
 #pygame.mixer.music.load("Ciara's First Beat.mp3")
@@ -42,6 +43,9 @@ def main():
         if game_state == GameState.Home:
             game_state = MenuScene(screen)
         #play Game
+        if (game_state == GameState.AiPlay):
+            game_state = aigame(screen)
+
         #remove_highlights()
         if (game_state == GameState.Play) and (ExistingGame):
             print('playing game')

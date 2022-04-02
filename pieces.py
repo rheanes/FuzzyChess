@@ -322,7 +322,8 @@ yellow_pieces = []
 blue_pieces = []
 green_pieces = []
 purple_pieces = []
-
+player_delegated_pieces = []
+ai_delegated_pieces = []
 #declare commanders here
 orange_commander = Commander(orange_pieces, ob)
 red_commander = King(red_pieces, rK)
