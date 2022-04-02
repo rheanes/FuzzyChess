@@ -583,37 +583,39 @@ def commMove(square: Square):
 
 def playgame(screen):
     #Button handles the free move commanders can make each turn
-    Command_Move_Button = CommFreeMove(pos=(WIDTH - 150, 300),
-                                     font_size=25,
+    Command_Move_Button = CommFreeMove(pos=(WIDTH - 300, 50),
+                                     font_size=40,
                                      txt_col=BLACK,
                                      bg_col=buttoncolor,
-                                     text="Commander Free Move",
+                                     text="Com. Free Move",
                                      bg_hover=buttonhover,
                                      action=GameState.Play)
 
-    Delegate_Button = DelegateButton(pos=(WIDTH - 100, 400),
-                                     font_size=25,
+    Delegate_Button = DelegateButton(pos=(WIDTH - 300, 125),
+                                     font_size=50,
                                      txt_col=BLACK,
                                      bg_col=buttoncolor,
                                      text="Delegate",
                                      bg_hover=buttonhover,
                                      action=GameState.Play)
-    Recall_Button = RecallButton(pos=(WIDTH-100, 500),
-                           font_size=25,
+
+    Recall_Button = RecallButton(pos=(WIDTH - 300, 200),
+                           font_size=50,
                            txt_col=BLACK,
                            bg_col=buttoncolor,
                            text="Recall",
                            bg_hover=buttonhover,
                            action=GameState.Play)
-    End_Turn_Button = button(pos=(WIDTH - 100, 600),
-                             font_size=25,
+    End_Turn_Button = button(pos=(WIDTH - 300, 275),
+                             font_size=50,
                              txt_col=BLACK,
                              bg_col=buttoncolor,
                              text="End Turn",
                              bg_hover=buttonhover,
                              action=GameState.EndTurn)
-    Resign_Button = button(pos=(WIDTH - 100, 700),
-                           font_size=25,
+
+    Resign_Button = button(pos=(WIDTH - 300, 350),
+                           font_size=50,
                            txt_col=BLACK,
                            bg_col=buttoncolor,
                            text="Resign",
@@ -673,9 +675,9 @@ def playgame(screen):
         # print('action count', action_count)
         Action_Counter.text = 'Action Count: ' + str(action_count)
 
-        """if action_count <= 0:
+        if action_count <= 0 and not turn:
             turnChange()
-            reset_turn()"""
+            reset_turn()
 
         if turn:
             # print('human turn')
@@ -911,24 +913,10 @@ def playgame(screen):
         elif not turn:  # AI starts
             # captured_commander = check_commanders()
             #ai.decision()
-            Action_Counter.text = 'Action Count: ' + str(action_count)
-            Current_turn.text = 'Current Turn: AI'
+            print("Ai Action " + str(action_count))
             # print('hello from computer')
             # after AI is done enable next line
             action_count -= 1
-            Action_Counter.text = 'Action Count: ' + str(action_count)
-            #time.sleep(2)
-
-            action_count -= 1
-            Action_Counter.text = 'Action Count: ' + str(action_count)
-            #time.sleep(2)
-
-            action_count -= 1
-            Action_Counter.text = 'Action Count: ' + str(action_count)
-            #time.sleep(2)
-
-            turnChange()
-            reset_turn()
 
         update_display(screen)
         for b in buttons:
