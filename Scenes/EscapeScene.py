@@ -1,5 +1,3 @@
-from pygame import KEYDOWN
-
 from guielements import *
 
 boxLoc = (400, 200, 400, 500)
@@ -9,42 +7,51 @@ def escapeScene(screen):
     #Define Text
     Top_Text = font.render("Escape Menu", True, BLACK)
     #define buttons
-    Home_Button = button(pos = (600, 300),
+    Home_Button = button(pos = (600, 250),
                          font_size=48,
                          txt_col=BLACK,
                          bg_col=buttoncolor,
                          text="Game Menu",
                          bg_hover=buttonhover,
                          action=GameState.Home)
-    Resume_Button = button(pos=(600, 375),
+    Resume_Button = button(pos=(600, 325),
                           font_size=48,
                           txt_col=BLACK,
                           bg_col=buttoncolor,
                           text="Resume Game",
                           bg_hover=buttonhover,
                           action=GameState.Play)
-    Save_Button = button(pos=(600, 450),
+    Save_Button = button(pos=(600, 400),
                           font_size=48,
                           txt_col=BLACK,
                           bg_col=buttoncolor,
                           text="Save Game",
                           bg_hover=buttonhover,
                           action=1)
-    Rules_Button = button(pos=(600, 525),
+    Rules_Button = button(pos=(600, 475),
                            font_size=48,
                            txt_col=BLACK,
                            bg_col=buttoncolor,
                            text="Game Rules",
                            bg_hover=buttonhover,
                            action=GameState.Rules)
-    Quit_Button = button(pos=(600, 600),
+    Resign_Button = button(pos=(600, 550),
+                           font_size=48
+                           ,
+                           txt_col=BLACK,
+                           bg_col=buttoncolor,
+                           text="Resign",
+                           bg_hover=buttonhover,
+                           action=2)
+    Quit_Button = button(pos=(600, 625),
                          font_size=48,
                          txt_col=BLACK,
                          bg_col=buttoncolor,
                          text="Quit Game",
                          bg_hover=buttonhover,
                          action=GameState.Quit)
-    buttons = [Home_Button, Resume_Button, Save_Button, Rules_Button, Quit_Button]
+
+    buttons = [Home_Button, Resume_Button, Save_Button, Rules_Button, Resign_Button, Quit_Button]
     while True:
         mouse_down = False
         for event in pygame.event.get():
@@ -62,6 +69,8 @@ def escapeScene(screen):
             ui_action = b.moused_over(pygame.mouse.get_pos(),mouse_down)
             if ui_action == 1:
                 ui_action = SaveGame(screen)
+            if ui_action == 2:
+                ui_action = ConfirmResign(screen)
             if ui_action is not None:
                 return ui_action
             b.draw(screen)
@@ -108,6 +117,42 @@ def SaveGame(screen):
                 exit()
             #draw stuff on screen here
             pygame.draw.rect(screen, BLACK, pygame.Rect(boxLoc))
+            for tab in tabs:
+                ui_action = tab.moused_over(pygame.mouse.get_pos(), mouse_down)
+                if ui_action is not None:
+                    return ui_action
+                tab.draw(screen)
+            pygame.display.flip()
+
+def ConfirmResign(screen):
+    Text = font.render("Are you sure?", True, WHITE)
+    Yes_Button = button((600, 400),
+                          font_size=48,
+                          txt_col=BLACK,
+                          bg_col=buttoncolor,
+                          text="Yes",
+                          bg_hover=buttonhover,
+                          action=GameState.Loss)
+    No_Button = button((600, 500),
+                          font_size=48,
+                          txt_col=BLACK,
+                          bg_col=buttoncolor,
+                          text="No",
+                          bg_hover=buttonhover,
+                          action=GameState.Escape)
+    tabs = [Yes_Button, No_Button]
+
+    while True:
+        mouse_down = False
+        for event in pygame.event.get():
+            if event.type == MOUSEBUTTONDOWN and event.button == 1:
+                mouse_down = True
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            #draw stuff on screen here
+            pygame.draw.rect(screen, BLACK, pygame.Rect(boxLoc))
+            screen.blit(Text, (430, 300))
             for tab in tabs:
                 ui_action = tab.moused_over(pygame.mouse.get_pos(), mouse_down)
                 if ui_action is not None:
