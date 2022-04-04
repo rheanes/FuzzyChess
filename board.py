@@ -467,6 +467,12 @@ def commAuthMovement(maxSpeed: int, iterations: int, position: tuple[int, int], 
 
 #----------START LOAD AND SAVE PROCESSING HERE---------------
 
+
+
+
+
+
+
 #This removes all the sprites from the pieces, because they cant be pickled.
 #It then pickles the board and adds the sprites back, so game can resume.
 def SaveGame(state):
@@ -474,25 +480,54 @@ def SaveGame(state):
         for col in range(8):
             if board[row][col].piece:
                 board[row][col].piece.image = None
-
+    for c in player_commanders:
+        for p in c.troops:
+            p.image = None
+    for c in ai_commanders:
+        for p in c.troops:
+            p.image = None
+    for p in player_captured_pieces:
+        p.image = None
+    for p in ai_captured_pieces:
+        p.image = None
     SaveBoard(state)
+    #sets default sprites for all pieces in commander arrays.
     default_sprites()
     return
+
+#a class for saving the game
+class saveStruct:
+    def __init__(self, brd, plc, aic, pdp, adp, aicp, plcp):
+        self.brd = brd
+        self.plc = plc
+        self.aic = aic
+        self.pdp = pdp
+        self.adp = adp
+        self.aicp = aicp
+        self.plcp = plcp
+
+    def showPlayerCommanders(self):
+        for c in self.plc:
+            for t in c.troops:
+                print(t.type)
 
 
 #Does the actual saving of the board.
 def SaveBoard(state):
+    currentGame = saveStruct(board, player_commanders, ai_commanders, player_delegated_pieces, ai_delegated_pieces,
+                             ai_captured_pieces, player_captured_pieces)
+    currentGame.showPlayerCommanders()
     if state == 1:
         with open('Save1.pickle', 'wb') as f:
-            pickle.dump(board, f)
+            pickle.dump(currentGame, f)
             return
     if state == 2:
         with open('Save2.pickle', 'wb') as f:
-            pickle.dump(board, f)
+            pickle.dump(currentGame, f)
             return
     if state == 3:
         with open('Save3.pickle', 'wb') as f:
-            pickle.dump(board, f)
+            pickle.dump(currentGame, f)
             return
 
 
@@ -514,14 +549,40 @@ def LoadGame(state):
 
 
 def setBoard(item):
+    bord = item.brd
+    pc = item.plc
+    aic = item.aic
+    pdp = item.pdp
+    adp = item.adp
+    aicp = item.aicp
+    plcp = item.plcp
     #add back sprites to the pieces.
     for row in range(8):
         for col in range(8):
-            board[row][col] = item[row][col]
-            if item[row][col].piece:
-                #code here to change the sprite to the correct sprite
+            #set each square of the board equal to the saved version
+            board[row][col] = bord[row][col]
+            #addes sprites back to the pieces
+            if board[row][col].piece:
                 ReturnPieceSprite(board[row][col].piece)
+    #clear all exising data from
+    player_commanders.clear()
+    ai_commanders.clear()
+    player_delegated_pieces.clear()
+    ai_delegated_pieces.clear()
+    ai_captured_pieces.clear()
+    player_captured_pieces.clear()
 
-    #now
+    for c in pc:
+        player_commanders.append(c)
+    for c in aic:
+        ai_commanders.append(c)
+    for p in pdp:
+        player_delegated_pieces.append(p)
+    for p in adp:
+        ai_delegated_pieces.append(p)
+    for p in aicp:
+        ai_captured_pieces.append(p)
+    for p in plcp:
+        player_captured_pieces.append(p)
 
     return
