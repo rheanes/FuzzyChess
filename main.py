@@ -140,7 +140,8 @@ def main():
             game_state = playgame(screen)
         if game_state == GameState.EndTurn:
             #add code to do something
-            print('EndTurn selected.')
+            turnChange()
+            reset_turn()
             game_state = playgame(screen)
 
 main()
