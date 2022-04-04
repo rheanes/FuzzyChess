@@ -32,13 +32,6 @@ def aigame(screen):
                              bg_hover=buttonhover,
                              action=GameState.EndTurn)
 
-    Resign_Button = button(pos=(WIDTH - 300, 500),
-                           font_size=50,
-                           txt_col=BLACK,
-                           bg_col=buttoncolor,
-                           text="Resign",
-                           bg_hover=buttonhover,
-                           action=GameState.Loss)
 
     Action_Counter = Action_Counttxt(pos=(WIDTH - 300, 125),
                                      font_size=50,
@@ -64,7 +57,7 @@ def aigame(screen):
                             bg_hover=buttonhover,
                             action=GameState.Play)
 
-    buttons = [Delegate_Button, Resign_Button, End_Turn_Button, Recall_Button,
+    buttons = [Delegate_Button, End_Turn_Button, Recall_Button,
                Action_Counter, Current_turn, Bone_Pile, Command_Move_Button]
 
     current_square = None
