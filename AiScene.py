@@ -106,9 +106,7 @@ def aigame(screen):
                     x, y = pygame.mouse.get_pos()
                     # if you dont click on the game board
                     if x >= GAME_WIDTH or y >= GAME_WIDTH:
-                        if End_Turn_Button.selected:
-                            turnChange()
-                            reset_turn()
+                        pass
 
                     # if you do click on the game board
                     else:
