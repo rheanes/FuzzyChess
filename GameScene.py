@@ -651,7 +651,6 @@ def playgame(screen):
     global commander
     global blue_commander
     global red_commander
-    captured_pieces = []
     global deployed_team
     action_limit = 3
     knight_special_turn = False
@@ -780,7 +779,7 @@ def playgame(screen):
                                         if chosen_square.color is BLACK:
                                             if attack(screen, current_square.piece.type.value,
                                                       chosen_square.piece.type.value, checkCommanderHasMoved(current_square.piece.team)) is True:
-                                                captured_pieces.append(chosen_square.piece)
+                                                ai_captured_pieces.append(chosen_square.piece)
                                                 end_commander_turn(chosen_square.piece.team)
 
                                                 if chosen_square.piece.type is Type.BISHOP:
@@ -867,7 +866,7 @@ def playgame(screen):
                                     elif (chosen_square.color is BLACK):
                                         if attack(screen, current_square.piece.type.value,
                                                   chosen_square.piece.type.value) is True:
-                                            captured_pieces.append(chosen_square.piece)
+                                            ai_captured_pieces.append(chosen_square.piece)
                                             remove_piece(chosen_square.piece)
                                             end_commander_turn(chosen_square.piece.team)
 
