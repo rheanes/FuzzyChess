@@ -55,7 +55,7 @@ def main():
             game_state = GameState.NewOrLoad
 
         if game_state == GameState.NewOrLoad:
-            game_state = NewOrLoadScene(screen)
+            game_state = NewOrLoadScene(screen, ExistingGame)
 
         if game_state == GameState.NewGame:
             clear_board()

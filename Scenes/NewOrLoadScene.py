@@ -1,7 +1,7 @@
 from guielements import *
 from common import *
 
-def NewOrLoadScene(screen):
+def NewOrLoadScene(screen, ExistingGame):
     Page_Title = font.render("How to Play", True, BLACK)
     Home_Button = button((WIDTH/ 2, 100),
                          font_size=48,
@@ -10,21 +10,30 @@ def NewOrLoadScene(screen):
                          text="Return Home",
                          bg_hover=buttonhover,
                          action=GameState.Home)
-    New_Button = button((WIDTH / 2, 300),
+    if ExistingGame:
+        Continue_Button = button((WIDTH / 2, 300),
+                                 font_size=48,
+                                 txt_col=BLACK,
+                                 bg_col=buttoncolor,
+                                 text="Continue Game",
+                                 bg_hover=buttonhover,
+                                 action=GameState.Play)
+    else:
+        Continue_Button = button((WIDTH / 2, 300),
+                                 font_size=48,
+                                 txt_col=BLACK,
+                                 bg_col=buttoncolor,
+                                 text="",
+                                 bg_hover=buttonhover,
+                                 action=GameState.Play)
+
+    New_Button = button((WIDTH / 2, 400),
                          font_size=48,
                          txt_col=BLACK,
                          bg_col=buttoncolor,
                          text="New Game",
                          bg_hover=buttonhover,
                          action=GameState.NewGame)
-    Continue_Button = button((WIDTH / 2, 400),
-                         font_size=48,
-                         txt_col=BLACK,
-                         bg_col=buttoncolor,
-                         text="Continue Game",
-                         bg_hover=buttonhover,
-                         action=GameState.Play)
-
     Load_Button = button((WIDTH / 2, 500),
                          font_size=48,
                          txt_col=BLACK,
