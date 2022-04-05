@@ -23,7 +23,6 @@ def turnChange():
     elif turn:
         turn = False
 
-
 def update_display(screen):
     """ Draw board squares """
     for row in board:
@@ -50,9 +49,45 @@ def update_display(screen):
         for j in range(9):
             pygame.draw.line(screen, BLACK, (j * gap, 0), (j * gap, GAME_WIDTH))
 
-    pygame.draw.rect(screen, BACKGROUND, (GAME_WIDTH + 1, 0, WIDTH, HEIGHT))
     pygame.draw.rect(screen, BACKGROUND, (0, GAME_WIDTH + 1, WIDTH, HEIGHT))
+
+    for row in bonePile:
+        for square in row:
+            x_pos = square.col * (GAME_WIDTH // 8)
+            y_pos = square.row * (GAME_WIDTH // 8) + 710
+            pygame.draw.rect(screen, square.color, (x_pos, y_pos, GAME_WIDTH, HEIGHT))
+            if square.piece is not None and square.piece.image is not None:
+                screen.blit(pygame.transform.scale(square.piece.image, DEFAULT_IMAGE_SIZE), (x_pos, y_pos))
+
+    for i in range(5):
+        pygame.draw.line(screen, BLACK, (0, i * gap), (GAME_WIDTH, i * gap))
+        for j in range(9):
+            pygame.draw.line(screen, BLACK, (j * gap, 710), (j * gap, HEIGHT))
+
+    pygame.draw.rect(screen, BACKGROUND, (GAME_WIDTH + 1, 0, WIDTH, HEIGHT))
     # print('testing')
+
+#Adds pieces to the bone pile. AI pieces appear in the upper rows, player pieces on the lower ones
+def insertBonepile():
+    global ai_captured_pieces
+    aiRow = 0
+    aiCol = 0
+    for troop in ai_captured_pieces:
+        bonePile[aiRow][aiCol].piece = troop
+        aiCol += 1
+        if aiCol > 7:
+            aiCol = 0
+            aiRow += 1
+    humRow = 0
+    humCol = 0
+    for troop in player_captured_pieces:
+        bonePile[humRow][humCol].piece = troop
+        humCol += 1
+        if humCol > 7:
+            humCol = 0
+            humRow += 1
+
+
 
 
 # These are the potential moves
@@ -632,7 +667,15 @@ def playgame(screen):
                             bg_hover=buttonhover,
                             action=GameState.Play)
 
-    Bone_Pile = BoneP(pos=(WIDTH - 1075, 650),
+    Special_Text = Action_Counttxt(pos=(WIDTH - 975, 625),
+                            font_size=25,
+                            txt_col=BLACK,
+                            bg_col=buttoncolor,
+                            text="",
+                            bg_hover=buttonhover,
+                            action=GameState.Play)
+
+    Bone_Pile = BoneP(pos=(WIDTH - 1075, 700),
                             font_size=50,
                             txt_col=BLACK,
                             bg_col=buttoncolor,
@@ -641,7 +684,7 @@ def playgame(screen):
                             action=GameState.Play)
 
     buttons = [Delegate_Button, End_Turn_Button, Recall_Button,
-               Action_Counter, Current_turn, Bone_Pile, Command_Move_Button]
+               Action_Counter, Current_turn, Bone_Pile, Command_Move_Button, Special_Text]
 
     current_square = None
     global action_count
@@ -652,6 +695,7 @@ def playgame(screen):
     global blue_commander
     global red_commander
     global deployed_team
+    global commMoveMode
     action_limit = 3
     knight_special_turn = False
     human_team = [Team.GREEN, Team.BLUE, Team.PURPLE]
@@ -674,6 +718,16 @@ def playgame(screen):
         if turn:
             # print('human turn')
             # print('enter pygame events')
+
+            if(recall_mode):
+                Special_Text.text = "Select Piece"
+
+            elif(delegation_mode):
+                Special_Text.text = "Select Piece then Commander"
+
+            elif not (delegation_mode or recall_mode):
+                Special_Text.text = ""
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -690,6 +744,9 @@ def playgame(screen):
                         if End_Turn_Button.selected:
                             turnChange()
                             reset_turn()
+                            delegation_mode = False
+                            recall_mode = False
+                            commMoveMode = False
 
                     # if you do click on the game board
                     else:
@@ -708,13 +765,19 @@ def playgame(screen):
                                 if result is not None:
                                     player_delegated_pieces.append(result)
 
+                        elif delegation_mode and chosen_square.piece is None:
+                            delegation_mode = False
+
                         elif recall_mode and human_piece_delegated is not True and checkCommanderTurn(Team.BLUE):
                             recall(chosen_square)
+                            Special_Text.text = ""
+
+                        elif recall_mode and chosen_square.piece is None:
+                            recall_mode = False
 
                         #Defines the free movement the commander can make without expending its corp turn
                         #This only occurs if the button is pressed
                         else:
-                            global commMoveMode
                             # if chosen_square.piece.team in human_team:
                             # conditions for selected_square
                             if current_square is None:
@@ -736,14 +799,24 @@ def playgame(screen):
                                                 if(blue_commander.has_moved):
                                                     current_square = chosen_square
                                                     knightAttack(chosen_square)
+                                                else:
+                                                    current_square = chosen_square
+                                                    potential_piece_moves(chosen_square)
                                             elif(chosen_square.piece.team is Team.GREEN):
                                                 if(green_commander.has_moved):
                                                     current_square = chosen_square
                                                     knightAttack(chosen_square)
+                                                else:
+                                                    current_square = chosen_square
+                                                    potential_piece_moves(chosen_square)
                                             elif(chosen_square.piece.team is Team.PURPLE):
                                                 if(purple_commander.has_moved):
                                                     current_square = chosen_square
                                                     knightAttack(chosen_square)
+                                                else:
+                                                    current_square = chosen_square
+                                                    potential_piece_moves(chosen_square)
+
                                         elif knight_special_turn and not adjacent_enemies((chosen_square.row, chosen_square.col), chosen_square.piece.team):
                                             current_square = chosen_square
                                             potential_piece_moves(chosen_square)
@@ -779,8 +852,9 @@ def playgame(screen):
                                         if chosen_square.color is BLACK:
                                             if attack(screen, current_square.piece.type.value,
                                                       chosen_square.piece.type.value, checkCommanderHasMoved(current_square.piece.team)) is True:
+                                                print(chosen_square.piece)
                                                 ai_captured_pieces.append(chosen_square.piece)
-                                                end_commander_turn(chosen_square.piece.team)
+                                                end_commander_turn(current_square.piece.team)
 
                                                 if chosen_square.piece.type is Type.BISHOP:
                                                     removeCommander(chosen_square.piece.team)
@@ -794,6 +868,7 @@ def playgame(screen):
                                                 current_square = None
                                                 action_count -= 1
                                                 remove_highlights()
+                                                knight_special_turn = False
                                                 if (chosen_square.piece.team is Team.BLUE):
                                                     blue_commander.has_moved = False
                                                 elif (chosen_square.piece.team is Team.GREEN):
@@ -802,16 +877,23 @@ def playgame(screen):
                                                     purple_commander.has_moved = False
                                             else:
                                                 end_commander_turn(current_square.piece.team)
-                                                chosen_square = None
-                                                current_square = None
                                                 remove_highlights()
                                                 action_count -= 1
-                                                if (chosen_square.piece.team is Team.BLUE):
+                                                if (current_square.piece.team is Team.BLUE):
                                                     blue_commander.has_moved = False
-                                                elif (chosen_square.piece.team is Team.GREEN):
+                                                elif (current_square.piece.team is Team.GREEN):
                                                     green_commander.has_moved = False
-                                                elif (chosen_square.piece.team is Team.PURPLE):
+                                                elif (current_square.piece.team is Team.PURPLE):
                                                     purple_commander.has_moved = False
+                                                knight_special_turn = False
+
+                                        elif chosen_square.color is BLUE:
+                                            action_count -= 1
+                                            end_commander_turn(current_square.piece.team)
+                                            move_piece(current_square, chosen_square)
+                                            remove_highlights()
+                                            current_square = None
+
 
 
                                     elif (chosen_square.color is BLUE) and \
@@ -906,6 +988,7 @@ def playgame(screen):
             return GameState.AiPlay
 
         update_display(screen)
+        insertBonepile()
         CAPTURE_TABLE_SIZE = (600, 340)
         captureTableImage = pygame.image.load('./Images/Capture Table.PNG')
         screen.blit(pygame.transform.scale(captureTableImage, CAPTURE_TABLE_SIZE), (WIDTH * .5, HEIGHT * .575)) # change this)

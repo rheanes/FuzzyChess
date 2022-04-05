@@ -59,7 +59,9 @@ def main():
 
         if game_state == GameState.NewGame:
             clear_board()
+            clearBonepile()
             create_board()
+            createBonepile()
             reset_turn()
             ExistingGame = True
             game_state = playgame(screen)
