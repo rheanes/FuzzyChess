@@ -906,6 +906,9 @@ def playgame(screen):
             return GameState.AiPlay
 
         update_display(screen)
+        CAPTURE_TABLE_SIZE = (600, 340)
+        captureTableImage = pygame.image.load('./Images/Capture Table.PNG')
+        screen.blit(pygame.transform.scale(captureTableImage, CAPTURE_TABLE_SIZE), (WIDTH * .5, HEIGHT * .575)) # change this)
         for b in buttons:
             ui_action = b.moused_over(pygame.mouse.get_pos(), mouse_down)
             if ui_action is not None:
