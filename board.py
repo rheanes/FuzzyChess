@@ -15,6 +15,7 @@ class Square:
 
 
 board = [[Square(None) for _ in range(8)] for _ in range(8)]
+bonePile = [[Square(None) for _ in range(8)] for _ in range(4)]
 
 
 #assign the proper troops to each commander
@@ -125,6 +126,19 @@ def create_board():
             board[row][col].y_pos = row * (WIDTH // 8)
             """
 
+def createBonepile():
+    bonePile[0] = [Square(None), Square(None), Square(None), Square(None), Square(None), Square(None), Square(None), Square(None)]
+    bonePile[1] = [Square(None), Square(None), Square(None), Square(None), Square(None), Square(None), Square(None), Square(None)]
+    bonePile[2] = [Square(None), Square(None), Square(None), Square(None), Square(None), Square(None), Square(None), Square(None)]
+    bonePile[3] = [Square(None), Square(None), Square(None), Square(None), Square(None), Square(None), Square(None), Square(None)]
+    for row in range(4):
+        for col in range(8):
+            if (row + col) % 2 == 1:
+                bonePile[row][col].color = GREY
+
+            bonePile[row][col].row = row
+            bonePile[row][col].col = col
+
 def clear_board():
     for row in range(8):
         for col in range(8):
@@ -142,6 +156,19 @@ def clear_board():
             board[row][col].y_pos = row * (WIDTH // 8)
             """
 
+def clearBonepile():
+    for row in range(4):
+        for col in range(8):
+            bonePile[row][col] = Square(None)
+
+    #Resets colors
+    for row in range(8):
+        for col in range(8):
+            if (row + col) % 2 == 1:
+                board[row][col].color = GREY
+
+            board[row][col].row = row
+            board[row][col].col = col
     # new changes
 
 
