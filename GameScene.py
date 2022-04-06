@@ -649,8 +649,6 @@ def playgame(screen):
                              bg_hover=buttonhover,
                              action=GameState.EndTurn)
 
-
-
     Action_Counter = Action_Counttxt(pos=(WIDTH - 300, 125),
                                      font_size=50,
                                      txt_col=BLACK,
@@ -699,7 +697,8 @@ def playgame(screen):
     action_limit = 3
     knight_special_turn = False
     human_team = [Team.GREEN, Team.BLUE, Team.PURPLE]
-
+    CAPTURE_TABLE_SIZE = (600, 340)
+    captureTableImage = pygame.image.load('./Images/Capture Table.PNG')
     ai = AI
 
     while True:
@@ -742,8 +741,6 @@ def playgame(screen):
                     # if you dont click on the game board
                     if x >= GAME_WIDTH or y >= GAME_WIDTH:
                         if End_Turn_Button.selected:
-                            turnChange()
-                            reset_turn()
                             delegation_mode = False
                             recall_mode = False
                             commMoveMode = False
@@ -989,8 +986,6 @@ def playgame(screen):
 
         update_display(screen)
         insertBonepile()
-        CAPTURE_TABLE_SIZE = (600, 340)
-        captureTableImage = pygame.image.load('./Images/Capture Table.PNG')
         screen.blit(pygame.transform.scale(captureTableImage, CAPTURE_TABLE_SIZE), (WIDTH * .5, HEIGHT * .575)) # change this)
         for b in buttons:
             ui_action = b.moused_over(pygame.mouse.get_pos(), mouse_down)
