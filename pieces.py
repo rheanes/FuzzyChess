@@ -121,6 +121,14 @@ class Commander:
         self.action = True
         self.has_moved = False
 
+    def update_commander(self, commander):
+        self.leader = commander.leader
+        self.troops = commander.troops
+        self.targets = commander.targets
+        self.authority = commander.authority
+        self.action = commander.action
+        self.has_moved = commander.action
+
     def see_pieces(self):
         for i in range(len(self.troops)):
             print(self.troops[i].type)
@@ -258,7 +266,9 @@ orange_commander.see_pieces()
 color_matrix_bishop = {Team.GREEN: './Images/green_bishop.png',
                        Team.PURPLE: './Images/purple_bishop.png',
                        Team.ORANGE: './Images/orange_bishop.png',
-                       Team.YELLOW: './Images/yellow_bishop.png'
+                       Team.YELLOW: './Images/yellow_bishop.png',
+                       Team.RED: './Images/red_bishop.png',
+                       Team.BLUE: './Images/blue_bishop.png'
 }
 color_matrix_king = {Team.BLUE: './Images/blue_king.png',
                      Team.RED: './Images/red_king.png'
