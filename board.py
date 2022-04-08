@@ -1,3 +1,4 @@
+import pieces
 from common import *
 from pieces import *
 import pickle
@@ -57,18 +58,29 @@ def default_sprites():
 
 #takes in a piece and returns the sprite that is the same as the color
 def ReturnPieceSprite(t):
-    if t.type == Type.PAWN:
-        t.switch_sprite(color_matrix_pawn[t.team])
-    elif t.type == Type.ROOK:
-        t.switch_sprite(color_matrix_rook[t.team])
-    elif t.type == Type.KNIGHT:
-        t.switch_sprite(color_matrix_knight[t.team])
-    elif t.type == Type.QUEEN:
-        t.switch_sprite(color_matrix_queen[t.team])
-    elif t.type == Type.BISHOP:
-        t.switch_sprite(color_matrix_bishop[t.team])
-    elif t.type == Type.KING:
-        t.switch_sprite(color_matrix_king[t.team])
+    #if its not delegated do this
+    if not t.delegated:
+        if t.type == Type.PAWN:
+            t.switch_sprite(color_matrix_pawn[t.team])
+        elif t.type == Type.ROOK:
+            t.switch_sprite(color_matrix_rook[t.team])
+        elif t.type == Type.KNIGHT:
+            t.switch_sprite(color_matrix_knight[t.team])
+        elif t.type == Type.QUEEN:
+            t.switch_sprite(color_matrix_queen[t.team])
+        elif t.type == Type.BISHOP:
+            t.switch_sprite(color_matrix_bishop[t.team])
+        elif t.type == Type.KING:
+            t.switch_sprite(color_matrix_king[t.team])
+    else:
+        if t.type == Type.PAWN:
+            t.switch_sprite(del_matrix_pawn[t.team])
+        elif t.type == Type.ROOK:
+            t.switch_sprite(del_matrix_rook[t.team])
+        elif t.type == Type.KNIGHT:
+            t.switch_sprite(del_matrix_knight[t.team])
+        elif t.type == Type.QUEEN:
+            t.switch_sprite(del_matrix_queen[t.team])
 
 def create_board():
     print(len(ai_commanders))
@@ -181,6 +193,7 @@ def remove_team(team):
         for troop in yellow_commander.troops:
             troop.team = Team.RED
             red_commander.troops.append(troop)
+            yellow_commander.troops.remove(troop)
             if troop.type == Type.PAWN:
                 troop.switch_sprite(color_matrix_pawn[Team.RED])
             elif troop.type == Type.KNIGHT:
@@ -197,6 +210,7 @@ def remove_team(team):
         for troop in orange_commander.troops:
             troop.team = Team.RED
             red_commander.troops.append(troop)
+            orange_commander.troops.remove(troop)
             if troop.type == Type.PAWN:
                 troop.switch_sprite(color_matrix_pawn[Team.RED])
             elif troop.type == Type.KNIGHT:
@@ -214,6 +228,7 @@ def remove_team(team):
         for troop in green_commander.troops:
             troop.team = Team.BLUE
             blue_commander.troops.append(troop)
+            green_commander.troops.remove(troop)
             if troop.type == Type.PAWN:
                 troop.switch_sprite(color_matrix_pawn[Team.BLUE])
             elif troop.type == Type.KNIGHT:
@@ -230,6 +245,7 @@ def remove_team(team):
         for troop in purple_commander.troops:
             troop.team = Team.BLUE
             blue_commander.troops.append(troop)
+            purple_commander.troops.remove(troop)
             if troop.type == Type.PAWN:
                 troop.switch_sprite(color_matrix_pawn[Team.BLUE])
             elif troop.type == Type.KNIGHT:
@@ -507,16 +523,18 @@ def SaveGame(state):
         for col in range(8):
             if board[row][col].piece:
                 board[row][col].piece.image = None
+    '''
     for c in player_commanders:
         for p in c.troops:
             p.image = None
     for c in ai_commanders:
         for p in c.troops:
             p.image = None
-    for p in player_captured_pieces:
-        p.image = None
-    for p in ai_captured_pieces:
-        p.image = None
+    '''
+    for row in range(4):
+        for col in range(8):
+            if bonePile[row][col].piece:
+                bonePile[row][col].piece.image = None
     SaveBoard(state)
     #sets default sprites for all pieces in commander arrays.
     default_sprites()
@@ -524,26 +542,36 @@ def SaveGame(state):
 
 #a class for saving the game
 class saveStruct:
-    def __init__(self, brd, plc, aic, pdp, adp, aicp, plcp):
-        self.brd = brd
-        self.plc = plc
-        self.aic = aic
-        self.pdp = pdp
-        self.adp = adp
-        self.aicp = aicp
-        self.plcp = plcp
+    def __init__(self):
+        #board
+        self.brd = board
+        #player commanders
+        self.blc = blue_commander
+        self.grc = pieces.green_commander
+        self.prc = pieces.purple_commander
+        #ai commanders
+        self.rdc = pieces.red_commander
+        self.orc = pieces.orange_commander
+        self.ylc = pieces.yellow_commander
+        #player delegated pieces
+        self.pdp = pieces.player_delegated_pieces
+        #ai delegated pieces
+        self.adp = pieces.ai_delegated_pieces
+        #player captured pieces
+        self.aicp = pieces.ai_captured_pieces
+        #ai captured pieces
+        self.plcp = pieces.player_captured_pieces
+        #bonepile
+        self.bnpl = bonePile
 
-    def showPlayerCommanders(self):
-        for c in self.plc:
-            for t in c.troops:
-                print(t.type)
 
 
 #Does the actual saving of the board.
 def SaveBoard(state):
-    currentGame = saveStruct(board, player_commanders, ai_commanders, player_delegated_pieces, ai_delegated_pieces,
-                             ai_captured_pieces, player_captured_pieces)
-    currentGame.showPlayerCommanders()
+    currentGame = saveStruct()
+    print(currentGame.blc.action, currentGame.blc.has_moved, currentGame.blc.authority)
+    print(blue_commander.action, blue_commander.has_moved, blue_commander.authority)
+    print('hello world')
     if state == 1:
         with open('Save1.pickle', 'wb') as f:
             pickle.dump(currentGame, f)
@@ -577,12 +605,29 @@ def LoadGame(state):
 
 def setBoard(item):
     bord = item.brd
-    pc = item.plc
-    aic = item.aic
-    pdp = item.pdp
-    adp = item.adp
-    aicp = item.aicp
-    plcp = item.plcp
+    bnpl = item.bnpl
+    #set the commanders to what they were last game.
+    pieces.blue_commander.update_commander(item.blc)
+    pieces.green_commander.update_commander(item.grc)
+    pieces.purple_commander.update_commander(item.prc)
+    pieces.red_commander.update_commander(item.rdc)
+    pieces.orange_commander.update_commander(item.orc)
+    pieces.yellow_commander.update_commander(item.ylc)
+    #clear ai_commanders and player_commanders
+    ai_commanders.clear()
+    player_commanders.clear()
+    #set ai captured pieces arrays.
+    global ai_captured_pieces
+    ai_captured_pieces = item.aicp
+    for p in ai_captured_pieces:
+        ReturnPieceSprite(p)
+    #set player captured pieces array and restore sprites
+    global player_captured_pieces
+    player_captured_pieces = item.plcp
+    for p in player_captured_pieces:
+        ReturnPieceSprite(p)
+
+
     #add back sprites to the pieces.
     for row in range(8):
         for col in range(8):
@@ -590,26 +635,36 @@ def setBoard(item):
             board[row][col] = bord[row][col]
             #addes sprites back to the pieces
             if board[row][col].piece:
+                #reloads the piece color back into the game
                 ReturnPieceSprite(board[row][col].piece)
-    #clear all exising data from
-    player_commanders.clear()
-    ai_commanders.clear()
-    player_delegated_pieces.clear()
-    ai_delegated_pieces.clear()
-    ai_captured_pieces.clear()
-    player_captured_pieces.clear()
-
-    for c in pc:
-        player_commanders.append(c)
-    for c in aic:
-        ai_commanders.append(c)
-    for p in pdp:
-        player_delegated_pieces.append(p)
-    for p in adp:
-        ai_delegated_pieces.append(p)
-    for p in aicp:
-        ai_captured_pieces.append(p)
-    for p in plcp:
-        player_captured_pieces.append(p)
+                #if the bishop eexists, append it back to commander arrays.
+                if (board[row][col].piece.type == Type.BISHOP) or (board[row][col].piece.type == Type.KING):
+                    BishopHandler(board[row][col].piece.team)
+    # restore the bone pile
+    for row in range(4):
+        for col in range(8):
+            bonePile[row][col] = bnpl[row][col]
+            if bonePile[row][col].piece:
+                ReturnPieceSprite(board[row][col].piece)
 
     return
+
+
+def BishopHandler(team):
+    if team == Team.BLUE:
+        player_commanders.append(blue_commander)
+    if team == Team.GREEN:
+        player_commanders.append(green_commander)
+    if team == Team.PURPLE:
+        player_commanders.append(purple_commander)
+    if team == Team.RED:
+        ai_commanders.append(red_commander)
+    if team == Team.ORANGE:
+        ai_commanders.append(orange_commander)
+    if team == Team.YELLOW:
+        ai_commanders.append(yellow_commander)
+
+
+
+
+
