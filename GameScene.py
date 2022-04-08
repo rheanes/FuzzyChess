@@ -563,7 +563,6 @@ FirstRun = True
 #This will take in a piece and the current team.
 #Then it will remove the
 def remove_piece(piece):
-    print('removing piece.')
     team = piece.team
     if team == team.RED:
         red_commander.troops.remove(piece)
@@ -710,9 +709,7 @@ def playgame(screen):
         # print('action count', action_count)
         Action_Counter.text = 'Action Count: ' + str(action_count)
 
-        if action_count <= 0 and not turn:
-            turnChange()
-            reset_turn()
+
 
         if turn:
             # print('human turn')
@@ -947,6 +944,9 @@ def playgame(screen):
                                                   chosen_square.piece.type.value) is True:
                                             ai_captured_pieces.append(chosen_square.piece)
                                             remove_piece(chosen_square.piece)
+                                            #Recoloring must be done after remove piece or that function gets fucked
+                                            chosen_square.piece.team = Team.RED
+                                            ReturnPieceSprite(chosen_square.piece)
                                             end_commander_turn(chosen_square.piece.team)
 
                                             if chosen_square.piece.type is Type.BISHOP:
