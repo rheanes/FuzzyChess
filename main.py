@@ -94,17 +94,17 @@ def main():
             ExistingGame = True
             LoadGame(1)
             update_display(screen)
-            game_state = playgame(screen)
+            game_state = GameState.Play
         if game_state == GameState.Load2:
             ExistingGame = True
             LoadGame(2)
             update_display(screen)
-            game_state = playgame(screen)
+            game_state = GameState.Play
         if game_state == GameState.Load3:
             ExistingGame = True
             LoadGame(3)
             update_display(screen)
-            game_state = playgame(screen)
+            game_state = GameState.Play
 
 #-----------START RULES PAGEE STUFF ------------------
         #Rules Page
