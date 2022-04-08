@@ -846,8 +846,11 @@ def playgame(screen):
                                         if chosen_square.color is BLACK:
                                             if attack(screen, current_square.piece.type.value,
                                                       chosen_square.piece.type.value, checkCommanderHasMoved(current_square.piece.team)) is True:
-                                                print(chosen_square.piece)
                                                 ai_captured_pieces.append(chosen_square.piece)
+                                                remove_piece(chosen_square.piece)
+                                                # Recoloring must be done after remove piece or that function gets fucked
+                                                chosen_square.piece.team = Team.RED
+                                                ReturnPieceSprite(chosen_square.piece)
                                                 end_commander_turn(current_square.piece.team)
 
                                                 if chosen_square.piece.type is Type.BISHOP:
