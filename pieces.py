@@ -165,17 +165,18 @@ class Commander:
         total_value = 0
         row, col = position[0], position[1]
         #reference piece table values based on piece type
-        if piece.type == Type.PAWN:
-            total_value += pawn_pos_table[row][col]
-        elif piece.type == Type.ROOK:
-            total_value += rook_pos_table[row][col]
-        elif piece.type == Type.BISHOP:
-            total_value += bishop_pos_table[row][col]
-        elif piece.type == Type.KNIGHT:
-            total_value += knight_pos_table[row][col]
+        if (board[row][col].piece is None) or (board[row][col].piece in enemies[piece.team]):
+            if piece.type == Type.PAWN:
+                total_value += pawn_pos_table[row][col]
+            elif piece.type == Type.ROOK:
+                total_value += rook_pos_table[row][col]
+            elif piece.type == Type.BISHOP:
+                total_value += bishop_pos_table[row][col]
+            elif piece.type == Type.KNIGHT:
+                total_value += knight_pos_table[row][col]
 
         #if a particular position to move to has an enemy piece, add the enemy pieces' value to the evaluation
-        if (board[row][col].piece is not None) and (board[row][col].piece.team not in enemies[piece.team]):
+        if (board[row][col].piece is not None) and (board[row][col].piece.team in enemies[piece.team]):
             total_value += board[row][col].piece.value
         
         return total_value
@@ -183,7 +184,7 @@ class Commander:
     for each moveable square in range for each piece, evaluate those squares (terminal nodes for alpha beta, prunes if that branch has not promising results)
     """
     #alpha-beta search
-    def search(self, piece, alpha, beta, maxPlayer):
+    def search(self, piece, alpha, beta, maxPlayer, depth, board):
         return
 
     # the commander shoudl chec
