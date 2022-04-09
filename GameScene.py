@@ -139,11 +139,18 @@ def potential_piece_moves(square: Square):
 def knightAttack(square: Square):
     highlight_moves(knightAttackPieces((square.row, square.col), (square.row, square.col)), square.piece.team)
 
+def findActionCount(array):
+    num = 0
+    for c in array:
+        if c.action == True:
+            num += 1
+
+    return num
 
 delegated_piece = None
 delegated_commander = None
 human_piece_delegated = False
-action_count = len(player_commanders)
+action_count = findActionCount(player_commanders)
 humanComms = len(player_commanders)
 aiComms = len(ai_commanders)
 turn = True  # True maeans human move
@@ -153,7 +160,6 @@ recalled_piece = None
 current_commander = None
 recall_mode = False
 commander = Team.GREEN
-deployed_team = []
 
 
 class DelegatedPiece:
@@ -456,8 +462,6 @@ class CommFreeMove(Sprite):
 
 # Sets the commanders turns to False to prevent their corp from making another action
 def end_commander_turn(team: Team):
-    global deployed_team
-    #deployed_team.append(team)
     if (team is Team.BLUE):
         blue_commander.action = False
     elif (team is Team.GREEN):
@@ -693,7 +697,6 @@ def playgame(screen):
     global commander
     global blue_commander
     global red_commander
-    global deployed_team
     global commMoveMode
     action_limit = 3
     knight_special_turn = False
@@ -701,7 +704,7 @@ def playgame(screen):
     CAPTURE_TABLE_SIZE = (600, 340)
     captureTableImage = pygame.image.load('./Images/Capture Table.PNG')
     ai = AI
-
+    action_count = findActionCount(player_commanders)
     while True:
         mouse_down = False
         pygame.mouse.get_pressed()

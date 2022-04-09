@@ -140,6 +140,8 @@ def create_board():
             """
 
 def createBonepile():
+    ai_captured_pieces.clear()
+    player_captured_pieces.clear()
     bonePile[0] = [Square(None), Square(None), Square(None), Square(None), Square(None), Square(None), Square(None), Square(None)]
     bonePile[1] = [Square(None), Square(None), Square(None), Square(None), Square(None), Square(None), Square(None), Square(None)]
     bonePile[2] = [Square(None), Square(None), Square(None), Square(None), Square(None), Square(None), Square(None), Square(None)]
@@ -564,9 +566,6 @@ class saveStruct:
 #Does the actual saving of the board.
 def SaveBoard(state):
     currentGame = saveStruct()
-    print(currentGame.blc.action, currentGame.blc.has_moved, currentGame.blc.authority)
-    print(blue_commander.action, blue_commander.has_moved, blue_commander.authority)
-    print('hello world')
     if state == 1:
         with open('Save1.pickle', 'wb') as f:
             pickle.dump(currentGame, f)
