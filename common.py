@@ -13,6 +13,7 @@ GAME_WIDTH = 600
 
 fonttype = "menlo"
 font = pygame.font.SysFont(fonttype, 45)
+headerFont = pygame.font.SysFont(fonttype, 300)
 rulesfont = pygame.font.SysFont(fonttype, 20)
 
 #colors

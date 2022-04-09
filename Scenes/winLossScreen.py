@@ -3,9 +3,9 @@ from common import *
 
 def winLossScreen(screen, win):
     if (win == True):
-        headerText = font.render("You Win", True, BLACK)
+        headerText = headerFont.render("You Win", True, BLACK)
     else:
-        headerText = font.render("You Lose", True, BLACK)
+        headerText = headerFont.render("You Lose", True, BLACK)
     homeButton = button(pos=(WIDTH * 0.2, 0.8 * HEIGHT), font_size=50, txt_col=BLACK, bg_col=buttoncolor,
                         text="Main Menu", bg_hover=buttonhover, action=GameState.Home)
     playButton = button(pos=(WIDTH * 0.8, 0.8 * HEIGHT), font_size=50, txt_col=BLACK, bg_col=buttoncolor,
@@ -24,7 +24,7 @@ def winLossScreen(screen, win):
                 pygame.quit()
                 exit()
         screen.fill(BACKGROUND)
-        screen.blit(headerText, (50, HEIGHT / 8))
+        screen.blit(headerText, (100, HEIGHT * .2))
         for b in buttons:
             ui_action = b.moused_over(pygame.mouse.get_pos(),mouse_down)
             if ui_action is not None:
