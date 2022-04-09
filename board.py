@@ -553,10 +553,6 @@ class saveStruct:
         self.rdc = pieces.red_commander
         self.orc = pieces.orange_commander
         self.ylc = pieces.yellow_commander
-        #player delegated pieces
-        self.pdp = pieces.player_delegated_pieces
-        #ai delegated pieces
-        self.adp = pieces.ai_delegated_pieces
         #player captured pieces
         self.aicp = pieces.ai_captured_pieces
         #ai captured pieces
