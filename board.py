@@ -3,7 +3,7 @@ from common import *
 from pieces import *
 import pickle
 
-#----------------BOARD CREATING AND SQUATE CLASS ------------
+#----------------BOARD CREATING AND SQUARE CLASS ------------
 class Square:
     def __init__(self, piece):
         super().__init__()
@@ -59,7 +59,7 @@ def default_sprites():
 
 #takes in a piece and returns the sprite that is the same as the color
 def ReturnPieceSprite(t):
-    #if its not delegated do this
+    #If it's not delegated do this
     if not t.delegated:
         if t.type == Type.PAWN:
             t.switch_sprite(color_matrix_pawn[t.team])
@@ -139,7 +139,10 @@ def create_board():
             board[row][col].y_pos = row * (WIDTH // 8)
             """
 
+#Create the bone pile and clears the captured pieces
 def createBonepile():
+    ai_captured_pieces.clear()
+    player_captured_pieces.clear()
     bonePile[0] = [Square(None), Square(None), Square(None), Square(None), Square(None), Square(None), Square(None), Square(None)]
     bonePile[1] = [Square(None), Square(None), Square(None), Square(None), Square(None), Square(None), Square(None), Square(None)]
     bonePile[2] = [Square(None), Square(None), Square(None), Square(None), Square(None), Square(None), Square(None), Square(None)]
