@@ -695,7 +695,6 @@ def playgame(screen):
     global blue_commander
     global red_commander
     global commMoveMode
-    action_limit = 3
     knight_special_turn = False
     human_team = [Team.GREEN, Team.BLUE, Team.PURPLE]
     CAPTURE_TABLE_SIZE = (600, 340)
