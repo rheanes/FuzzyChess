@@ -513,12 +513,6 @@ def commAuthMovement(maxSpeed: int, iterations: int, position: tuple[int, int], 
 
 #----------START LOAD AND SAVE PROCESSING HERE---------------
 
-
-
-
-
-
-
 #This removes all the sprites from the pieces, because they cant be pickled.
 #It then pickles the board and adds the sprites back, so game can resume.
 def SaveGame(state):
@@ -567,8 +561,6 @@ class saveStruct:
         #bonepile
         self.bnpl = bonePile
 
-
-
 #Does the actual saving of the board.
 def SaveBoard(state):
     currentGame = saveStruct()
@@ -588,7 +580,6 @@ def SaveBoard(state):
             pickle.dump(currentGame, f)
             return
 
-
 #Loads the save file into the board.
 #Then re-sets up the game with setBoard()
 def LoadGame(state):
@@ -604,8 +595,6 @@ def LoadGame(state):
     setBoard(item)
     return
 
-
-
 def setBoard(item):
     bord = item.brd
     bnpl = item.bnpl
@@ -620,16 +609,15 @@ def setBoard(item):
     ai_commanders.clear()
     player_commanders.clear()
     #set ai captured pieces arrays.
-    global ai_captured_pieces
-    ai_captured_pieces = item.aicp
+    for p in item.aicp:
+        ai_captured_pieces.append(p)
     for p in ai_captured_pieces:
         ReturnPieceSprite(p)
     #set player captured pieces array and restore sprites
-    global player_captured_pieces
-    player_captured_pieces = item.plcp
+    for p in item.plcp:
+        player_captured_pieces.append(p)
     for p in player_captured_pieces:
         ReturnPieceSprite(p)
-
 
     #add back sprites to the pieces.
     for row in range(8):
