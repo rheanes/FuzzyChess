@@ -89,9 +89,6 @@ def insertBonepile():
             humCol = 0
             humRow += 1
 
-
-
-
 # These are the potential moves
 def potential_piece_moves(square: Square):
     piece = square.piece
@@ -358,7 +355,7 @@ class DelegateButton(Sprite):
     def rect(self):
         return self.rects[1] if self.selected else self.rects[0]
 
-    # selects different button images depending if the mouse is hovered over it
+    # selects different button images depending on if the mouse is hovered over it
     def moused_over(self, mouse_pos, mouse_down):
         global delegation_mode
         if self.rect.collidepoint(mouse_pos):
@@ -399,7 +396,7 @@ class RecallButton(Sprite):
     def rect(self):
         return self.rects[1] if self.selected else self.rects[0]
 
-    # selects different button images depending if the mouse is hovered over it
+    # selects different button images depending on if the mouse is hovered over it
     def moused_over(self, mouse_pos, mouse_down):
         global recall_mode
         if self.rect.collidepoint(mouse_pos):
@@ -418,7 +415,7 @@ class RecallButton(Sprite):
     def draw(self, surface):
         surface.blit(self.img, self.rect)
 
-#This class is for use of the Commander's Free Movement. They are able to move a small amont depending
+#This class is for use of the Commander's Free Movement. They are able to move a small amount depending
 #on the piece. Kings can move 2 spaces, and Bishops can move one space.
 class CommFreeMove(Sprite):
     def __init__(self, pos, text, font_size, txt_col, bg_col, bg_hover, action=None):
@@ -441,7 +438,7 @@ class CommFreeMove(Sprite):
     def rect(self):
         return self.rects[1] if self.selected else self.rects[0]
 
-    # selects different button images depending if the mouse is hovered over it
+    # selects different button images depending on if the mouse is hovered over it
     def moused_over(self, mouse_pos, mouse_down):
         global commMoveMode
         if self.rect.collidepoint(mouse_pos):
@@ -460,7 +457,7 @@ class CommFreeMove(Sprite):
     def draw(self, surface):
         surface.blit(self.img, self.rect)
 
-# Sets the commanders turns to False to prevent their corp from making another action
+# Sets the commanders turns to False in order to prevent their corp from making another action
 def end_commander_turn(team: Team):
     if (team is Team.BLUE):
         blue_commander.action = False
@@ -589,7 +586,7 @@ def remove_piece(piece):
         green_commander.troops.remove(piece)
     return
 
-#This checks the commanders authority and returns it's value. If we don't have a piece,
+#This checks the commanders authority and returns its value. If we don't have a piece,
 #or the selected piece isn't a commander, we return false
 def commAuth(square: Square):
     global commMoveMode
@@ -740,7 +737,7 @@ def playgame(screen):
                     mouse_down = True
 
                     x, y = pygame.mouse.get_pos()
-                    # if you dont click on the game board
+                    # if you don't click on the game board
                     if x >= GAME_WIDTH or y >= GAME_WIDTH:
                         if End_Turn_Button.selected:
                             delegation_mode = False
@@ -853,7 +850,7 @@ def playgame(screen):
                                                       chosen_square.piece.type.value, checkCommanderHasMoved(current_square.piece.team)) is True:
                                                 ai_captured_pieces.append(chosen_square.piece)
                                                 remove_piece(chosen_square.piece)
-                                                # Recoloring must be done after remove piece or that function gets fucked
+                                                # Recoloring must be done after remove piece or that function gets killed
                                                 chosen_square.piece.team = Team.RED
                                                 ReturnPieceSprite(chosen_square.piece)
                                                 end_commander_turn(current_square.piece.team)
@@ -934,7 +931,7 @@ def playgame(screen):
                                             action_count -= 1
 
                                         #We only end turn and reduce action count if we aren't performing a commander move.
-                                        #If we are, then we can ignore the above and just set the commanders authority to false
+                                        #If we are, then we can ignore the above and just set the commander's authority to false
                                         if (commMoveMode):
                                             commMoveMode = False
                                             if current_square.piece.team is Team.BLUE:
@@ -952,7 +949,7 @@ def playgame(screen):
                                                   chosen_square.piece.type.value) is True:
                                             ai_captured_pieces.append(chosen_square.piece)
                                             remove_piece(chosen_square.piece)
-                                            #Recoloring must be done after remove piece or that function gets fucked
+                                            #Recoloring must be done after remove piece or that function gets killed
                                             chosen_square.piece.team = Team.RED
                                             ReturnPieceSprite(chosen_square.piece)
                                             end_commander_turn(chosen_square.piece.team)
@@ -994,11 +991,11 @@ def playgame(screen):
 
         update_display(screen)
         insertBonepile()
-        screen.blit(pygame.transform.scale(captureTableImage, CAPTURE_TABLE_SIZE), (WIDTH * .5, HEIGHT * .575)) # change this)
+        screen.blit(pygame.transform.scale(captureTableImage, CAPTURE_TABLE_SIZE), (WIDTH * .5, HEIGHT * .665)) # (change this)
         for b in buttons:
             ui_action = b.moused_over(pygame.mouse.get_pos(), mouse_down)
             if ui_action is not None:
-                # if b == Deligate_Button:
+                # if b == Delegate_Button:
 
                 return ui_action
             b.draw(screen)
