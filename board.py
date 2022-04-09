@@ -54,6 +54,7 @@ def default_sprites():
         for t in c.troops:
             ReturnPieceSprite(t)
 
+
     return
 
 #takes in a piece and returns the sprite that is the same as the color
@@ -145,8 +146,10 @@ def createBonepile():
     bonePile[3] = [Square(None), Square(None), Square(None), Square(None), Square(None), Square(None), Square(None), Square(None)]
     for row in range(4):
         for col in range(8):
-            if (row + col) % 2 == 1:
-                bonePile[row][col].color = GREY
+            if row == 0 or row == 1:
+                bonePile[row][col].color = DARK_BLUE
+            else:
+                bonePile[row][col].color = RED
 
             bonePile[row][col].row = row
             bonePile[row][col].col = col
@@ -174,7 +177,7 @@ def clearBonepile():
             bonePile[row][col] = Square(None)
 
     #Resets colors
-    for row in range(8):
+    for row in range(4):
         for col in range(8):
             if (row + col) % 2 == 1:
                 board[row][col].color = GREY

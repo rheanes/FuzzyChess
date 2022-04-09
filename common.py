@@ -23,6 +23,7 @@ buttonhover =  (222, 184, 135)
 blackish = (10, 10, 10)
 RED = (255, 0, 0) # highlight attack positions
 BLUE = (50, 255, 255) # highlight potential positions
+DARK_BLUE = (0, 205, 255)
 GREY = (128, 128, 128)
 YELLOW = (204, 204, 0) # highlight pieces controlled by a commanders' pieces
 BROWN = (222, 184, 135)
