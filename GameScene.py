@@ -51,6 +51,7 @@ def update_display(screen):
 
     pygame.draw.rect(screen, BACKGROUND, (0, GAME_WIDTH + 1, WIDTH, HEIGHT))
 
+    #Creates the bone pile
     for row in bonePile:
         for square in row:
             x_pos = square.col * (GAME_WIDTH // 8)
@@ -59,8 +60,8 @@ def update_display(screen):
             if square.piece is not None and square.piece.image is not None:
                 screen.blit(pygame.transform.scale(square.piece.image, DEFAULT_IMAGE_SIZE), (x_pos, y_pos))
 
-    for i in range(5):
-        pygame.draw.line(screen, BLACK, (0, i * gap), (GAME_WIDTH, i * gap))
+    for i in range(4):
+        pygame.draw.line(screen, BLACK, (0, 710 + i * gap), (GAME_WIDTH, 710 + i * gap))
         for j in range(9):
             pygame.draw.line(screen, BLACK, (j * gap, 710), (j * gap, HEIGHT))
 
@@ -70,6 +71,7 @@ def update_display(screen):
 #Adds pieces to the bone pile. AI pieces appear in the upper rows, player pieces on the lower ones
 def insertBonepile():
     global ai_captured_pieces
+    global player_captured_pieces
     aiRow = 0
     aiCol = 0
     for troop in ai_captured_pieces:
@@ -78,7 +80,7 @@ def insertBonepile():
         if aiCol > 7:
             aiCol = 0
             aiRow += 1
-    humRow = 0
+    humRow = 2
     humCol = 0
     for troop in player_captured_pieces:
         bonePile[humRow][humCol].piece = troop
@@ -564,22 +566,22 @@ FirstRun = True
 #Then it will remove the
 def remove_piece(piece):
     team = piece.team
-    if team == team.RED:
+    if team is Team.RED:
         red_commander.troops.remove(piece)
 
-    elif team == team.YELLOW:
+    elif team is Team.YELLOW:
         yellow_commander.troops.remove(piece)
 
-    elif team == team.ORANGE:
+    elif team is Team.ORANGE:
         orange_commander.troops.remove(piece)
 
-    elif piece.team == team.BLUE:
+    elif piece.team is Team.BLUE:
         blue_commander.troops.remove(piece)
 
-    elif piece.team == team.PURPLE:
+    elif piece.team is Team.PURPLE:
         purple_commander.troops.remove(piece)
 
-    elif piece.team == team.GREEN:
+    elif piece.team is Team.GREEN:
         green_commander.troops.remove(piece)
     return
 
