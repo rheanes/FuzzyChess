@@ -1,7 +1,6 @@
 from guielements import *
 
 from GameScene import playgame, delegation_mode, turnChange, create_board, reset_turn, update_display
-from board import *
 from Scenes.MainMenuScene import MenuScene
 from Scenes.RulesPageScene import RulesPageScene
 from Scenes.HowToPlay import HowToPlayScene
@@ -18,14 +17,8 @@ from Scenes.NewOrLoadScene import NewOrLoadScene
 from AiScene import aigame
 from board import remove_highlights
 
-#pygame.mixer.music.load("Ciara's First Beat.mp3")
-#pygame.mixer.music.play(-1)
-
-#TODO add some functionality for continue game. This entails adding a game exists button
-#I need to make buttons not appear if they cant be called.
-#So if there is no current game, then save should not be an option. If there is no current game then continue should
-#not be an option
-#for the rules page make the button in the top right take you back to where it brought you.
+pygame.mixer.music.load("Ciara's First Beat.mp3")
+pygame.mixer.music.play(-1)
 
 def main():
     pygame.init()
