@@ -2,6 +2,7 @@ from cmath import inf
 import enum
 import pygame
 import random
+import moves
 #from board import board
 """
     ATTENTION: Fix the piece moves to return all highlighted squares
@@ -279,7 +280,8 @@ class Commander:
 
         if maxPlayer:
             best_score = -inf
-            curr_eval = random.randint(0, 100)
+            curr_score = self.search(moves, alpha, beta, False, depth - 1, board)
+
 
     #TODO: This function calls search function. 
     # the commander shoudl chec
