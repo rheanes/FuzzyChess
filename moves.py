@@ -6,4 +6,9 @@ class Move:
         self.position = position
         pass
 
+
+class BoardState:
+    def __init__(self) -> None:
+        pass
+
         

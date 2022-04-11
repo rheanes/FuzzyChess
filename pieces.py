@@ -268,20 +268,51 @@ class Commander:
                 total_value += (enemy.value * rook_atk_chnc[enemy.type])
         return total_value
     """
-    for each moveable square in range for each piece, evaluate those squares (terminal nodes for alpha beta, prunes if that branch has not promising results)
+    Alpha beta search needs to acquire all possible moves from current board state for the ai side
+    needs to do same process for enemy side during minimizing step(board_scan might be able to get a 
+    list of enemy pieces)
+
+    We can consider each board state as a node and the opposing player's responses to that move to be the 
+    children of our move. We then repeat the process until we reach max depth of the search.
+
+    how do we represent board state as a node?
+    1. Encapsulate each move as an object storing the piece to move and the coordinates it is moving to
+    2. have a backend representation of the board and moving pieces on that board, and then matching 
+    that move on the board when the best move is found.
+    
+    need to generate list of moves
     """
     #alpha-beta search
     def search(self, moves, alpha, beta, maxPlayer, depth, board):
+        #returns static evaluation of best move found
         score = 0
         best_move = moves[0]
         if depth == 0:
             score = self.evaluation(best_move[0], best_move[1], board)
             return score
-
+        #if it is the maximizing player(ai)
         if maxPlayer:
-            best_score = -inf
-            curr_score = self.search(moves, alpha, beta, False, depth - 1, board)
-
+            max_score = -inf
+            #search through all moves available for that corp
+            for m in moves:
+                curr_score = self.search(m, alpha, beta, False, depth - 1, board)
+                #if the current move is better than the current highest score, replace it
+                max_score = max(curr_score,  max_score)
+                #if the highest score is higher than beta, break out of the loop and return the value at that position?
+                if max_score >= beta:
+                    break
+                alpha = max(alpha, max_score)
+            return best_score
+        else:
+            #inverse process for opposing(human) player
+            min_score = inf
+            for m in moves:
+                curr_score = self.search(m, alpha, beta, True, depth - 1, board)
+                best_score = min(curr_score, min_score)
+                if min_score <= alpha:
+                    break
+                beta = min(beta, min_score)
+            return min_score
 
     #TODO: This function calls search function. 
     # the commander shoudl chec
