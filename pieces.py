@@ -1,6 +1,7 @@
+from cmath import inf
 import enum
 import pygame
-
+import random
 #from board import board
 """
     ATTENTION: Fix the piece moves to return all highlighted squares
@@ -10,37 +11,55 @@ pawn_pos_table = [[-5, 0, 0, 0, 0, 0, 0, -5],
                   [-10, -20, -10, -15, -5, -10, -20, -10],
                   [15, 15, 5, 10, 5, 5, 15, 15],
                   [10, 10, 0, 0, -5, 0, 10, 10],
-                  [-5, -5, -5, -5, -5, -5, -5, -5],
-                  [-5, -5, -5, -5, -5, -5, -5, -5],
+                  [10, 10, 0, 0, -5, 0, 10, 10],
+                  [10, 10, 0, 0, -5, 0, 10, 10],
                   [-5, -5, -5, -5, -5, -5, -5, -5],
                   [0, 0, 0, 0, 0, 0, 0, 0]]
 
-rook_pos_table = [[0, 0, 0, 0, 0, 0, 0, 0],
+rook_pos_table = [[-15, -15, -15, -15, -15, -15, -15, -15],
                   [15, 15, 10, 10, 5, 10, 15, 15],
                   [10, 10, 5, 5, 5, 3, 10, 10],
-                  [8, 8, 8, 0, 0, 8, 8, 8],
-                  [0, 0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 0, 0, 0, 0, 0],
-                  [-5, -5, -5, -5, -5, -5, -5, -5],
-                  [0, 0, 0, 0, 0, 0, 0, 0]]
+                  [8, 8, 8, 8, 8, 8, 8, 8],
+                  [8, 8, 8, 8, 8, 8, 8, 8],
+                  [10, 10, 5, 5, 5, 3, 10, 10],
+                  [15, 15, 10, 10, 5, 10, 15, 15],
+                  [-15, -15, -15, -15, -15, -15, -15, -15]]
+                  
 bishop_pos_table = [[5, 15, 20, 20, 15, 20, 15, 5],
                   [0, 10, 15, 15, 10, 15, 10, 0],
                   [-5, 5, 8, 8, 8, 3, 5, -5],
-                  [-5, -5, -5, -5, -5, -5, -5, -5],
-                  [-10, -10, -10, -10, -10, -10, -10, -10],
                   [-15, -15, -15, -15, -15, -15, -15, -15],
-                  [-20, -20, -20, -20, -20, -20, -20, -20],
-                  [-20, -20, -20, -20, -20, -20, -20, -20]]
+                  [-15, -15, -15, -15, -15, -15, -15, -15],
+                  [-5, 5, 8, 8, 8, 3, 5, -5],
+                  [0, 10, 15, 15, 10, 15, 10, 0],
+                  [5, 15, 20, 20, 15, 20, 15, 5]]
 
 knight_pos_table = [[-20, -20, -20, -20, -20, -20, -20, -20],
                   [-20, -15, -10, -5, -5, -10, -15, -20],
-                  [-10, -5, 0, 5, 5, 0, -5, -10],
-                  [-10, 0, 5, 15, 15, 5, 0, -10],
-                  [-10, 0, 10, 25, 25, 10, 0, -10],
-                  [-5, 0, 15, 20, 20, 15, 0, -5],
-                  [-5, 0, 10, 20, 20, 10, 0, -5],
-                  [-5, 0, 10, 20, 20, 10, 0, -5]]
+                  [-10, 10, 15, 20, 20, 15, 10, -10],
+                  [-10, 10, 15, 25, 25, 15, 10, -10],
+                  [-10, 10, 15, 25, 25, 15, 10, -10],
+                  [-10, 5, 15, 20, 20, 15, 5, -10],
+                  [-20, -15, -10, -5, -5, -10, -15, -20],
+                  [-20, -20, -20, -20, -20, -20, -20, -20]]
 
+queen_pos_table = [[-20, -20, -20, -20, -20, -20, -20, -20],
+                  [-20, -15, -10, -5, -5, -10, -15, -20],
+                  [-10, 5, 10, 15, 15, 10, 5, -10],
+                  [-10, 10, 15, 25, 25, 15, 10, -10],
+                  [-10, 10, 15, 25, 25, 15, 10, -10],
+                  [-10, 5, 10, 15, 15, 10, 5, -10],
+                  [-20, -15, -10, -5, -5, -10, -15, -20],
+                  [-20, -20, -20, -20, -20, -20, -20, -20]]
+
+king_pos_table = [[5, 15, 20, 25, 25, 20, 15, 5],
+                  [0, 10, 15, 25, 25, 15, 10, 0],
+                  [-5, 5, 8, 8, 8, 3, 5, -5],
+                  [-15, -15, -15, -15, -15, -15, -15, -15],
+                  [-15, -15, -15, -15, -15, -15, -15, -15],
+                  [-5, 5, 8, 8, 8, 3, 5, -5],
+                  [0, 10, 15, 25, 25, 15, 10, 0],
+                  [5, 15, 20, 25, 25, 20, 15, 5]]
 class Team(enum.Enum):
     # Player AI
     YELLOW = 0
@@ -66,7 +85,7 @@ class Action(enum.Enum):
     ATTACK = 1
 
 class Value(enum.Enum):
-    KING = 1000
+    KING = 2000
     QUEEN = 200
     BISHOP = 400
     KNIGHT = 200
@@ -81,6 +100,49 @@ enemies = {
     Team.ORANGE : [Team.BLUE, Team.GREEN, Team.PURPLE],
     Team.YELLOW : [Team.BLUE, Team.GREEN, Team.PURPLE]
 }
+
+#following dictionaries associate enemy piece type with the probability of successful capture for each piece type
+pawn_atk_chnc = {Type.KING: 0.17,
+                Type.QUEEN: 0.17,
+                Type.KNIGHT: 0.17,
+                Type.BISHOP: 0.33,
+                Type.ROOK: 0.17,
+                Type.PAWN: 0.5}
+
+king_atk_chnc = {Type.KING: 0.5,
+                Type.QUEEN: 0.5,
+                Type.KNIGHT: 0.5,
+                Type.BISHOP: 0.5,
+                Type.ROOK: 0.33,
+                Type.PAWN: 1.0}
+queen_atk_chnc = {Type.KING: 0.5,
+                Type.QUEEN: 0.5,
+                Type.KNIGHT: 0.5,
+                Type.BISHOP: 0.5,
+                Type.ROOK: 0.33,
+                Type.PAWN: 0.83}
+#add 0.17 to chance when knight has moved before attacking
+knight_atk_chnc = {Type.KING: 0.33,
+                Type.QUEEN: 0.33,
+                Type.KNIGHT: 0.33,
+                Type.BISHOP: 0.33,
+                Type.ROOK: 0.33,
+                Type.PAWN: 0.83}
+
+bishop_atk_chnc = {Type.KING: 0.33,
+                Type.QUEEN: 0.33,
+                Type.KNIGHT: 0.33,
+                Type.BISHOP: 0.5,
+                Type.ROOK: 0.33,
+                Type.PAWN: 0.67}
+
+rook_atk_chnc = {Type.KING: 0.5,
+                Type.QUEEN: 0.5,
+                Type.KNIGHT: 0.5,
+                Type.BISHOP: 0.33,
+                Type.ROOK: 0.33,
+                Type.PAWN: 0.33}
+
 
 #creates a chess piece class that shows:
 #team, attackable, and color
@@ -129,6 +191,7 @@ class Commander:
         self.action = commander.action
         self.has_moved = commander.action
 
+
     def see_pieces(self):
         for i in range(len(self.troops)):
             print(self.troops[i].type)
@@ -166,9 +229,10 @@ class Commander:
     needs to check if an action is valid (maybe already defined?)
     maybe encapsulate action as an object? (action class) -> 
     stores piece that is doing action, position that it is moving to. Doing so allows for a list of moves to be stored
-    Alternative: for each moveable square in range for each piece, evaluate those squares,
+    
     """
-    #evaluation function for determining best position
+    """"""
+    #returns numerical evaluation of a particular position that a piece wishes to move to
     def evaluation(self, piece, position, board):
         total_value = 0
         row, col = position[0], position[1]
@@ -182,19 +246,42 @@ class Commander:
                 total_value += bishop_pos_table[row][col]
             elif piece.type == Type.KNIGHT:
                 total_value += knight_pos_table[row][col]
-
-        #if a particular position to move to has an enemy piece, add the enemy pieces' value to the evaluation
+            elif piece.type == Type.QUEEN:
+                total_value += queen_pos_table[row][col]
+            elif piece.type == Type.KING:
+                total_value += king_pos_table[row][col]
+        #if a particular position to move to has an enemy piece, add the enemy pieces' value to the evaluation times the chance of successful capture
         if (board[row][col].piece is not None) and (board[row][col].piece.team in enemies[piece.team]):
-            total_value += board[row][col].piece.value
-        
+            enemy = board[row][col].piece
+            if piece.type == Type.PAWN:
+                total_value += (enemy.value * pawn_atk_chnc[enemy.type])
+            elif piece.type == Type.KING:
+                total_value += (enemy.value * king_atk_chnc[enemy.type])
+            elif piece.type == Type.QUEEN:
+                total_value += (enemy.value * queen_atk_chnc[enemy.type])    
+            elif piece.type == Type.BISHOP:
+                total_value += (enemy.value * bishop_atk_chnc[enemy.type])
+            elif piece.type == Type.KNIGHT:
+                total_value += (enemy.value * knight_atk_chnc[enemy.type])
+            elif piece.type == Type.ROOK:
+                total_value += (enemy.value * rook_atk_chnc[enemy.type])
         return total_value
     """
     for each moveable square in range for each piece, evaluate those squares (terminal nodes for alpha beta, prunes if that branch has not promising results)
     """
     #alpha-beta search
-    def search(self, piece, alpha, beta, maxPlayer, depth, board):
-        return
+    def search(self, moves, alpha, beta, maxPlayer, depth, board):
+        score = 0
+        best_move = moves[0]
+        if depth == 0:
+            score = self.evaluation(best_move[0], best_move[1], board)
+            return score
 
+        if maxPlayer:
+            best_score = -inf
+            curr_eval = random.randint(0, 100)
+
+    #TODO: This function calls search function. 
     # the commander shoudl chec
     def make_decision(self, board, positions):
         # get troops enemies

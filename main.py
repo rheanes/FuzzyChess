@@ -15,7 +15,7 @@ from Scenes.winLossScreen import winLossScreen
 from Scenes.EscapeScene import escapeScene
 from Scenes.NewOrLoadScene import NewOrLoadScene
 from AiScene import aigame
-from board import remove_highlights
+from board import clear_board, clearBonepile, create_board, createBonepile, LoadGame, SaveGame
 
 pygame.mixer.music.load("Ciara's First Beat.mp3")
 pygame.mixer.music.play(-1)
