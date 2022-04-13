@@ -2,7 +2,7 @@ from cmath import inf
 import enum
 import pygame
 import random
-import moves
+from moves import *
 #from board import board
 """
     ATTENTION: Fix the piece moves to return all highlighted squares
@@ -286,7 +286,7 @@ class Commander:
     def search(self, moves, alpha, beta, maxPlayer, depth, board):
         #returns static evaluation of best move found
         score = 0
-        best_move = moves[0]
+        best_move = None
         if depth == 0:
             score = self.evaluation(best_move[0], best_move[1], board)
             return score
@@ -295,24 +295,28 @@ class Commander:
             max_score = -inf
             #search through all moves available for that corp
             for m in moves:
-                curr_score = self.search(m, alpha, beta, False, depth - 1, board)
+                curr_score = self.search(m, alpha, beta, False, depth - 1, board) * -1
                 #if the current move is better than the current highest score, replace it
-                max_score = max(curr_score,  max_score)
+                if curr_score > max_score:
+                    max_score = curr_score
+                    best_move = moves[m]
                 #if the highest score is higher than beta, break out of the loop and return the value at that position?
                 if max_score >= beta:
                     break
                 alpha = max(alpha, max_score)
-            return best_score
+            return best_move, max_score
         else:
             #inverse process for opposing(human) player
             min_score = inf
             for m in moves:
                 curr_score = self.search(m, alpha, beta, True, depth - 1, board)
-                best_score = min(curr_score, min_score)
+                if curr_score < min_score:
+                    min_score = curr_score
+                    best_move = moves[m]
                 if min_score <= alpha:
                     break
                 beta = min(beta, min_score)
-            return min_score
+            return best_move, min_score
 
     #TODO: This function calls search function. 
     # the commander shoudl chec

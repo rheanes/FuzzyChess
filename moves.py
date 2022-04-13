@@ -1,14 +1,13 @@
 
 
 class Move:
-    def __init__(self, piece, position: tuple[int, int]) -> None:
+    def __init__(self, piece, start_position: tuple[int, int], end_position: tuple[int, int]) -> None:
         self.piece = piece
-        self.position = position
+        self.start_position = start_position
+        self.end_position = end_position
         pass
 
 
-class BoardState:
-    def __init__(self) -> None:
-        pass
+
 
         
