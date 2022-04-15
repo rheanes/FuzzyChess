@@ -842,24 +842,30 @@ def playgame(screen):
                                         current_square = None
                                         if commMoveMode:
                                             commMoveMode = False
-
+#knight attacks, upddate here then do normal attacks.
                                     elif knight_special_turn and current_square.piece.type is Type.KNIGHT and adjacent_enemies((current_square.row, current_square.col), current_square.piece.team):
                                         if chosen_square.color is BLACK:
                                             if attack(screen, current_square.piece.type.value,
                                                       chosen_square.piece.type.value, checkCommanderHasMoved(current_square.piece.team)) is True:
+                                                if chosen_square.piece.type is Type.BISHOP:
+                                                    removeCommander(chosen_square.piece.team)
+                                                    #changes color of all pieces in commander.troops to red
+                                                    #adds pieces to red commander troop array
+                                                    #removed pieces from original commander array
+                                                    #changes sprite color
+                                                    remove_team(chosen_square.piece.team)
+                                                elif (chosen_square.piece.type is Type.KING) and \
+                                                        (chosen_square.piece.team is Team.RED):
+                                                    return GameState.Win
+                                                else:
+                                                    remove_piece(chosen_square.piece)
                                                 ai_captured_pieces.append(chosen_square.piece)
-                                                remove_piece(chosen_square.piece)
                                                 # Recoloring must be done after remove piece or that function gets killed
                                                 chosen_square.piece.team = Team.RED
                                                 ReturnPieceSprite(chosen_square.piece)
                                                 end_commander_turn(current_square.piece.team)
 
-                                                if chosen_square.piece.type is Type.BISHOP:
-                                                    removeCommander(chosen_square.piece.team)
-                                                    remove_team(chosen_square.piece.team)
-                                                elif (chosen_square.piece.type is Type.KING) and \
-                                                        (chosen_square.piece.team is Team.RED):
-                                                    return GameState.Win
+
 
                                                 chosen_square.piece = None
                                                 move_piece(current_square, chosen_square)
@@ -946,13 +952,6 @@ def playgame(screen):
                                     elif (chosen_square.color is BLACK):
                                         if attack(screen, current_square.piece.type.value,
                                                   chosen_square.piece.type.value) is True:
-                                            ai_captured_pieces.append(chosen_square.piece)
-                                            remove_piece(chosen_square.piece)
-                                            #Recoloring must be done after remove piece or that function gets killed
-                                            chosen_square.piece.team = Team.RED
-                                            ReturnPieceSprite(chosen_square.piece)
-                                            end_commander_turn(chosen_square.piece.team)
-
                                             if chosen_square.piece.type is Type.BISHOP:
                                                 #We decrement the counter to ensure the actions done by a human are limited based on the number of commanders we have
                                                 removeCommander(chosen_square.piece.team)
@@ -963,6 +962,15 @@ def playgame(screen):
                                             elif (chosen_square.piece.type is Type.KING) and (
                                                     chosen_square.piece.team is Team.BLUE):
                                                 return GameState.Loss
+                                            else:
+                                                remove_piece(chosen_square.piece)
+                                            #append to captured pieces
+                                            ai_captured_pieces.append(chosen_square.piece)
+                                            #remove from commander array
+                                            #Recoloring must be done after remove piece or that function gets killed
+                                            chosen_square.piece.team = Team.RED
+                                            ReturnPieceSprite(chosen_square.piece)
+                                            end_commander_turn(chosen_square.piece.team)
 
                                             chosen_square.piece = None
                                             if (current_square.piece.type is not Type.ROOK):

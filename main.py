@@ -1,6 +1,7 @@
 from guielements import *
 
 from GameScene import playgame, delegation_mode, turnChange, create_board, reset_turn, update_display
+from board import *
 from Scenes.MainMenuScene import MenuScene
 from Scenes.RulesPageScene import RulesPageScene
 from Scenes.HowToPlay import HowToPlayScene

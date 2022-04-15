@@ -193,13 +193,10 @@ def clearBonepile():
 #removes all the pieces from the team that is passed in and appends them to the king.
 #this is called when a bishop is captured.
 def remove_team(team):
-    old_troops = []
     if team == team.YELLOW:
-        print("removing yellow team")
         for troop in yellow_commander.troops:
-            troop.team = Team.RED
+            troop.Team = Team.RED
             red_commander.troops.append(troop)
-            yellow_commander.troops.remove(troop)
             if troop.type == Type.PAWN:
                 troop.switch_sprite(color_matrix_pawn[Team.RED])
             elif troop.type == Type.KNIGHT:
@@ -210,13 +207,15 @@ def remove_team(team):
                 troop.switch_sprite(color_matrix_queen[Team.RED])
             else:
                 pass
+        yellow_commander.troops.clear()
 
     elif team == team.ORANGE:
         print("removing orange team")
         for troop in orange_commander.troops:
+            print(troop.type)
             troop.team = Team.RED
             red_commander.troops.append(troop)
-            orange_commander.troops.remove(troop)
+
             if troop.type == Type.PAWN:
                 troop.switch_sprite(color_matrix_pawn[Team.RED])
             elif troop.type == Type.KNIGHT:
@@ -227,14 +226,12 @@ def remove_team(team):
                 troop.switch_sprite(color_matrix_queen[Team.RED])
             else:
                 pass
-
+        orange_commander.troops.clear()
 
     elif team == team.GREEN:
-        print("removing green team")
         for troop in green_commander.troops:
             troop.team = Team.BLUE
             blue_commander.troops.append(troop)
-            green_commander.troops.remove(troop)
             if troop.type == Type.PAWN:
                 troop.switch_sprite(color_matrix_pawn[Team.BLUE])
             elif troop.type == Type.KNIGHT:
@@ -245,13 +242,11 @@ def remove_team(team):
                 troop.switch_sprite(color_matrix_queen[Team.BLUE])
             else:
                 pass
-
+        green_commander.troops.clear()
     elif team == team.PURPLE:
-        print("removing purple team")
         for troop in purple_commander.troops:
             troop.team = Team.BLUE
             blue_commander.troops.append(troop)
-            purple_commander.troops.remove(troop)
             if troop.type == Type.PAWN:
                 troop.switch_sprite(color_matrix_pawn[Team.BLUE])
             elif troop.type == Type.KNIGHT:
@@ -262,6 +257,7 @@ def remove_team(team):
                 troop.switch_sprite(color_matrix_queen[Team.BLUE])
             else:
                 pass
+        purple_commander.troops.clear()
 
     #_----------_SQUARE UTILITY-------------
 
@@ -523,18 +519,11 @@ def SaveGame(state):
         for col in range(8):
             if board[row][col].piece:
                 board[row][col].piece.image = None
-    '''
-    for c in player_commanders:
-        for p in c.troops:
-            p.image = None
-    for c in ai_commanders:
-        for p in c.troops:
-            p.image = None
-    '''
-    for row in range(4):
-        for col in range(8):
-            if bonePile[row][col].piece:
-                bonePile[row][col].piece.image = None
+
+    for p in player_captured_pieces:
+        p.image = None
+    for p in ai_captured_pieces:
+        p.image = None
     SaveBoard(state)
     #sets default sprites for all pieces in commander arrays.
     default_sprites()
@@ -633,7 +622,6 @@ def setBoard(item):
             bonePile[row][col] = bnpl[row][col]
             if bonePile[row][col].piece:
                 ReturnPieceSprite(board[row][col].piece)
-
     return
 
 
