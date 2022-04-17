@@ -48,6 +48,11 @@ class Status(Sprite):
     def draw(self, surface):
         surface.blit(self.img, self.rect)
 
+def find_piece_pos(piece):
+    for row in range(8):
+        for col in range(8):
+            if
+
 def aigame(screen):
     #Button handles the free move commanders can make each turn
     Command_Move_Button = CommFreeMove(pos=(WIDTH - 300, 200),
