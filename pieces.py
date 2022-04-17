@@ -489,7 +489,6 @@ Each commander needs to know their living troops
 Also needs to know all targets in range of troops
 Needs to keep track of authority or action it posseses
 """
-
 class King(Commander):
     def __init__(self, troops, leader):
         Commander.__init__(self, troops, leader)

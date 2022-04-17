@@ -34,11 +34,24 @@ maybe encapsulate action as an object? (action class) ->
 stores piece that is doing action, position that it is moving to. Doing so allows for a list of moves to be stored
 
 """
+
+def assign_piece_pos():
+    for row in range(8):
+        for col in range(8):
+            board[row][col].piece.pos = (row, col)
+
+class Move:
+    def __init__(self, piece, start_position: tuple[int, int], end_position: tuple[int, int]) -> None:
+        self.piece = piece
+        self.start_position = start_position
+        self.end_position = end_position
+        pass
+
 # for easy mode
 class AiAction:
-    def __init__(self, troop=None, action=None, square=None, team=None):
+    def __init__(self, troop=None, decision=None, square=None, team=None):
+        self.decision = decision
         self.troop = troop
-        self.action = action
         self.square = square
         self.team = team
 
@@ -222,6 +235,7 @@ def easy_mode(comm): # troop will either move or attack
     troop_actions = []
     knight_actions = []
     bishop_acitons = []
+
     for troop in comm.troops:
         #
         potential_piece_moves(troop)
@@ -309,6 +323,7 @@ def easy_mode(comm): # troop will either move or attack
     bishop: randomly choose which troop will move or attack based on evaluation of present (use evaluation matrix)
     king: randomly choose which troop will move, attack, delegated, or recalled based on evaluation of present
 '''
+'''
 def medium_mode(comm):
     troop = None
     next_square = None
@@ -321,16 +336,39 @@ def medium_mode(comm):
     self.targets.append(self.board_scan(board))
 
     return troop, next_square
-
+'''
 '''
 @strategy: 
     bishop: randomly choose which troop will move or attack based on evaluation of present and future (probabilities)
     king: randomly choose which troop will move, attack, delegated, or recalled based on evaluation of present and future
 '''
+
+pawns = [False, False, False]
+
 def hard_mode(comm):
-    troop = None
-    next_square = None
-    return troop, next_square
+    # append leader to troop when half lost
+    if len(comm.troops) < 2:
+        comm.troops.append(comm.leader)
+
+    ai_action = AiAction()
+
+    # Pawn's Action
+    for troop in comm.troops:
+        global pawns
+        if troop.type is Type.PAWN:
+            potential_piece_moves(Square(troop))
+
+
+    # Knight's Action
+    for troop in comm.troops:
+        if troop.type is Type.
+
+    potential_piece_moves()
+    # Bishop's Action
+
+
+
+    return ai_action
 
 
 def make_decision(comm, mode=DecisionMode.EASY):
