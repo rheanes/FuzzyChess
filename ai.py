@@ -36,10 +36,11 @@ stores piece that is doing action, position that it is moving to. Doing so allow
 """
 # for easy mode
 class AiAction:
-    def __init__(self, troop=None, action=None, square=None):
+    def __init__(self, troop=None, action=None, square=None, team=None):
         self.troop = troop
         self.action = action
         self.square = square
+        self.team = team
 
 # returns numerical evaluation of a particular position that a piece wishes to move to
 def evaluation(piece, position, board):
