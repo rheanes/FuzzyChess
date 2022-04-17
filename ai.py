@@ -159,7 +159,7 @@ def find_potential_piece_moves(self):
 '''
 
 # for ai, scans entire board for enemies
-def board_scan_moves():
+def board_scan_moves(piece):
     targets = []
 
     for square in board:
@@ -176,11 +176,11 @@ def board_scan_moves():
             square[:].piece.pos = ()
         '''
         if square[:].color is BLUE:
-            targets.append(AiAction(Action.MOVE, (square.row, square.col)))
+            targets.append(AiAction(piece, Action.MOVE, (square.row, square.col)))
 
     return targets
 
-def board_scan_attacks():
+def board_scan_attacks(piece):
     targets = []
 
     for square in board:
@@ -197,7 +197,7 @@ def board_scan_attacks():
             square[:].piece.pos = ()
         '''
         if square[:].color is BLACK:
-            targets.append(AiAction(Action.ATTACK, (square.row, square.col)))
+            targets.append(AiAction(piece ,Action.ATTACK, (square.row, square.col)))
 
     return targets
 
@@ -214,24 +214,20 @@ def easy_mode(comm): # troop will either move or attack
     if len(comm.troops) < 2:
         comm.leader.troops.append(comm.leader)
 
-    ai_action = AiAction()
+    ai_action = None
 
     ####################################
     # Scan each troop for nearby enemies or moves
     ####################################
     troop_actions = []
     knight_actions = []
-    bishop_acitons = []
+    bishop_actions = []
     for troop in comm.troops:
         #
-        potential_piece_moves(troop)
-        troop_actions.append(board_scan())
-
-        for troop_enemy in troop_enemies:
-            if
-        global ai_action
-        ai_action = random.choice(troop_enemies)
-
+        potential_piece_moves()
+        troop_actions.extend(board_scan_attacks(troop))
+        troop_actions.extend(board_scan_moves(troop))
+        
 
     decision = None
 
@@ -290,7 +286,7 @@ def easy_mode(comm): # troop will either move or attack
 
     # if decision is Delegation
     if decision is Action.DELEGATE:
-        if len(orange_commander.troops) < len(yellow_commander.troops):
+        if comm is orange_commander and ok not in orange_commander.troops:
             team = Team.ORANGE
         else:
             team = Team.YELLOW
@@ -298,8 +294,8 @@ def easy_mode(comm): # troop will either move or attack
     remove_highlights()
 
     # randomly choose square
-    if len(troop_moves)
-    next_square = random.choice(troop_moves)
+    if len(troop_moves):
+        next_square = random.choice(troop_moves)
 
     return decision, troop, next_square, team
 
