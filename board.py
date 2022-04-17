@@ -275,6 +275,7 @@ def move_piece(curr_pos: Square, new_pos: Square):
 
 #--------------__SQUARE HIGHLIGHTING AND UNHIGHLIGHTING------------------
 
+
 # highlight possible moves
 # add 'type: Action' for type of action
 def highlight_moves(positions: tuple[int, int], team: Team):

@@ -18,8 +18,8 @@ from Scenes.NewOrLoadScene import NewOrLoadScene
 from AiScene import aigame
 from board import clear_board, clearBonepile, create_board, createBonepile, LoadGame, SaveGame
 
-pygame.mixer.music.load("Ciara's First Beat.mp3")
-pygame.mixer.music.play(-1)
+#pygame.mixer.music.load("Ciara's First Beat.mp3")
+#pygame.mixer.music.play(-1)
 
 def main():
     pygame.init()
@@ -37,7 +37,7 @@ def main():
         if game_state == GameState.Home:
             game_state = MenuScene(screen)
         #play Game
-        if (game_state == GameState.AiPlay):
+        if game_state == GameState.AiPlay:
             game_state = aigame(screen)
 
         #remove_highlights()

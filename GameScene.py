@@ -7,7 +7,7 @@ from common import *
 from board import *
 
 from guielements import *
-from ai import *
+#from ai import *
 
 DEFAULT_IMAGE_SIZE = (GAME_WIDTH / 8, GAME_WIDTH / 8)
 SQUARE_WIDTH = SQUARE_HEIGHT = GAME_WIDTH / 8
@@ -69,7 +69,7 @@ def update_display(screen):
     # print('testing')
 
 #Adds pieces to the bone pile. AI pieces appear in the upper rows, player pieces on the lower ones
-def insertBonepile():
+def insertBonepile(): #
     global ai_captured_pieces
     global player_captured_pieces
     aiRow = 0
@@ -699,8 +699,9 @@ def playgame(screen):
     human_team = [Team.GREEN, Team.BLUE, Team.PURPLE]
     CAPTURE_TABLE_SIZE = (600, 340)
     captureTableImage = pygame.image.load('./Images/Capture Table.PNG')
-    ai = AI
+    #ai = AI
     action_count = findActionCount(player_commanders)
+
     while True:
         mouse_down = False
         pygame.mouse.get_pressed()
@@ -789,6 +790,7 @@ def playgame(screen):
 
                                 elif (checkCommanderTurn(chosen_square.piece.team) or chosen_square.piece.type is Type.KNIGHT) and (chosen_square.piece.team not in enemies[Team.BLUE]):
                                     if chosen_square.piece.type is Type.KNIGHT:
+                                        # deals with knight' s attack pieces after move
                                         if knight_special_turn and adjacent_enemies((chosen_square.row, chosen_square.col), chosen_square.piece.team):
                                             if(chosen_square.piece.team is Team.BLUE):
                                                 if(blue_commander.has_moved):

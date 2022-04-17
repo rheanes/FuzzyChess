@@ -1,4 +1,53 @@
 from GameScene import *
+from ai import make_decision
+# from pieces import *
+
+# for consistancy sake
+class Pos:
+    def __init__(self, pos):
+        self.row = pos[0]
+        self.col = pos[1]
+
+class Status(Sprite):
+    def __init__(self, pos, text, font_size, txt_col, bg_col, bg_hover, action=None):
+        self.action = action
+        # self.selected = False
+        self.text = text
+        self.pos = pos
+        self.font_size = font_size
+        self.txt_col = txt_col
+        self.bg_col = bg_col
+        # unselected_img = create_text_surface(self.text, font_size, txt_col, bg_col)
+        # highlighted_img = create_text_surface(text, font_size * 1.3, txt_col, bg_hover)
+
+        # self.images = unselected_img
+        # self.rects = unselected_img.get_rect(center=pos)
+        super().__init__()
+
+    # def update_count(self, count):
+    #    self.text = count
+
+    @property
+    def img(self):
+        return create_text_surface(self.text, self.font_size, self.txt_col, self.bg_col)
+
+    @property
+    def rect(self):
+        return create_text_surface(self.text, self.font_size, self.txt_col, self.bg_col).get_rect(center=self.pos)
+
+    def moused_over(self, mouse_pos, mouse_down):
+        pass
+    #    if self.rect.collidepoint(mouse_pos):
+    #        self.selected = False
+    #       if mouse_down:
+    #        return self.action
+
+    #  else:
+    #  self.selected = False
+
+    def draw(self, surface):
+        surface.blit(self.img, self.rect)
+
 def aigame(screen):
     #Button handles the free move commanders can make each turn
     Command_Move_Button = CommFreeMove(pos=(WIDTH - 300, 200),
@@ -7,7 +56,7 @@ def aigame(screen):
                                      bg_col=buttoncolor,
                                      text="Com. Free Move",
                                      bg_hover=buttonhover,
-                                     action=GameState.Play)
+                                     action=GameState.AiPlay)
 
     Delegate_Button = DelegateButton(pos=(WIDTH - 300, 275),
                                      font_size=50,
@@ -15,7 +64,7 @@ def aigame(screen):
                                      bg_col=buttoncolor,
                                      text="Delegate",
                                      bg_hover=buttonhover,
-                                     action=GameState.Play)
+                                     action=GameState.AiPlay)
 
     Recall_Button = RecallButton(pos=(WIDTH - 300, 350),
                            font_size=50,
@@ -23,12 +72,21 @@ def aigame(screen):
                            bg_col=buttoncolor,
                            text="Recall",
                            bg_hover=buttonhover,
-                           action=GameState.Play)
+                           action=GameState.AiPlay)
+
     End_Turn_Button = button(pos=(WIDTH - 300, 425),
                              font_size=50,
                              txt_col=BLACK,
                              bg_col=buttoncolor,
                              text="End Turn",
+                             bg_hover=buttonhover,
+                             action=GameState.EndTurn)
+
+    status_label = Status(pos=(WIDTH - 300, 500),
+                             font_size=50,
+                             txt_col=BLACK,
+                             bg_col=buttoncolor,
+                             text="Status: ",
                              bg_hover=buttonhover,
                              action=GameState.EndTurn)
 
@@ -49,6 +107,7 @@ def aigame(screen):
                             bg_hover=buttonhover,
                             action=GameState.Play)
 
+
     Bone_Pile = BoneP(pos=(WIDTH - 1075, 650),
                             font_size=50,
                             txt_col=BLACK,
@@ -57,7 +116,7 @@ def aigame(screen):
                             bg_hover=buttonhover,
                             action=GameState.Play)
 
-    buttons = [Delegate_Button, End_Turn_Button, Recall_Button,
+    buttons = [Delegate_Button, End_Turn_Button, status_label, Recall_Button,
                Action_Counter, Current_turn, Bone_Pile, Command_Move_Button]
 
     current_square = None
@@ -75,10 +134,59 @@ def aigame(screen):
     knight_special_turn = False
     human_team = [Team.GREEN, Team.BLUE, Team.PURPLE]
 
-    ai = AI
+    commanding = True
+    decision = None
 
+    decision = None
+    troop = None
+    next_square = None
+
+    for ai_commander in ai_commanders:
+        action_count = len(ai_commanders)
+
+
+        decision, troop, next_square, team = make_decision(ai_commander)
+
+        # Completes specific action
+        if decision is Action.MOVE:
+            if ai_commander.knight_special_move:
+                decision, troop, next_square, team = make_decision(ai_commander)
+                move_piece(Square(troop), next_square)
+            else:
+                action_count -= 1
+
+        elif decision is Action.ATTACK:
+            target = next_square.piece
+            if attack(screen, troop, target):
+                if target.type is Type.BISHOP:
+                    removeCommander(target.team)
+                    remove_team(target.team)
+                elif target.type is Type.KING:
+                    return GameState.Loss
+                else:
+                    remove_piece(troop)
+
+
+        # Shows which action was completed
+        if decision is Action.MOVE:
+            status_label.text = 'Troop moved' # shows AI status
+        elif decision is Action.ATTACK:
+            status_label.text = 'Troop attacked'  # shows AI status
+        elif decision is Action.DELEGATE:
+            status_label.text = 'Troop delegated'
+        elif decision is Action.RECALL:
+            status_label.text = 'Troop recalled'
+
+
+
+        if action_count == 0:
+            commanding = False
+
+    mouse_down = False
+
+    """
     while True:
-        mouse_down = False
+        
         pygame.mouse.get_pressed()
         # print('Delegation: ', Delegate_Button.selected)
         # print('Delegation remain selected: ', Delegate_Button.remain_selected)
@@ -113,12 +221,13 @@ def aigame(screen):
                         row, col = find_square_coordinates((x, y))
                         # print('row ', row, ' col ', col)
                         chosen_square = board[row][col]  # refers to the square clicked by the mouse
-                        """ current causes issues
+                         
+                        current causes issues
                         # prevents clicking on enemy pieces
                         if (chosen_square.piece.team in enemies) and chosen_square.piece:
                             pass
                         else:
-                        """
+                        
 
                         if delegation_mode and human_piece_delegated is not True and checkCommanderTurn(Team.BLUE):
                                 result = delegate(chosen_square)
@@ -176,12 +285,12 @@ def aigame(screen):
                                         # purple_commander.see_pieces
 
                             else:  # a piece is currently selected
-                                """
+                                
                                 if chosen_square.piece is not None: # clicking alternative piece on your side
                                     remove_highlights()
                                     current_square = chosen_square
                                     potential_piece_moves(chosen_square)
-                                """
+                                
                                 #This check ensures that the chosen corp hasn't worked. If a knight is selected, then
                                 #we bypass this condition if the knight's special turn is enabled.
                                 if (checkCommanderTurn(current_square.piece.team) or current_square.piece.type is Type.KNIGHT or commMoveMode) and (current_square.piece.team not in enemies[Team.BLUE]):
@@ -234,13 +343,13 @@ def aigame(screen):
                                     elif (chosen_square.color is BLUE) and \
                                             (chosen_square.piece is None):  # deals with movement
 
-                                        """
+                                        
                                             current_square = None
                                             remove_highlights()
                                             move_piece(current_square, chosen_square)
                                             action_count -= 1
                                         else:
-                                        """
+                                        
                                         if current_square.piece.type == Type.KNIGHT and adjacent_enemies((chosen_square.row, chosen_square.col), current_square.piece.team):
                                             # action_count -= 1
                                             # print('action count decreased')
@@ -326,14 +435,15 @@ def aigame(screen):
             # print('hello from computer')
             # after AI is done enable next line
             action_count -= 1
+        """
+    update_display(screen)
+    for b in buttons:
+        ui_action = b.moused_over(pygame.mouse.get_pos(), mouse_down)
+        if ui_action is not None:
+            # if b == Deligate_Button:
 
-        update_display(screen)
-        for b in buttons:
-            ui_action = b.moused_over(pygame.mouse.get_pos(), mouse_down)
-            if ui_action is not None:
-                # if b == Deligate_Button:
-
-                return ui_action
-            b.draw(screen)
-        pygame.display.flip()
-        clock.tick(15)
+            return ui_action
+        b.draw(screen)
+    pygame.display.flip()
+    clock.tick(15)
+    return GameState.Play

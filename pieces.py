@@ -2,8 +2,10 @@ from cmath import inf
 import enum
 import pygame
 import random
+from common import *
+#from GameFunctions import knightAttack
 from moves import *
-#from board import board
+
 """
     ATTENTION: Fix the piece moves to return all highlighted squares
 """
@@ -61,6 +63,8 @@ king_pos_table = [[5, 15, 20, 25, 25, 20, 15, 5],
                   [-5, 5, 8, 8, 8, 3, 5, -5],
                   [0, 10, 15, 25, 25, 15, 10, 0],
                   [5, 15, 20, 25, 25, 20, 15, 5]]
+
+
 class Team(enum.Enum):
     # Player AI
     YELLOW = 0
@@ -84,6 +88,21 @@ class Type(enum.Enum):
 class Action(enum.Enum):
     MOVE = 0
     ATTACK = 1
+    DELEGATE = 2
+    RECALL = 3
+    PASS = 4
+
+
+
+class CommanderMessage:
+    def __init__(self, comm, message):
+        self.commander = comm
+        self.message = message
+
+class PieceAction:
+    def __init__(self, action: Action, square=None):
+        self.action = action
+        self.square = square
 
 class Value(enum.Enum):
     KING = 2000
@@ -92,6 +111,12 @@ class Value(enum.Enum):
     KNIGHT = 200
     ROOK = 200
     PAWN = 50
+
+class DecisionMode(enum.Enum):
+    EASY = 0
+    MEDIUM = 1
+    HARD = 2
+    EXTRA_HARD = 3
 
 enemies = {
     Team.BLUE : [Team.RED, Team.ORANGE, Team.YELLOW],
@@ -183,6 +208,7 @@ class Commander:
         self.authority = True
         self.action = True
         self.has_moved = False
+        self.knight_special_move = False
 
     def update_commander(self, commander):
         self.leader = commander.leader
@@ -205,34 +231,13 @@ class Commander:
         if self.leader not in self.troops:
             self.authority = False
 
-    # for ai, scans entire board for enemies
-    def board_scan(self, board):
-        for square in board:
-            # scan enemies
-            if square.piece is not None:
-                if enemies[square.piece.team] is Team.RED or \
-                    enemies[square.piece.team] is Team.ORANGE or \
-                        enemies[square.piece.team] is Team.YELLOW:
-                    square[:].piece.pos = (square.row, square.col)
-                    self.targets.append(square[:].piece)
-
-                if square.piece.team is self.leader.team:
-                    square[:].piece.pos = ()
-        return self.targets
-    """
-    def find_troop_position(self, board):
-        for square in board:
-            if square.piece.team is self.leader.
-    """
-
     """
     how to define move/attack?
     needs to check if an action is valid (maybe already defined?)
     maybe encapsulate action as an object? (action class) -> 
     stores piece that is doing action, position that it is moving to. Doing so allows for a list of moves to be stored
-    
     """
-    """"""
+    '''
     #returns numerical evaluation of a particular position that a piece wishes to move to
     def evaluation(self, piece, position, board):
         total_value = 0
@@ -267,6 +272,7 @@ class Commander:
             elif piece.type == Type.ROOK:
                 total_value += (enemy.value * rook_atk_chnc[enemy.type])
         return total_value
+    '''
     """
     Alpha beta search needs to acquire all possible moves from current board state for the ai side
     needs to do same process for enemy side during minimizing step(board_scan might be able to get a 
@@ -282,24 +288,30 @@ class Commander:
     
     need to generate list of moves
     """
+    '''
     #alpha-beta search
     def search(self, moves, alpha, beta, maxPlayer, depth, board):
         #returns static evaluation of best move found
         score = 0
         best_move = None
+
         if depth == 0:
             score = self.evaluation(best_move[0], best_move[1], board)
             return score
+
         #if it is the maximizing player(ai)
         if maxPlayer:
             max_score = -inf
+
             #search through all moves available for that corp
             for m in moves:
                 curr_score = self.search(m, alpha, beta, False, depth - 1, board) * -1
+
                 #if the current move is better than the current highest score, replace it
                 if curr_score > max_score:
                     max_score = curr_score
                     best_move = moves[m]
+
                 #if the highest score is higher than beta, break out of the loop and return the value at that position?
                 if max_score >= beta:
                     break
@@ -310,33 +322,167 @@ class Commander:
             min_score = inf
             for m in moves:
                 curr_score = self.search(m, alpha, beta, True, depth - 1, board)
+
                 if curr_score < min_score:
                     min_score = curr_score
                     best_move = moves[m]
+
                 if min_score <= alpha:
                     break
                 beta = min(beta, min_score)
-            return best_move, min_score
+            return min_score
+    '''
+    ###############################################
+    # Possible modes: Easy, Medium, and Hard
+    ###############################################
+    '''
+    @base strategy: commanders should be in close proximity of troops, however king should have queen be in proximity
 
-    #TODO: This function calls search function. 
-    # the commander shoudl chec
-    def make_decision(self, board, positions):
-        # get troops enemies
+    def base_strategy(self):
+        pass
+
+    '''
+    '''
+    @strategy: 
+        bishop: randomly choose which troop will move or attack
+        king: randomly choose which troop will move, attack, delegated, or recalled
+    '''
+    '''
+    def find_potential_piece_moves(self):
+        for row in range(8):
+            for col in range(8):
+                if board[row][col].color is BLUE or \
+                    board[row][col].color is BLACK:
+    '''
+    '''
+    # TODO: finish and follow strategy and base strategy
+    # TODO: When finished with medium consider recoding easy with defense strategy
+    def easy_mode(self, board):
+        # adds lead to action scene in desperation
+        if len(self.troops) < 2:
+            self.leader.troops.append(self.leader)
+
+        #########################
+        # Randomly choose a troop
+        #########################
+        if not self.knight_special_move:
+            troop = random.choice(self.troops)
+
+        decision = None
+
+        ##############################
+        # Get troop's actions
+        ##############################
+        potential_piece_moves(Square(troop))
+
+        troop_moves = []
+
+        troop_actions = [Action.PASS]
+
+        if self.leader.type is Type.KING: # TODO: account for
+            if not troop.delegated:
+                troop_actions.append(Action.DELEGATE)
+            else:
+                troop_actions.append(Action.RECALL)
+
+        ##############################
+        # Get troop's squares
+        ##############################
+        if self.knight_special_move:
+            knightAttack(Square(troop))
+            troop_moves = [Action.ATTACK]
+
+            for row in range(8):
+                for col in range(8):
+                    if board[row][col].color is BLACK:
+                        troop_moves.append(PieceAction(Action.ATTACK, board[row][col]))
+                        troop_moves.append(Action.ATTACK)
+        else:
+            for row in range(8):
+                for col in range(8):
+                    if board[row][col].color is BLUE:
+                        if troop.type is Type.KNIGHT and adjacent_enemies(troop.pos, troop.team) and \
+                                not self.knight_special_move:
+                            self.knight_special_move = True
+
+                        #global decision
+                        #decision = Action.MOVE
+                        troop_moves.append(PieceAction(Action.MOVE, board[row][col]))
+                        troop_actions.append(Action.MOVE)
+                    elif board[row][col].color is BLACK:
+                        troop_moves.append(PieceAction(Action.ATTACK, board[row][col]))
+                        troop_actions.append(Action.ATTACK)
+
+        ################################
+        # Randomly choose troop's action
+        ################################
+        # randomly choose action
+        decision = random.choice(troop_actions)
+        team = None
+
+        # if decision is Delegation
+        if decision.action is Action.DELEGATE: #TODO:
+            if len(orange_commander.troops) < len(yellow_commander.troops):
+                team = Team.ORANGE
+            else:
+                team = Team.YELLOW
+
+        remove_highlights()
+
+        # randomly choose square
+        next_square = random.choice(troop_moves)
+
+        return decision, troop, next_square, team
+    '''
+    '''
+    @strategy: 
+        bishop: randomly choose which troop will move or attack based on evaluation of present (use evaluation matrix)
+        king: randomly choose which troop will move, attack, delegated, or recalled based on evaluation of present
+    '''
+    '''
+    def medium_mode(self):
+        troop = None
+        next_square = None
+
         for troop in self.troops:
             for pos in positions:
                 self.targets.append(troop[:].detect_targets(board, (pos[0], pos[1]), board[pos[0]][pos[1]].piece.team))
 
         # get all enemies
         self.targets.append(self.board_scan(board))
-        
-        # get troop position
-        for troop in self.troops:
-            print("hi")
 
+        return troop, next_square
+    '''
+    '''
+    @strategy: 
+        bishop: randomly choose which troop will move or attack based on evaluation of present and future (probabilities)
+        king: randomly choose which troop will move, attack, delegated, or recalled based on evaluation of present and future
+    '''
+    '''
+    def hard_mode(self):
+        troop = None
+        next_square = None
+        return troop, next_square
 
+    def make_decision(self, board, mode=DecisionMode.EASY):
+        self.decisions = [] # stores decision, troop current pos, troop next pos
+        # get remaining troops
+        self.troops = list(set(self.troops) - set(player_captured_pieces))
 
+        troop = None
+        next_square = tuple()
+        # choose decision mode
+        if mode is DecisionMode.EASY:
+            troop, next_square = self.easy_mode()
+        elif mode is DecisionMode.MEDIUM:
+            troop, next_square = self.medium_mode()
+        elif mode is DecisionMode.HARD:
+            troop, next_square = self.hard_mode()
+        elif mode is DecisionMode.EXTRA_HARD:
+            troop, next_square = self.extra_hard_mode()
 
-
+        return troop, next_square
+    '''
 
 """
 Each commander needs to know their living troops
@@ -344,10 +490,10 @@ Also needs to know all targets in range of troops
 Needs to keep track of authority or action it posseses
 """
 
-
 class King(Commander):
     def __init__(self, troops, leader):
         Commander.__init__(self, troops, leader)
+        self.message = None
         #self.delegate_action = True
 
     #sub refers to sub commander
@@ -495,9 +641,9 @@ pp2 = Piece(Team.PURPLE, Type.PAWN, pygame.image.load('./Images/purple_pawn.png'
 pp3 = Piece(Team.PURPLE, Type.PAWN, pygame.image.load('./Images/purple_pawn.png'), Value.PAWN, False)
 
 #declare teams here
-orange_pieces = []
-red_pieces = []
-yellow_pieces = []
+orange_pieces = [op1, op2, op3, ok]
+red_pieces = [rp1, rp2, rr1, rr2, rq]
+yellow_pieces = [yp1, yp2, yp3, yk]
 blue_pieces = []
 green_pieces = []
 purple_pieces = []

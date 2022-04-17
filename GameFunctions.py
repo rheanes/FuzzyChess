@@ -1,6 +1,7 @@
 import pygame
 import sys
 from common import *
+from board import *
 import random
 from guielements import *
 
@@ -81,5 +82,90 @@ def attack(screen, attacker: int, defender: int, hasMoved: bool = False) -> bool
             return True
         else:
             return False
+'''
+# These are the potential moves
+def potential_piece_moves(square: Square):
+    piece = square.piece
+    if (piece.team == Team.YELLOW or (piece.team == Team.RED) or piece.team == Team.ORANGE):
+        if piece.type == Type.PAWN:
+            highlight_moves(pawn_moves_top((square.row, square.col)), square.piece.team)
+        elif (piece.type == Type.KING) or (piece.type == Type.QUEEN):
+            highlight_moves(
+                maxMovement(3, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value),
+                square.piece.team)
+        elif piece.type == Type.ROOK:
+            highlight_moves(
+                maxMovement(2, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value),
+                square.piece.team)
+        elif piece.type == Type.BISHOP:
+            highlight_moves(
+                maxMovement(2, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value),
+                square.piece.team)
+        elif piece.type == Type.KNIGHT:
+            highlight_moves(
+                maxMovement(4, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value),
+                square.piece.team)
+    elif (piece.team == Team.GREEN or piece.team == Team.BLUE or piece.team == Team.PURPLE):
+        if piece.type == Type.PAWN:
+            highlight_moves(pawn_moves_bottom((square.row, square.col)), square.piece.team)
+        if (piece.type == Type.KING) or (piece.type == Type.QUEEN):
+            highlight_moves(
+                maxMovement(3, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value),
+                square.piece.team)
+        elif piece.type == Type.ROOK:
+            highlight_moves(
+                maxMovement(2, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value),
+                square.piece.team)
+        elif piece.type == Type.BISHOP:
+            highlight_moves(
+                maxMovement(2, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value),
+                square.piece.team)
+        elif piece.type == Type.KNIGHT:
+            highlight_moves(
+                maxMovement(4, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value),
+                square.piece.team)
+'''
+
+# Only called after a Knight moves. Is used to highlight enemies in the general area
+def knightAttack(square: Square):
+    highlight_moves(knightAttackPieces((square.row, square.col), (square.row, square.col)), square.piece.team)
+
+    def adjacent_enemies(pos: tuple[int, int], team: Team):
+        row = pos[0]
+        col = pos[1]
+        new_pos_list = [(row - 1, col - 1), (row - 1, col), (row - 1, col + 1),
+                        (row, col - 1), (row, col + 1),
+                        (row + 1, col - 1), (row + 1, col), (row + 1, col + 1)]
+
+        consensus = False
+
+        for new_pos in new_pos_list:
+            if on_board(new_pos):
+                if (board[new_pos[0]][new_pos[1]].piece is not None) and \
+                        (board[new_pos[0]][new_pos[1]].piece.team in enemies[team]):
+                    return True
+
+        return consensus
+
+    FirstRun = True
 
 
+def adjacent_enemies(pos: tuple[int, int], team: Team):
+    row = pos[0]
+    col = pos[1]
+    new_pos_list = [(row - 1, col - 1), (row - 1, col), (row - 1, col + 1),
+                    (row, col - 1), (row, col + 1),
+                    (row + 1, col - 1), (row + 1, col), (row + 1, col + 1)]
+
+    consensus = False
+
+    for new_pos in new_pos_list:
+        if on_board(new_pos):
+            if (board[new_pos[0]][new_pos[1]].piece is not None) and \
+                    (board[new_pos[0]][new_pos[1]].piece.team in enemies[team]):
+                return True
+
+    return consensus
+
+
+FirstRun = True
