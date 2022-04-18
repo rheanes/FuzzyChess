@@ -2,7 +2,7 @@ from GameScene import *
 from ai import *
 # from pieces import *
 
-# for consistancy sake
+# for consistency sake
 class Pos:
     def __init__(self, pos):
         self.row = pos[0]

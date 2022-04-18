@@ -158,14 +158,12 @@ def move_copy_piece(curr_pos: Square, new_pos: Square, c_board):
 
 
 # alpha-beta search
-def search(comm, alpha, beta, maxPlayer, depth, board):
+def search(comm, alpha, beta, maxPlayer, depth, board, best_move = None):
     # returns static evaluation of best move found
     score = 0
     if depth == 0:
         score = evaluation(best_move.piece, best_move.end_position, board)
-        return best_move ,score
-    best_move = None
-
+        return best_move, score
 
     # if it is the maximizing player(ai)
     if maxPlayer:
@@ -173,12 +171,13 @@ def search(comm, alpha, beta, maxPlayer, depth, board):
         moves = []
         #generates moves for a given commander
         moves.extend(generate_moves(comm))
+        best_move = moves[0]
         # search through all moves available for that corp
         for m in moves:
             #performs move on simulated board
             move_copy_piece(m.start_position, m.end_position, board)
             #calls search on simulated board state
-            best_move, curr_score = search(comm, alpha, beta, False, depth - 1, board)
+            best_move, curr_score = search(comm, alpha, beta, False, depth - 1, board, best_move)
             curr_score *= -1
             #undos move
             move_copy_piece(m.end_position, m.start_position, board)
@@ -186,7 +185,6 @@ def search(comm, alpha, beta, maxPlayer, depth, board):
             if curr_score > max_score:
                 max_score = curr_score
                 best_move = moves[m]
-
             # if the highest score is higher than beta, break out of the loop and return the value at that position?
             if max_score >= beta:
                 break
@@ -200,7 +198,7 @@ def search(comm, alpha, beta, maxPlayer, depth, board):
             moves.extend(generate_moves(c))
         for m in moves:
             move_copy_piece(m.start_position, m.end_position)
-            best_move, curr_score = search(comm, alpha, beta, True, depth - 1, board)
+            best_move, curr_score = search(comm, alpha, beta, True, depth - 1, board, best_move)
             move_copy_piece(m.end_position, m.start_position)
             if curr_score < min_score:
                 min_score = curr_score
@@ -295,7 +293,6 @@ def easy_mode(comm): # troop will either move or attack
     troop_actions = []
     #bishop_actions = []
     for troop in comm.troops:
-        
         potential_piece_moves(board[troop.pos[0]][troop.pos[1]])
         troop_actions.extend(board_scan_attacks(troop))
         troop_actions.extend(board_scan_moves(troop))
@@ -446,8 +443,8 @@ def hard_mode(comm):
     #moves_sorted = sorted(moves, key=lambda x : x[1])
     #chosen_move = moves_sorted[-1]
     piece = chosen_move[0].piece
-    temp_row = chosen_move[0].pos[0]
-    temp_col = chosen_move[0].pos[1]
+    temp_row = chosen_move[0].end_position[0]
+    temp_col = chosen_move[0].end_position[1]
 
     ai_action.troop = piece
     ai_action.square = Square(piece)
@@ -483,18 +480,21 @@ def hard_mode(comm):
 def make_decision(comm, mode=DecisionMode.HARD):
     # get remaining troops
     comm.troops = list(set(comm.troops) - set(player_captured_pieces))
-
+    action = None
     troop = None
     next_square = tuple()
     # choose decision mode
     if mode is DecisionMode.EASY:
         troop, next_square = easy_mode(comm)
-    elif mode is DecisionMode.MEDIUM:
-        troop, next_square = medium_mode(comm)
+    #elif mode is DecisionMode.MEDIUM:
+    #    troop, next_square = medium_mode(comm)
     elif mode is DecisionMode.HARD:
-        troop, next_square = hard_mode(comm)
+        action = hard_mode(comm)
     #elif mode is DecisionMode.EXTRA_HARD:
     #    troop, next_square = extra_hard_mode()
+
+    troop = action.troop
+    next_square = action.square
 
     return troop, next_square
 
