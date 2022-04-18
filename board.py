@@ -138,6 +138,11 @@ def create_board():
             board[row][col].x_pos = col * (WIDTH // 8)
             board[row][col].y_pos = row * (WIDTH // 8)
             """
+    #Sets pos values in the initial set up
+    for row in range(8):
+        for col in range(8):
+            if board[row][col].piece is not None:
+                board[row][col].piece.pos = [row, col]
 
 #Create the bone pile and clears the captured pieces
 def createBonepile():
@@ -333,6 +338,11 @@ def maxMovement(maxSpeed: int, iterations: int, position: tuple[int, int], start
         positions = []
     currRow = position[0]
     currCol = position[1]
+    team = None
+    if board[startPos[0]][startPos[1]].piece.team is Team.BLUE or Team.PURPLE or Team.GREEN:
+        team = Team.BLUE
+    else:
+        team = Team.RED
 
     #Return conditions
     if (currRow < 0) or (currCol < 0):
@@ -346,7 +356,8 @@ def maxMovement(maxSpeed: int, iterations: int, position: tuple[int, int], start
 
     if (board[currRow][currCol].piece is not None) and (position != startPos):
         if iterations <= 1:
-            positions.append(position)
+            if position not in positions and board[currRow][currCol].piece.team in enemies[team]:
+                positions.append(position)
         if (piece != 4):
             return positions
 
@@ -359,49 +370,49 @@ def maxMovement(maxSpeed: int, iterations: int, position: tuple[int, int], start
                 if currCol+1 <= 7:
                     if (board[currRow][currCol+1].piece is not None):
                         newPosition = (currRow, currCol + 1)
-                        if newPosition not in positions:
+                        if newPosition not in positions and board[currRow][currCol+1].piece.team in enemies[team]:
                             positions.append(newPosition)
 
                 if currRow + 1 <= 7 and currCol + 1 <= 7:
                     if (board[currRow+1][currCol+1].piece is not None):
                         newPosition = (currRow + 1, currCol + 1)
-                        if newPosition not in positions:
+                        if newPosition not in positions and board[currRow+1][currCol+1].piece.team in enemies[team]:
                             positions.append(newPosition)
 
                 if currRow+1 <= 7:
                     if (board[currRow+1][currCol].piece is not None):
                         newPosition = (currRow + 1, currCol)
-                        if newPosition not in positions:
+                        if newPosition not in positions and board[currRow+1][currCol].piece.team in enemies[team]:
                             positions.append(newPosition)
 
                 if currRow + 1 <= 7 and currCol - 1 >= 0:
                     if (board[currRow+1][currCol-1].piece is not None):
                         newPosition = (currRow + 1, currCol - 1)
-                        if newPosition not in positions:
+                        if newPosition not in positions and board[currRow+1][currCol-1].piece.team in enemies[team]:
                             positions.append(newPosition)
 
                 if currCol-1 >= 0:
                     if (board[currRow][currCol-1].piece is not None):
                         newPosition = (currRow, currCol - 1)
-                        if newPosition not in positions:
+                        if newPosition not in positions and board[currRow][currCol-1].piece.team in enemies[team]:
                             positions.append(newPosition)
 
                 if currCol-1 >= 0 and currRow-1 >= 0:
                     if(board[currRow-1][currCol-1].piece is not None):
                         newPosition = (currRow - 1, currCol - 1)
-                        if newPosition not in positions:
+                        if newPosition not in positions and board[currRow-1][currCol-1].piece.team in enemies[team]:
                             positions.append(newPosition)
 
                 if(currRow - 1) >= 0:
                     if (board[currRow - 1][currCol].piece is not None):
                         newPosition = (currRow - 1, currCol)
-                        if newPosition not in positions:
+                        if newPosition not in positions and board[currRow - 1][currCol].piece.team in enemies[team]:
                             positions.append(newPosition)
 
                 if(currRow - 1) >= 0 and currCol+1 <= 7:
                     if (board[currRow - 1][currCol + 1].piece is not None):
                         newPosition = (currRow - 1, currCol + 1)
-                        if newPosition not in positions:
+                        if newPosition not in positions and board[currRow - 1][currCol + 1].piece.team in enemies[team]:
                             positions.append(newPosition)
                 return positions
             elif iterations == 2:
@@ -445,6 +456,12 @@ def knightAttackPieces(position: tuple[int, int], startPos: tuple[int, int], pos
     currRow = position[0]
     currCol = position[1]
 
+    team = None
+    if board[startPos[0]][startPos[1]].piece.team is Team.BLUE or Team.PURPLE or Team.GREEN:
+        team = Team.BLUE
+    else:
+        team = Team.RED
+
     if (currRow < 0) or (currCol < 0):
         return
 
@@ -452,7 +469,8 @@ def knightAttackPieces(position: tuple[int, int], startPos: tuple[int, int], pos
         return
 
     if(board[currRow][currCol].piece is not None) and position != startPos:
-        positions.append(position)
+        if position not in positions and board[currRow][currCol].piece.team in enemies[team]:
+            positions.append(position)
         return positions
     if(board[currRow][currCol].piece is None):
         return
