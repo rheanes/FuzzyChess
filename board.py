@@ -370,19 +370,19 @@ def maxMovement(maxSpeed: int, iterations: int, position: tuple[int, int], start
                 if currCol+1 <= 7:
                     if (board[currRow][currCol+1].piece is not None):
                         newPosition = (currRow, currCol + 1)
-                        if newPosition not in positions and board[currRow][currCol+1].piece.team in enemies(team):
+                        if newPosition not in positions and board[currRow][currCol+1].piece.team in enemies[team]:
                             positions.append(newPosition)
 
                 if currRow + 1 <= 7 and currCol + 1 <= 7:
                     if (board[currRow+1][currCol+1].piece is not None):
                         newPosition = (currRow + 1, currCol + 1)
-                        if newPosition not in positions and board[currRow+1][currCol+1].piece.team in enemies(team):
+                        if newPosition not in positions and board[currRow+1][currCol+1].piece.team in enemies[team]:
                             positions.append(newPosition)
 
                 if currRow+1 <= 7:
                     if (board[currRow+1][currCol].piece is not None):
                         newPosition = (currRow + 1, currCol)
-                        if newPosition not in positions and board[currRow+1][currCol].piece.team in enemies(team):
+                        if newPosition not in positions and board[currRow+1][currCol].piece.team in enemies[team]:
                             positions.append(newPosition)
 
                 if currRow + 1 <= 7 and currCol - 1 >= 0:
