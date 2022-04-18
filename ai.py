@@ -110,6 +110,7 @@ that move on the board when the best move is found.
 
 need to generate list of moves
 """
+#for a given piece, returns all possible positions for the piece to traverse to
 def available_moves(piece):
     if (piece.team == Team.YELLOW or (piece.team == Team.RED) or piece.team == Team.ORANGE):
         if piece.type == Type.PAWN:
@@ -123,7 +124,7 @@ def available_moves(piece):
         elif piece.type == Type.KNIGHT:
             return maxMovement(4, 0, piece.pos, piece.pos, piece.type.value, piece.team)
     
-
+#generatesa list of moves for each piece
 def generate_moves(comm):
     moves = []
     for troop in comm.troops:
@@ -132,11 +133,12 @@ def generate_moves(comm):
         
     return moves
 
+#creates copy of board
 def copy_board(board):
     return deepcopy(board)
 
 
-
+#moves pieces 
 def move_copy_piece(curr_pos: Square, new_pos: Square, c_board):
     c_board[new_pos.row][new_pos.col].piece = c_board[curr_pos.row][curr_pos.col].piece
     c_board[curr_pos.row][curr_pos.col].piece = None
@@ -146,12 +148,7 @@ def move_copy_piece(curr_pos: Square, new_pos: Square, c_board):
 
     
 
-"""
-moves = [[piece, (row, col)]]
-generating enemy moves -> access enemy commanders troops
-call potential_piece_moves and store possible moves from that function
-[green_commander.troops[0]] , (row, col)]
-"""
+
 # alpha-beta search
 def search(comm, alpha, beta, maxPlayer, depth, board):
     # returns static evaluation of best move found
@@ -167,12 +164,15 @@ def search(comm, alpha, beta, maxPlayer, depth, board):
     if maxPlayer:
         max_score = -inf
         moves = []
-        
+        #generates moves for a given commander
         moves.extend(generate_moves(comm))
         # search through all moves available for that corp
         for m in moves:
+            #performs move on simulated board
             move_copy_piece(m.start_position, m.end_position, copied_board)
+            #calls search on simulated board state
             curr_score = search(comm, alpha, beta, False, depth - 1, copied_board) * -1
+            #undos move
             move_copy_piece(m.end_position, m.start_position, copied_board)
             # if the current move is better than the current highest score, replace it
             if curr_score > max_score:
@@ -201,7 +201,7 @@ def search(comm, alpha, beta, maxPlayer, depth, board):
             if min_score <= alpha:
                 break
             beta = min(beta, min_score)
-        return min_score
+        return best_move, min_score
 
 
 ###############################################
