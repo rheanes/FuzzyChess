@@ -146,7 +146,7 @@ def aigame(screen):
         assign_piece_pos()
 
 
-        decision, troop, next_square, team = make_decision(ai_commander)
+        decision, troop, next_square = make_decision(ai_commander)
 
         # Completes specific action
         if decision is Action.MOVE:

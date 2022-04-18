@@ -483,8 +483,6 @@ def make_decision(comm, mode=DecisionMode.HARD):
     # get remaining troops
     comm.troops = list(set(comm.troops) - set(player_captured_pieces))
     action = None
-    troop = None
-    next_square = tuple()
     # choose decision mode
     if mode is DecisionMode.EASY:
         troop, next_square = easy_mode(comm)
@@ -497,8 +495,9 @@ def make_decision(comm, mode=DecisionMode.HARD):
 
     troop = action.troop
     next_square = action.square
+    decision = action.decision
 
-    return troop, next_square
+    return decision, troop, next_square
 
 '''
 class AI:
