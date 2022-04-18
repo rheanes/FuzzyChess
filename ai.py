@@ -135,11 +135,11 @@ def generate_moves(comm):
 def copy_board(board):
     return deepcopy(board)
 
-copied_board = copy_board(board)
 
-def move_copy_piece(curr_pos: Square, new_pos: Square):
-    copied_board[new_pos.row][new_pos.col].piece = copied_board[curr_pos.row][curr_pos.col].piece
-    copied_board[curr_pos.row][curr_pos.col].piece = None
+
+def move_copy_piece(curr_pos: Square, new_pos: Square, c_board):
+    c_board[new_pos.row][new_pos.col].piece = c_board[curr_pos.row][curr_pos.col].piece
+    c_board[curr_pos.row][curr_pos.col].piece = None
 
 
 
@@ -155,9 +155,10 @@ call potential_piece_moves and store possible moves from that function
 # alpha-beta search
 def search(comm, alpha, beta, maxPlayer, depth, board):
     # returns static evaluation of best move found
+    copied_board = copy_board(board)
     score = 0
     if depth == 0:
-        score = evaluation(best_move.piece, best_move.end_position, board)
+        score = evaluation(best_move.piece, best_move.end_position, copied_board)
         return best_move ,score
     best_move = None
 
@@ -170,9 +171,9 @@ def search(comm, alpha, beta, maxPlayer, depth, board):
         moves.extend(generate_moves(comm))
         # search through all moves available for that corp
         for m in moves:
-            move_copy_piece(m.start_position, m.end_position)
-            curr_score = search(comm, alpha, beta, False, depth - 1, board) * -1
-            move_copy_piece(m.end_position, m.start_position)
+            move_copy_piece(m.start_position, m.end_position, copied_board)
+            curr_score = search(comm, alpha, beta, False, depth - 1, copied_board) * -1
+            move_copy_piece(m.end_position, m.start_position, copied_board)
             # if the current move is better than the current highest score, replace it
             if curr_score > max_score:
                 max_score = curr_score
@@ -191,7 +192,7 @@ def search(comm, alpha, beta, maxPlayer, depth, board):
             moves.extend(generate_moves(c))
         for m in moves:
             move_copy_piece(m.start_position, m.end_position)
-            curr_score = search(comm, alpha, beta, True, depth - 1, board)
+            curr_score = search(comm, alpha, beta, True, depth - 1, copied_board)
             move_copy_piece(m.end_position, m.start_position)
             if curr_score < min_score:
                 min_score = curr_score
