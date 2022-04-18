@@ -5,11 +5,6 @@ import random
 from copy import deepcopy
 #Team, Type, orange_commander, red_commander, yellow_commander
 
-class Pos:
-    def __init__(self, pos):
-        self.row = pos[0]
-        self.col = pos[1]
-
 '''
 # for ai, scans entire board for enemies
 def board_scan(targets, leader, board):
@@ -117,29 +112,24 @@ need to generate list of moves
 """
 #for a given piece, returns all possible positions for the piece to traverse to
 def available_moves(piece):
-    temp_list = []
     if (piece.team == Team.YELLOW or (piece.team == Team.RED) or piece.team == Team.ORANGE):
         if piece.type == Type.PAWN:
-            #return  pawn_moves_top(piece.pos)
-            temp_list = pawn_moves_top(piece.pos)
-            return temp_list
+            return pawn_moves_top(piece.pos, piece.team)
         elif (piece.type == Type.KING) or (piece.type == Type.QUEEN):
-            return maxMovement(3, 0, piece.pos, piece.pos, piece.type.value)
+            return maxMovement(3, 0, piece.pos, piece.pos, piece.type.value, piece.team)
         elif piece.type == Type.ROOK:
-            return maxMovement(2, 0, piece.pos, piece.pos, piece.type.value)
+            return maxMovement(2, 0, piece.pos, piece.pos, piece.type.value, piece.team)
         elif piece.type == Type.BISHOP:
-            return maxMovement(2, 0, piece.pos, piece.pos, piece.type.value)
+            return maxMovement(2, 0, piece.pos, piece.pos, piece.type.value, piece.team)
         elif piece.type == Type.KNIGHT:
-            return maxMovement(4, 0, piece.pos, piece.pos, piece.type.value)
+            return maxMovement(4, 0, piece.pos, piece.pos, piece.type.value, piece.team)
     
 #generatesa list of moves for each piece
 def generate_moves(comm):
     moves = []
     for troop in comm.troops:
-        temp_list = available_moves(troop)
-        if temp_list is not None:
-            for pos in available_moves(troop):
-                moves.append(Move(troop, troop.pos, (pos[0], pos[1])))
+        for row, col in available_moves(troop):
+            moves.append(Move(troop, troop.pos, (row, col)))
         
     return moves
 
@@ -148,23 +138,27 @@ def copy_board(board):
     return deepcopy(board)
 
 
-
-
 #moves pieces 
 def move_copy_piece(curr_pos: Square, new_pos: Square, c_board):
-    c_board[new_pos[0]][new_pos[1]].piece = c_board[curr_pos[0]][curr_pos[1]].piece
-    c_board[curr_pos[0]][curr_pos[1]].piece = None
+    c_board[new_pos.row][new_pos.col].piece = c_board[curr_pos.row][curr_pos.col].piece
+    c_board[curr_pos.row][curr_pos.col].piece = None
+
+
+
+
     
 
 
 # alpha-beta search
-def search(comm, alpha, beta, maxPlayer, depth, board):
+def search(comm, alpha, beta, maxPlayer, depth, b_move ,board):
     # returns static evaluation of best move found
+    copied_board = copy_board(board)
     score = 0
-    if depth == 0:
-        score = evaluation(best_move.piece, best_move.end_position, board)
-        return best_move ,score
     best_move = None
+    if depth == 0:
+        score = evaluation(best_move.piece, best_move.end_position, copied_board)
+        return best_move ,score
+    
 
 
     # if it is the maximizing player(ai)
@@ -178,7 +172,7 @@ def search(comm, alpha, beta, maxPlayer, depth, board):
             #performs move on simulated board
             move_copy_piece(m.start_position, m.end_position, board)
             #calls search on simulated board state
-            best_move, curr_score = search(comm, alpha, beta, False, depth - 1, board)
+            best_move, curr_score = search(comm, alpha, beta, False, depth - 1, best_move, board)
             curr_score *= -1
             #undos move
             move_copy_piece(m.end_position, m.start_position, board)
@@ -200,7 +194,7 @@ def search(comm, alpha, beta, maxPlayer, depth, board):
             moves.extend(generate_moves(c))
         for m in moves:
             move_copy_piece(m.start_position, m.end_position)
-            best_move, curr_score = search(comm, alpha, beta, True, depth - 1, board)
+            best_move, curr_score = search(comm, alpha, beta, True, depth - 1, best_move, board)
             move_copy_piece(m.end_position, m.start_position)
             if curr_score < min_score:
                 min_score = curr_score
@@ -235,42 +229,21 @@ def find_potential_piece_moves(self):
 def board_scan_moves(piece):
     targets = []
 
-    for square in board:
-        # scan enemies
-        '''
-        if square is not None:
-        if enemies[square.piece.team] is Team.RED or \
-            enemies[square.piece.team] is Team.ORANGE or \
-                enemies[square.piece.team] is Team.YELLOW:
-            square[:].piece.pos = (square.row, square.col)
-            targets.append(square[:].piece)
-
-        if square.piece.team is self.leader.team:
-            square[:].piece.pos = ()
-        '''
-        if square[:].color is BLUE:
-            targets.append(AiAction(piece, Action.MOVE, (square.row, square.col)))
+    for row in range(8):
+        for col in range(8):
+            if board[row][col].color is BLUE:
+                targets.append(AiAction(piece, Action.MOVE, (row, col)))
 
     return targets
 
 def board_scan_attacks(piece):
     targets = []
 
-    for square in board:
-        # scan enemies
-        '''
-        if square is not None:
-        if enemies[square.piece.team] is Team.RED or \
-            enemies[square.piece.team] is Team.ORANGE or \
-                enemies[square.piece.team] is Team.YELLOW:
-            square[:].piece.pos = (square.row, square.col)
-            targets.append(square[:].piece)
-
-        if square.piece.team is self.leader.team:
-            square[:].piece.pos = ()
-        '''
-        if square[:].color is BLACK:
-            targets.append(AiAction(piece ,Action.ATTACK, (square.row, square.col)))
+    for row in range(8):
+        for col in range(8):
+            
+            if board[row][col].color is BLACK:
+                targets.append(AiAction(piece ,Action.ATTACK, (row, col)))
 
     return targets
 
@@ -395,73 +368,17 @@ def medium_mode(comm):
     bishop: randomly choose which troop will move or attack based on evaluation of present and future (probabilities)
     king: randomly choose which troop will move, attack, delegated, or recalled based on evaluation of present and future
 '''
-pawn_start_pos = [(1, 2), (1, 6)]
 
-def message_king_rook(comm):
-    red_commander.message = comm.leader.team
-
-def has_knight(comm):
-    lost_knight = True
-    for troop in comm.troops:
-        if troop.type is Type.KNIGHT:
-            lost_knight = False
-
-    return lost_knight
-
-def has_only_queen():
-    only_queen = True
-
-    for troop in red_commander.troops:
-        if troop.type is Type.PAWN:
-            only_queen = False
-        elif troop.type is Type.ROOK:
-            only_queen = False
-
-    return only_queen
+pawns = [False, False, False]
 
 def hard_mode(comm):
     # append leader to troop when half lost
+    if len(comm.troops) < 2:
+        comm.troops.append(comm.leader)
+
     ai_action = AiAction()
 
-
-    if comm.leader.type is Type.BISHOP:
-        if not has_knight(comm):
-            message_king_rook(comm)
-        elif len(comm.troops) < 2:
-            comm.troops.append(comm.leader)
-
-    elif comm.leader.type is Type.KING:
-        if comm.message is not None:
-            ai_action.team = red_commander.message
-            ai_action.decision = Action.DELEGATE
-            return ai_action
-        elif has_only_queen():
-            ai_action.decision = Action.RECALL
-            return ai_action
-
-    # Does action
-    # search() Move(): piece, start, end
-    chosen_move = search(comm, -inf, inf, True, 5, board) # should store (move, score)
-
-    #moves_sorted = sorted(moves, key=lambda x : x[1])
-    #chosen_move = moves_sorted[-1]
-    piece = chosen_move[0].piece
-    temp_row = chosen_move[0].pos[0]
-    temp_col = chosen_move[0].pos[1]
-
-    ai_action.troop = piece
-    ai_action.square = Square(piece)
-
-    if board[temp_row][temp_col].piece is None:
-        ai_action.decision = Action.MOVE
-    else:
-        ai_action.decision = Action.ATTACK
-
-    return ai_action
-
-
-'''
-    # Get all troop actions
+    # Pawn's Action
     for troop in comm.troops:
         global pawns
         if troop.type is Type.PAWN:
@@ -469,8 +386,8 @@ def hard_mode(comm):
 
 
     # Knight's Action
-    for troop in comm.troops:
-        if troop.type is Type.
+    #for troop in comm.troops:
+        #if troop.type is Type.
 
     potential_piece_moves()
     # Bishop's Action
@@ -478,9 +395,9 @@ def hard_mode(comm):
 
 
     return ai_action
-'''
 
-def make_decision(comm, mode=DecisionMode.HARD):
+
+def make_decision(comm, mode=DecisionMode.EASY):
     # get remaining troops
     comm.troops = list(set(comm.troops) - set(player_captured_pieces))
 
@@ -498,12 +415,12 @@ def make_decision(comm, mode=DecisionMode.HARD):
 
     return troop, next_square
 
-'''
+
 class AI:
     def __init__(self):
 
         pass
-    
+    """
     # These are the potential moves
     def potential_piece_moves(square: Square):
         piece = square.piece
@@ -545,7 +462,7 @@ class AI:
                 highlight_moves(
                     maxMovement(4, 0, (square.row, square.col), (square.row, square.col), square.piece.type.value),
                     square.piece.team)
-    
+    """
 
     def set_piece_pos(self):
         for row in range(8):
@@ -568,4 +485,3 @@ class AI:
                         board[chosen_row][chosen_col].piece = board[pos[0]][pos[1]].piece
                         remove_highlights()
                         return
-'''
