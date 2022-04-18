@@ -27,7 +27,7 @@ rook_pos_table = [[-15, -15, -15, -15, -15, -15, -15, -15],
                   [10, 10, 5, 5, 5, 3, 10, 10],
                   [15, 15, 10, 10, 5, 10, 15, 15],
                   [-15, -15, -15, -15, -15, -15, -15, -15]]
-                  
+
 bishop_pos_table = [[5, 15, 20, 20, 15, 20, 15, 5],
                   [0, 10, 15, 15, 10, 15, 10, 0],
                   [-5, 5, 8, 8, 8, 3, 5, -5],
@@ -65,26 +65,6 @@ king_pos_table = [[5, 15, 20, 25, 25, 20, 15, 5],
                   [5, 15, 20, 25, 25, 20, 15, 5]]
 
 
-class Team(enum.Enum):
-    # Player AI
-    YELLOW = 0
-    RED = 1
-    ORANGE = 2
-    # Player Human
-    PURPLE = 3
-    BLUE = 4
-    GREEN = 5
-
-
-class Type(enum.Enum):
-    KING = 0
-    QUEEN = 1
-    BISHOP = 2
-    KNIGHT = 3
-    ROOK = 4
-    PAWN = 5
-
-
 class Action(enum.Enum):
     MOVE = 0
     ATTACK = 1
@@ -117,6 +97,25 @@ class DecisionMode(enum.Enum):
     MEDIUM = 1
     HARD = 2
     EXTRA_HARD = 3
+
+class Team(enum.Enum):
+    # Player AI
+    YELLOW = 0
+    RED = 1
+    ORANGE = 2
+    # Player Human
+    PURPLE = 3
+    BLUE = 4
+    GREEN = 5
+
+
+class Type(enum.Enum):
+    KING = 0
+    QUEEN = 1
+    BISHOP = 2
+    KNIGHT = 3
+    ROOK = 4
+    PAWN = 5
 
 enemies = {
     Team.BLUE : [Team.RED, Team.ORANGE, Team.YELLOW],
@@ -168,6 +167,7 @@ rook_atk_chnc = {Type.KING: 0.5,
                 Type.BISHOP: 0.33,
                 Type.ROOK: 0.33,
                 Type.PAWN: 0.33}
+
 
 
 #creates a chess piece class that shows:

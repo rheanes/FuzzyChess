@@ -1,5 +1,5 @@
 from GameScene import *
-from ai import make_decision
+from ai import *
 # from pieces import *
 
 # for consistancy sake
@@ -47,11 +47,6 @@ class Status(Sprite):
 
     def draw(self, surface):
         surface.blit(self.img, self.rect)
-
-def find_piece_pos(piece):
-    for row in range(8):
-        for col in range(8):
-            if
 
 def aigame(screen):
     #Button handles the free move commanders can make each turn
@@ -148,6 +143,7 @@ def aigame(screen):
 
     for ai_commander in ai_commanders:
         action_count = len(ai_commanders)
+        assign_piece_pos()
 
 
         decision, troop, next_square, team = make_decision(ai_commander)
