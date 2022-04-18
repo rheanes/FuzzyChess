@@ -47,12 +47,12 @@ class Status(Sprite):
 
     def draw(self, surface):
         surface.blit(self.img, self.rect)
-
+'''
 def find_piece_pos(piece):
     for row in range(8):
         for col in range(8):
             if
-
+'''
 def aigame(screen):
     #Button handles the free move commanders can make each turn
     Command_Move_Button = CommFreeMove(pos=(WIDTH - 300, 200),
@@ -60,24 +60,21 @@ def aigame(screen):
                                      txt_col=BLACK,
                                      bg_col=buttoncolor,
                                      text="Com. Free Move",
-                                     bg_hover=buttonhover,
-                                     action=GameState.AiPlay)
+                                     bg_hover=buttonhover)
 
     Delegate_Button = DelegateButton(pos=(WIDTH - 300, 275),
                                      font_size=50,
                                      txt_col=BLACK,
                                      bg_col=buttoncolor,
                                      text="Delegate",
-                                     bg_hover=buttonhover,
-                                     action=GameState.AiPlay)
+                                     bg_hover=buttonhover)
 
     Recall_Button = RecallButton(pos=(WIDTH - 300, 350),
                            font_size=50,
                            txt_col=BLACK,
                            bg_col=buttoncolor,
                            text="Recall",
-                           bg_hover=buttonhover,
-                           action=GameState.AiPlay)
+                           bg_hover=buttonhover)
 
     End_Turn_Button = button(pos=(WIDTH - 300, 425),
                              font_size=50,
@@ -101,16 +98,14 @@ def aigame(screen):
                                      txt_col=BLACK,
                                      bg_col=buttoncolor,
                                      text="Action Count: ",
-                                     bg_hover=buttonhover,
-                                     action=GameState.Play)
+                                     bg_hover=buttonhover)
 
     Current_turn = WhosTurn(pos=(WIDTH - 300, 50),
                             font_size=50,
                             txt_col=BLACK,
                             bg_col=buttoncolor,
                             text="Current Turn: AI",
-                            bg_hover=buttonhover,
-                            action=GameState.Play)
+                            bg_hover=buttonhover)
 
 
     Bone_Pile = BoneP(pos=(WIDTH - 1075, 650),
@@ -118,8 +113,7 @@ def aigame(screen):
                             txt_col=BLACK,
                             bg_col=buttoncolor,
                             text="Bone Pile",
-                            bg_hover=buttonhover,
-                            action=GameState.Play)
+                            bg_hover=buttonhover)
 
     buttons = [Delegate_Button, End_Turn_Button, status_label, Recall_Button,
                Action_Counter, Current_turn, Bone_Pile, Command_Move_Button]
