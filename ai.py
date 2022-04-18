@@ -36,7 +36,7 @@ stores piece that is doing action, position that it is moving to. Doing so allow
 
 """
 
-copied_board = copy_board(board)
+
 
 def assign_piece_pos():
     for row in range(8):
