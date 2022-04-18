@@ -138,6 +138,11 @@ def create_board():
             board[row][col].x_pos = col * (WIDTH // 8)
             board[row][col].y_pos = row * (WIDTH // 8)
             """
+    #Sets pos values in the initial set up
+    for row in range(8):
+        for col in range(8):
+            if board[row][col].piece is not None:
+                board[row][col].piece.pos = [row, col]
 
 #Create the bone pile and clears the captured pieces
 def createBonepile():

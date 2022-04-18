@@ -526,12 +526,14 @@ def reset_turn():
     global ai_commanders
     if turn:
         action_count = len(player_commanders)
+        print("PLayer Turn")
         for x in player_commanders:
             x.action = True
             x.has_moved = False
             x.authority = True
     elif not turn:
         action_count = len(ai_commanders)
+        print("AI Turn")
         for x in ai_commanders:
             x.action = True
             x.has_moved = False
@@ -710,8 +712,6 @@ def playgame(screen):
         # print('Delegation Mode: ', delegation_mode)
         # print('action count', action_count)
         Action_Counter.text = 'Action Count: ' + str(action_count)
-
-
 
         if turn:
             # print('human turn')
@@ -996,7 +996,90 @@ def playgame(screen):
                 else:
                     pass
         elif not turn:  # AI starts
-            return GameState.AiPlay
+            for c in ai_commanders:
+                if c.action is not False:
+                    moves = []
+                    pieces = []
+                    for troop in c.troops:
+                        if troop.type is Type.PAWN:
+                            pawn_moves = pawn_moves_top(troop.pos)
+                            if pawn_moves is not None:
+                                moves.append(pawn_moves)
+                                pieces.append(troop.pos)
+                        elif troop.type is Type.KING or Type.QUEEN:
+                            kqmoves = maxMovement(3, 0, troop.pos, troop.pos, troop.type.value)
+                            if kqmoves is not None:
+                                moves.append(kqmoves)
+                                pieces.append(troop.pos)
+                        elif troop.type is Type.KNIGHT:
+                            kmoves = maxMovement(4, 0, troop.pos, troop.pos, troop.type.value)
+                            if kmoves is not None:
+                                moves.append(kmoves)
+                                pieces.append(troop.pos)
+                        elif troop.type is Type.BISHOP:
+                            bmoves = maxMovement(2, 0, troop.pos, troop.pos, troop.type.value)
+                            if bmoves is not None:
+                                moves.append(bmoves)
+                                pieces.append(troop.pos)
+                        elif troop.type is Type.ROOK:
+                            rmoves = maxMovement(2, 0, troop.pos, troop.pos, troop.type.value)
+                            if rmoves is not None:
+                                moves.append(rmoves)
+                                pieces.append(troop.pos)
+                    chosen_piece = random.randint(0, len(pieces) - 1)
+                    pieceSq = pieces[chosen_piece]
+                    team = board[pieceSq[0]][pieceSq[1]].piece.team
+                    chosen_move = moves[chosen_piece]
+                    highlight_moves(chosen_move, team)
+                    finalMove = chosen_move[random.randint(0, len(chosen_move) - 1)]
+                    if(board[finalMove[0]][finalMove[1]].color is BLUE):
+                        board[pieceSq[0]][pieceSq[1]].piece.pos = [finalMove[0], finalMove[1]]
+                        tempSquare = board[pieceSq[0]][pieceSq[1]]
+                        finalSquare = board[finalMove[0]][finalMove[1]]
+                        move_piece(tempSquare, finalSquare)
+                        action_count -= 1
+                        end_commander_turn(team)
+                    elif(board[finalMove[0]][finalMove[1]].color is BLACK):
+                        if(attack(screen, board[pieceSq[0]][pieceSq[1]].piece.type.value, board[finalMove[0]][finalMove[1]].piece.type.value)):
+                            if board[finalMove[0]][finalMove[1]].piece.type is Type.BISHOP:
+                                # We decrement the counter to ensure the actions done by a human are limited based on the number of commanders we have
+                                removeCommander(board[finalMove[0]][finalMove[1]].piece.team)
+                                remove_team(board[finalMove[0]][finalMove[1]].piece.team)
+                            elif (board[finalMove[0]][finalMove[1]].piece.type is Type.KING) and (
+                                    board[finalMove[0]][finalMove[1]].piece.team is Team.BLUE):
+                                return GameState.Loss
+                            else:
+                                remove_piece(board[finalMove[0]][finalMove[1]].piece)
+                            # append to captured pieces
+                            player_captured_pieces.append(board[finalMove[0]][finalMove[1]].piece)
+                            # remove from commander array
+                            # Recoloring must be done after remove piece or that function gets killed
+                            board[finalMove[0]][finalMove[1]].piece.team = Team.BLUE
+                            ReturnPieceSprite(board[finalMove[0]][finalMove[1]].piece)
+                            end_commander_turn(board[finalMove[0]][finalMove[1]].piece.team)
+
+                            if (board[pieceSq[0]][pieceSq[1]].piece.type is not Type.ROOK):
+                                board[pieceSq[0]][pieceSq[1]].piece.pos = [finalMove[0], finalMove[1]]
+                                move_piece(board[pieceSq[0]][pieceSq[1]], board[finalMove[0]][finalMove[1]])
+                                end_commander_turn(board[finalMove[0]][finalMove[1]].piece.team)
+                            else:
+                                end_commander_turn(board[pieceSq[0]][pieceSq[1]].piece.team)
+                            action_count -= 1
+                            remove_highlights()
+                        else:
+                            remove_highlights()
+                            end_commander_turn(board[pieceSq[0]][pieceSq[1]].piece.team)
+                            action_count -= 1
+                            current_square = None
+                    remove_highlights()
+                if action_count <= 0:
+                    turnChange()
+                    reset_turn()
+
+
+
+
+        #return GameState.AiPlay
 
         update_display(screen)
         insertBonepile()
