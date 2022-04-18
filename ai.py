@@ -166,13 +166,13 @@ def search(comm, alpha, beta, maxPlayer, depth, board):
     if maxPlayer:
         max_score = -inf
         moves = []
-        for c in ai_commanders:
-            moves.extend(generate_moves(c))
+        
+        moves.extend(generate_moves(comm))
         # search through all moves available for that corp
         for m in moves:
             move_copy_piece(m.start_position, m.end_position)
-            curr_score = search(c, alpha, beta, False, depth - 1, board) * -1
-
+            curr_score = search(comm, alpha, beta, False, depth - 1, board) * -1
+            move_copy_piece(m.end_position, m.start_position)
             # if the current move is better than the current highest score, replace it
             if curr_score > max_score:
                 max_score = curr_score
@@ -190,8 +190,9 @@ def search(comm, alpha, beta, maxPlayer, depth, board):
         for c in player_commanders:
             moves.extend(generate_moves(c))
         for m in moves:
-            curr_score = search(c, alpha, beta, True, depth - 1, board)
-
+            move_copy_piece(m.start_position, m.end_position)
+            curr_score = search(comm, alpha, beta, True, depth - 1, board)
+            move_copy_piece(m.end_position, m.start_position)
             if curr_score < min_score:
                 min_score = curr_score
                 best_move = moves[m]
