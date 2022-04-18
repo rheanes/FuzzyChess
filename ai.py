@@ -416,6 +416,8 @@ def has_only_queen():
 
     return only_queen
 
+# this comment is to do a draw commit
+
 def hard_mode(comm):
     # append leader to troop when half lost
     ai_action = AiAction()
