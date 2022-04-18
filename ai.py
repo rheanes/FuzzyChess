@@ -38,7 +38,8 @@ stores piece that is doing action, position that it is moving to. Doing so allow
 def assign_piece_pos():
     for row in range(8):
         for col in range(8):
-            board[row][col].piece.pos = (row, col)
+            if board[row][col].piece is not None:
+                board[row][col].piece.pos = (row, col)
 
 class Move:
     def __init__(self, piece, start_position: tuple[int, int], end_position: tuple[int, int]) -> None:
@@ -224,34 +225,32 @@ def board_scan_attacks(piece):
 '''
 def easy_mode(comm): # troop will either move or attack
     # adds lead to action scene in desperation
-    if len(comm.troops) < 2:
-        comm.leader.troops.append(comm.leader)
+    #if len(comm.troops) < 2:
+     #   comm.leader.troops.append(comm.leader)
 
-    ai_action = None
-
+    
+    #assign_piece_pos
     ####################################
     # Scan each troop for nearby enemies or moves
     ####################################
     troop_actions = []
-    knight_actions = []
-    bishop_actions = []
+    #bishop_actions = []
     for troop in comm.troops:
-        #
-        potential_piece_moves()
+        
+        potential_piece_moves(board[troop.pos[0]][troop.pos[1]])
         troop_actions.extend(board_scan_attacks(troop))
         troop_actions.extend(board_scan_moves(troop))
         
 
-    decision = None
 
     ##############################
     # Get troop's actions
     ##############################
-    potential_piece_moves(Square(troop))
+    potential_piece_moves(board[troop.pos[0]][troop.pos[1]])
 
     troop_moves = []
 
-    troop_actions = [Action.PASS]
+    troop_actions = []
 
     if comm.leader.type is Type.KING:
         if not troop.delegated:
@@ -301,7 +300,7 @@ def easy_mode(comm): # troop will either move or attack
     if decision is Action.DELEGATE:
         if comm is orange_commander and ok not in orange_commander.troops:
             team = Team.ORANGE
-        else:
+        elif comm is yellow_commander and yk not in yellow_commander.troops:
             team = Team.YELLOW
 
     remove_highlights()
