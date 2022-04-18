@@ -2,6 +2,7 @@ from common import *
 #from GameFunctions import *
 from GameScene import *
 import random
+from copy import deepcopy
 #Team, Type, orange_commander, red_commander, yellow_commander
 
 '''
@@ -34,6 +35,8 @@ maybe encapsulate action as an object? (action class) ->
 stores piece that is doing action, position that it is moving to. Doing so allows for a list of moves to be stored
 
 """
+
+copied_board = copy_board(board)
 
 def assign_piece_pos():
     for row in range(8):
@@ -107,25 +110,66 @@ that move on the board when the best move is found.
 
 need to generate list of moves
 """
+def available_moves(piece):
+    if (piece.team == Team.YELLOW or (piece.team == Team.RED) or piece.team == Team.ORANGE):
+        if piece.type == Type.PAWN:
+            return pawn_moves_top(piece.pos, piece.team)
+        elif (piece.type == Type.KING) or (piece.type == Type.QUEEN):
+            return maxMovement(3, 0, piece.pos, piece.pos, piece.type.value, piece.team)
+        elif piece.type == Type.ROOK:
+            return maxMovement(2, 0, piece.pos, piece.pos, piece.type.value, piece.team)
+        elif piece.type == Type.BISHOP:
+            return maxMovement(2, 0, piece.pos, piece.pos, piece.type.value, piece.team)
+        elif piece.type == Type.KNIGHT:
+            return maxMovement(4, 0, piece.pos, piece.pos, piece.type.value, piece.team)
+    
+
+def generate_moves(comm):
+    moves = []
+    for troop in comm.troops:
+        for row, col in available_moves(troop):
+            moves.append(Move(troop, troop.pos, (row, col)))
+        
+    return moves
+
+#def copy_board(board):
+#    return deepcopy(board)
+#
+#copied_board = copy_board(board)
+#def move_copy_piece(curr_pos: Square, new_pos: Square):
+#    copied_board[new_pos.row][new_pos.col].piece = copied_board[curr_pos.row][curr_pos.col].piece
+#    copied_board[curr_pos.row][curr_pos.col].piece = None
 
 
+
+    
+
+"""
+moves = [[piece, (row, col)]]
+generating enemy moves -> access enemy commanders troops
+call potential_piece_moves and store possible moves from that function
+[green_commander.troops[0]] , (row, col)]
+"""
 # alpha-beta search
-def search(moves, alpha, beta, maxPlayer, depth, board):
+def search(alpha, beta, maxPlayer, depth, board):
     # returns static evaluation of best move found
     score = 0
+    if depth == 0:
+        score = evaluation(best_move.piece, best_move.end_position, board)
+        return best_move ,score
     best_move = None
 
-    if depth == 0:
-        score = evaluation(best_move[0], best_move[1], board)
-        return score
 
     # if it is the maximizing player(ai)
     if maxPlayer:
         max_score = -inf
-
+        moves = []
+        for c in ai_commanders:
+            moves.extend(generate_moves(c))
         # search through all moves available for that corp
         for m in moves:
-            curr_score = search(m, alpha, beta, False, depth - 1, board) * -1
+            #move_copy_piece(m.start_position, m.end_position)
+            curr_score = search(alpha, beta, False, depth - 1, board) * -1
 
             # if the current move is better than the current highest score, replace it
             if curr_score > max_score:
@@ -140,8 +184,11 @@ def search(moves, alpha, beta, maxPlayer, depth, board):
     else:
         # inverse process for opposing(human) player
         min_score = inf
+        moves = []
+        for c in player_commanders:
+            moves.extend(generate_moves(c))
         for m in moves:
-            curr_score = search(m, alpha, beta, True, depth - 1, board)
+            curr_score = search(alpha, beta, True, depth - 1, board)
 
             if curr_score < min_score:
                 min_score = curr_score
@@ -268,7 +315,7 @@ def easy_mode(comm): # troop will either move or attack
         for row in range(8):
             for col in range(8):
                 if board[row][col].color is BLACK:
-                    troop_moves.append(PieceAction(Action.ATTACK, board[row][col]))
+                    troop_moves.append(AiAction(Action.ATTACK, board[row][col]))
                     troop_moves.append(Action.ATTACK)
     else:
         for row in range(8):
@@ -280,10 +327,10 @@ def easy_mode(comm): # troop will either move or attack
 
                     # global decision
                     # decision = Action.MOVE
-                    troop_moves.append(PieceAction(Action.MOVE, board[row][col]))
+                    troop_moves.append(AiAction(Action.MOVE, board[row][col]))
                     troop_actions.append(Action.MOVE)
                 elif board[row][col].color is BLACK:
-                    troop_moves.append(PieceAction(Action.ATTACK, board[row][col]))
+                    troop_moves.append(AiAction(Action.ATTACK, board[row][col]))
                     troop_actions.append(Action.ATTACK)
 
     ################################
