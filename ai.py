@@ -371,6 +371,8 @@ def medium_mode(comm):
 
 pawns = [False, False, False]
 
+# this comment is to do a draw commit
+
 def hard_mode(comm):
     # append leader to troop when half lost
     if len(comm.troops) < 2:
