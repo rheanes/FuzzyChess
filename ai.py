@@ -114,7 +114,7 @@ need to generate list of moves
 def available_moves(piece):
     if (piece.team == Team.YELLOW or (piece.team == Team.RED) or piece.team == Team.ORANGE):
         if piece.type == Type.PAWN:
-            return pawn_moves_top(piece.pos, piece.team)
+            return pawn_moves_top(piece.pos)
         elif (piece.type == Type.KING) or (piece.type == Type.QUEEN):
             return maxMovement(3, 0, piece.pos, piece.pos, piece.type.value, piece.team)
         elif piece.type == Type.ROOK:
