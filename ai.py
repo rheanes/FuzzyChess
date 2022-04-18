@@ -132,13 +132,15 @@ def generate_moves(comm):
         
     return moves
 
-#def copy_board(board):
-#    return deepcopy(board)
-#
-#copied_board = copy_board(board)
-#def move_copy_piece(curr_pos: Square, new_pos: Square):
-#    copied_board[new_pos.row][new_pos.col].piece = copied_board[curr_pos.row][curr_pos.col].piece
-#    copied_board[curr_pos.row][curr_pos.col].piece = None
+def copy_board(board):
+    return deepcopy(board)
+
+copied_board = copy_board(board)
+
+def move_copy_piece(curr_pos: Square, new_pos: Square):
+    copied_board[new_pos.row][new_pos.col].piece = copied_board[curr_pos.row][curr_pos.col].piece
+    copied_board[curr_pos.row][curr_pos.col].piece = None
+
 
 
 
@@ -151,7 +153,7 @@ call potential_piece_moves and store possible moves from that function
 [green_commander.troops[0]] , (row, col)]
 """
 # alpha-beta search
-def search(alpha, beta, maxPlayer, depth, board):
+def search(comm, alpha, beta, maxPlayer, depth, board):
     # returns static evaluation of best move found
     score = 0
     if depth == 0:
@@ -168,8 +170,8 @@ def search(alpha, beta, maxPlayer, depth, board):
             moves.extend(generate_moves(c))
         # search through all moves available for that corp
         for m in moves:
-            #move_copy_piece(m.start_position, m.end_position)
-            curr_score = search(alpha, beta, False, depth - 1, board) * -1
+            move_copy_piece(m.start_position, m.end_position)
+            curr_score = search(c, alpha, beta, False, depth - 1, board) * -1
 
             # if the current move is better than the current highest score, replace it
             if curr_score > max_score:
@@ -188,7 +190,7 @@ def search(alpha, beta, maxPlayer, depth, board):
         for c in player_commanders:
             moves.extend(generate_moves(c))
         for m in moves:
-            curr_score = search(alpha, beta, True, depth - 1, board)
+            curr_score = search(c, alpha, beta, True, depth - 1, board)
 
             if curr_score < min_score:
                 min_score = curr_score
