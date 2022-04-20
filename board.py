@@ -2,7 +2,7 @@ import pieces
 from common import *
 from pieces import *
 import pickle
-
+from copy import deepcopy
 #----------------BOARD CREATING AND SQUARE CLASS ------------
 class Square:
     def __init__(self, piece):
@@ -18,6 +18,28 @@ class Square:
 board = [[Square(None) for _ in range(8)] for _ in range(8)]
 bonePile = [[Square(None) for _ in range(8)] for _ in range(4)]
 
+#performs deep copy of piece for copy_board, This implementation is necessary since 
+# the image attribute in pieces is a Surface object which can't be copied normally with deep copy
+def copy_piece(piece): 
+    c_piece = Piece(None, None, None, None, False)
+    for name, attr in piece.__dict__.items():
+        if hasattr(attr, 'copy') and callable(getattr(attr, 'copy')):
+            c_piece.__dict__[name] = attr.copy()
+        else:
+            c_piece.__dict__[name] = deepcopy(attr)
+        
+    return c_piece 
+#creates an empty board and populates it with copies of the pieces from the original board
+#TODO: Might have to reset/and or delete this board after each completed call of search
+def copy_board(board):
+    copy_board = [[Square(None) for _ in range(8)] for _ in range(8)]
+    for row in range(8):
+        for col in range(8):
+            copy_board[row][col].row = row
+            copy_board[row][col].col = col
+            if board[row][col].piece is not None:
+                copy_board[row][col] = Square(copy_piece(board[row][col].piece))
+    return copy_board
 
 #assign the proper troops to each commander
 def default_troops():
@@ -276,6 +298,7 @@ def find_square_coordinates(position: tuple[int, int]):
 def move_piece(curr_pos: Square, new_pos: Square):
     board[new_pos.row][new_pos.col].piece = board[curr_pos.row][curr_pos.col].piece
     board[curr_pos.row][curr_pos.col].piece = None
+    board[new_pos.row][new_pos.col].piece.pos = [new_pos.row, new_pos.col]
     #print('pieced moved')
 
 #--------------__SQUARE HIGHLIGHTING AND UNHIGHLIGHTING------------------
@@ -305,6 +328,21 @@ def highlight_moves(positions: tuple[int, int], team: Team):
                 board[row][col].color = RED
             """
     #print('finished highlighting')
+
+def highlight_move(position, team: Team):
+    row, col = position
+    if board[row][col].color == BLUE:
+            pass
+    else:
+        if board[row][col].piece is None:
+            board[row][col].color = BLUE
+        elif board[row][col].piece is not None:
+            if board[row][col].piece.team in enemies[team]:
+                board[row][col].color = BLACK
+            else:
+                pass
+        else:
+            pass
 
 def remove_highlights():
     for row in range(8):
