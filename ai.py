@@ -200,12 +200,12 @@ def search(comm, alpha, beta, maxPlayer, depth, copied_board, best_move = None):
                 break
             alpha = max(alpha, max_score)
             
-            print("Piece: " + str(m.piece.type) +"\n"+ 
-                "Start position: " + str(m.start_position) +"\n"+ 
-                "End position: " + str(m.end_position) +"\n"+ 
-                "Team: "+ str(m.piece.team) +"\n" + 
-                "eval value: " + str(evaluation(m.piece, m.end_position, copied_board)) + "\n")
-
+            print("Piece: " + str(best_move.piece.type) +"\n"+ 
+                "Start position: " + str(best_move.start_position) +"\n"+ 
+                "End position: " + str(best_move.end_position) +"\n"+ 
+                "Team: "+ str(best_move.piece.team) +"\n" + 
+                "eval value: " + str(evaluation(best_move.piece, best_move.end_position, copied_board)) + "\n")
+            
         return best_move, max_score
     elif maxPlayer == False:
         # inverse process for opposing(human) player
