@@ -1010,8 +1010,12 @@ def playgame(screen):
                 finalMove = chosen_move[0].end_position
                 
                     
-                #for move in chosen_move:
-                    #print(move)
+                
+                print("Piece: " + str(temp[0].piece.type) +"\n"+ 
+                "Start position: " + str(temp[0].start_position) +"\n"+ 
+                "End position: " + str(temp[0].end_position) +"\n"+ 
+                "Team: "+ str(temp[0].piece.team) +"\n" + 
+                "eval value: " + str(evaluation(temp[0].piece, temp[0].end_position, copied_board)) + "\n")
                 update_display(screen)
                 highlight_move(finalMove, team)
                 update_display(screen)
