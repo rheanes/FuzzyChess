@@ -56,16 +56,22 @@ def default_troops():
 def default_colors():
     for p in red_commander.troops:
         p.team = Team.RED
+        p.delegated = False
     for p in yellow_commander.troops:
         p.team = Team.YELLOW
+        p.delegated = False
     for p in blue_commander.troops:
         p.team = Team.BLUE
+        p.delegated = False
     for p in green_commander.troops:
         p.team = Team.GREEN
+        p.delegated = False
     for p in purple_commander.troops:
         p.team = Team.PURPLE
+        p.delegated = False
     for p in orange_commander.troops:
         p.team = Team.ORANGE
+        p.delegated = False
 
 #Change all sprites to default color
 #This is executed right after default_colors, so all Piece.Team is correct.
@@ -587,12 +593,12 @@ class saveStruct:
         self.brd = board
         #player commanders
         self.blc = blue_commander
-        self.grc = pieces.green_commander
-        self.prc = pieces.purple_commander
+        self.grc = green_commander
+        self.prc = purple_commander
         #ai commanders
-        self.rdc = pieces.red_commander
-        self.orc = pieces.orange_commander
-        self.ylc = pieces.yellow_commander
+        self.rdc = red_commander
+        self.orc = orange_commander
+        self.ylc = yellow_commander
         #player captured pieces
         self.aicp = pieces.ai_captured_pieces
         #ai captured pieces
