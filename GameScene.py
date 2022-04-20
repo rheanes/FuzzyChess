@@ -1016,7 +1016,7 @@ def playgame(screen):
                           "Start position: " + str(temp.start_position) + "\n" +
                           "End position: " + str(temp.end_position) + "\n" +
                           "Team: " + str(temp.piece.team) + "\n" +
-                          "eval value: " + str(evaluation(temp.piece, temp.end_position, board)) + "\n")
+                          "eval value: " + str(evaluation(temp.piece,temp.start_position ,temp.end_position, board)) + "\n")
                     highlight_move(finalMove, team)
                     if (board[finalMove[0]][finalMove[1]].color is BLUE):
                         board[pieceSq[0]][pieceSq[1]].piece.pos = [finalMove[0], finalMove[1]]
@@ -1034,7 +1034,7 @@ def playgame(screen):
                                 chosenAttack = None
                                 maxScore = -inf
                                 for move in knightAttacks:
-                                    score = evaluation(chosen_piece, move, board)
+                                    score = evaluation(chosen_piece,pieceSq ,move, board)
                                     if score > maxScore:
                                         chosenAttack = move
                                         maxScore = score
