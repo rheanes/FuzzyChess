@@ -13,8 +13,37 @@ attackMatrix = [[4, 4, 4, 4, 5, 0],
                 [6, 6, 5, 6, 6, 4]]
 
 
+
+def string_color(team):
+    if team == team.BLUE:
+        return 'Blue'
+    if team == team.GREEN:
+        return 'Green'
+    if team == team.PURPLE:
+        return 'Purple'
+    if team == team.RED:
+        return 'Red'
+    if team == team.ORANGE:
+        return 'Orange'
+    if team == team.YELLOW:
+        return 'Yellow'
+
+def piece_type(type):
+    if type == Type.PAWN:
+        return 'pawn'
+    if type == Type.ROOK:
+        return 'rook'
+    if type == Type.KNIGHT:
+        return 'knight'
+    if type == Type.QUEEN:
+        return 'queen'
+    if type == Type.BISHOP:
+        return 'bishop'
+    if type == Type.KING:
+        return 'king'
+
 # ------------------------------ACTUAL DICE ROLL --------------------- #
-def attackAnimation(screen, roll: int):
+def attackAnimation(screen, atk, deff, roll):
     dieImage1 = pygame.image.load('./Images/dieFace1.png')
     dieImage2 = pygame.image.load('./Images/dieFace2.png')
     dieImage3 = pygame.image.load('./Images/dieFace3.png')
@@ -24,6 +53,12 @@ def attackAnimation(screen, roll: int):
     dieImages = [dieImage1, dieImage2, dieImage3, dieImage4, dieImage5, dieImage6]
     cycles = 3
     dieImage = dieImages[roll - 1]
+    #orange knight attacking blue king
+    atk_piece =  str(string_color(atk.team))+ ' ' + str(piece_type(atk.type))
+    def_piece =  str(string_color(deff.team)) +' '+ str(piece_type(deff.type))
+    Top_Text = font.render(atk_piece, True, BACKGROUND)
+    Middle_Text = font.render('attacking', True, BACKGROUND)
+    Botttom_Text = font.render(def_piece, True, BACKGROUND)
     while True:
         mouse_down = False
         for event in pygame.event.get():
@@ -43,22 +78,25 @@ def attackAnimation(screen, roll: int):
         pygame.draw.rect(screen, BLACK, pygame.Rect(75, 75, 400, 400))
         while cycles > 0:
             for i in dieImages:
-                screen.blit(i, (225, 200))
+                screen.blit(i, (225, 265))
                 pygame.display.flip()
                 pygame.time.delay(100)
             cycles = cycles - 1
-        screen.blit(dieImage, (225, 200))
+        screen.blit(dieImage, (225, 265))
         ui_action = okButton.moused_over(pygame.mouse.get_pos(), mouse_down)
         if ui_action is not None:
             return ui_action
         okButton.draw(screen)
+        screen.blit(Top_Text, (100, 75))
+        screen.blit(Middle_Text,(100, 125))
+        screen.blit(Botttom_Text, (100, 175))
         pygame.display.flip()
 
-def attackRoll(screen):
+def attackRoll(screen, atk, deff):
     minRoll = 1
     maxRoll = 6
     roll = random.randint(minRoll, maxRoll)
-    attackAnimation(screen, roll)
+    attackAnimation(screen, atk, deff, roll)
     return roll
 
 
@@ -69,8 +107,11 @@ def attackRoll(screen):
 # an optional parameter (hasMoved) as well in the event a knight is the attacker.
 # The knight tells the attack function it has moved, and gets a bonus to its move.
 
-def attack(screen, attacker: int, defender: int, hasMoved: bool = False) -> bool:
-    num = attackRoll(screen)
+def attack(screen, atk, deff, hasMoved: bool = False) -> bool:
+    #atk and deff are pieces passed in we need to have to actual pieces
+    attacker = atk.type.value
+    defender = deff.type.value
+    num = attackRoll(screen, atk, deff)
     if hasMoved:
         if num + 1 >= attackMatrix[attacker][defender]:
             return True

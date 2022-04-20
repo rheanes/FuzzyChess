@@ -847,8 +847,8 @@ def playgame(screen):
 #knight attacks, upddate here then do normal attacks.
                                     elif knight_special_turn and current_square.piece.type is Type.KNIGHT and adjacent_enemies((current_square.row, current_square.col), current_square.piece.team):
                                         if chosen_square.color is BLACK:
-                                            if attack(screen, current_square.piece.type.value,
-                                                      chosen_square.piece.type.value, checkCommanderHasMoved(current_square.piece.team)) is True:
+                                            if attack(screen, current_square.piece,
+                                                      chosen_square.piece, checkCommanderHasMoved(current_square.piece.team)) is True:
                                                 if chosen_square.piece.type is Type.BISHOP:
                                                     removeCommander(chosen_square.piece.team)
                                                     #changes color of all pieces in commander.troops to red
@@ -952,8 +952,8 @@ def playgame(screen):
                                         current_square = None
 
                                     elif (chosen_square.color is BLACK):
-                                        if attack(screen, current_square.piece.type.value,
-                                                  chosen_square.piece.type.value) is True:
+                                        if attack(screen, current_square.piece,
+                                                  chosen_square.piece) is True:
                                             if chosen_square.piece.type is Type.BISHOP:
                                                 #We decrement the counter to ensure the actions done by a human are limited based on the number of commanders we have
                                                 removeCommander(chosen_square.piece.team)
@@ -1058,7 +1058,7 @@ def playgame(screen):
 
                                 attackSquare = board[chosenAttack[0]][chosenAttack[1]]
                                 knightAttack(finalSquare)
-                                if attack(screen, finalSquare.piece.type.value, attackSquare.piece.type.value, True):
+                                if attack(screen, finalSquare.piece, attackSquare.piece, True):
                                     if attackSquare.piece.type is Type.BISHOP:
                                         # We decrement the counter to ensure the actions done by a human are limited based on the number of commanders we have
                                         removeCommander(attackSquare.piece.team)
@@ -1082,8 +1082,8 @@ def playgame(screen):
                                     remove_highlights()
                     #attacking for non knight pieces
                     elif (board[finalMove[0]][finalMove[1]].color is BLACK):
-                        if (attack(screen, board[pieceSq[0]][pieceSq[1]].piece.type.value,
-                                   board[finalMove[0]][finalMove[1]].piece.type.value)):
+                        if (attack(screen, board[pieceSq[0]][pieceSq[1]].piece,
+                                   board[finalMove[0]][finalMove[1]].piece)):
                             if board[finalMove[0]][finalMove[1]].piece.type is Type.BISHOP:
                                 # We decrement the counter to ensure the actions done by a human are limited based on the number of commanders we have
                                 removeCommander(board[finalMove[0]][finalMove[1]].piece.team)
