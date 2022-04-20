@@ -56,6 +56,7 @@ def attackAnimation(screen, atk, deff, roll):
     #orange knight attacking blue king
     atk_piece =  str(string_color(atk.team))+ ' ' + str(piece_type(atk.type))
     def_piece =  str(string_color(deff.team)) +' '+ str(piece_type(deff.type))
+    print(atk_piece, 'attacking', def_piece)
     Top_Text = font.render(atk_piece, True, BACKGROUND)
     Middle_Text = font.render('attacking', True, BACKGROUND)
     Botttom_Text = font.render(def_piece, True, BACKGROUND)
