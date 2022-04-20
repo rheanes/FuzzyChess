@@ -1033,6 +1033,7 @@ def playgame(screen):
                           "eval value: " + str(evaluation(temp.piece,temp.start_position ,temp.end_position, board)) + "\n")
                     '''
                     highlight_move(finalMove, team)
+                    #general movement
                     if (board[finalMove[0]][finalMove[1]].color is BLUE):
                         board[pieceSq[0]][pieceSq[1]].piece.pos = [finalMove[0], finalMove[1]]
                         tempSquare = board[pieceSq[0]][pieceSq[1]]
@@ -1041,6 +1042,7 @@ def playgame(screen):
                         action_count -= 1
                         end_commander_turn(team)
                         remove_highlights()
+                        #attacking for knight
                         if (finalSquare.piece.type is Type.KNIGHT):
                             if adjacent_enemies((finalSquare.row, finalSquare.col), finalSquare.piece.team):
                                 knightAttacks = knightAttackPieces((finalSquare.row, finalSquare.col),
@@ -1078,6 +1080,7 @@ def playgame(screen):
                                     remove_highlights()
                                 else:
                                     remove_highlights()
+                    #attacking for non knight pieces
                     elif (board[finalMove[0]][finalMove[1]].color is BLACK):
                         if (attack(screen, board[pieceSq[0]][pieceSq[1]].piece.type.value,
                                    board[finalMove[0]][finalMove[1]].piece.type.value)):

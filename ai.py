@@ -91,15 +91,15 @@ def evaluation(piece,start_position, end_position, board):
         if piece.type == Type.PAWN:
             total_value += (enemy.value.value * pawn_atk_chnc[enemy.type]) 
         elif piece.type == Type.KING:
-            total_value += (enemy.value.value * king_atk_chnc[enemy.type]) 
+            total_value += (enemy.value.value * king_atk_chnc[enemy.type]) + 200
         elif piece.type == Type.QUEEN:
-            total_value += (enemy.value.value * queen_atk_chnc[enemy.type]) 
+            total_value += (enemy.value.value * queen_atk_chnc[enemy.type]) + 200
         elif piece.type == Type.BISHOP:
             total_value += (enemy.value.value * bishop_atk_chnc[enemy.type]) 
         elif piece.type == Type.KNIGHT:
-            total_value += (enemy.value.value * knight_atk_chnc[enemy.type]) 
+            total_value += (enemy.value.value * knight_atk_chnc[enemy.type]) + 200
         elif piece.type == Type.ROOK:
-            total_value += (enemy.value.value * rook_atk_chnc[enemy.type]) 
+            total_value += (enemy.value.value * rook_atk_chnc[enemy.type]) + 100
     #remove_highlights()
     return total_value
 
@@ -204,12 +204,13 @@ def greedy_search(comm):
 #            #calls search on simulated board state
 #            best_move, curr_score = search(comm, alpha, beta, False, depth - 1, copied_board, best_move)
 #            curr_score *= -1
-#            #undos move
-#            move_copy_piece(copied_board[m.end_position[0]][m.end_position[1]], copied_board[m.start_position[0]][m.start_position[1]], copied_board)
+#            
 #            # if the current move is better than the current highest score, replace it
 #            if curr_score > max_score:
 #                max_score = curr_score
 #                best_move = m
+             #undos move
+#            move_copy_piece(copied_board[m.end_position[0]][m.end_position[1]], copied_board[m.start_position[0]][m.start_position[1]], copied_board)
 #            # if the highest score is higher than beta, break out of the loop and return the value at that position?
 #            if max_score >= beta:
 #                break
@@ -233,11 +234,11 @@ def greedy_search(comm):
 #        for m in moves:
 #            move_copy_piece(copied_board[m.start_position[0]][m.start_position[1]], copied_board[m.end_position[0]][m.end_position[1]], copied_board)
 #            best_move, curr_score = search(comm, alpha, beta, True, depth - 1, copied_board, best_move)
-#            move_copy_piece(copied_board[m.end_position[0]][m.end_position[1]], copied_board[m.start_position[0]][m.start_position[1]], copied_board)
+#            
 #            if curr_score < min_score:
 #                min_score = curr_score
 #                best_move = m
-#
+#            move_copy_piece(copied_board[m.end_position[0]][m.end_position[1]], copied_board[m.start_position[0]][m.start_position[1]], copied_board)
 #            if min_score <= alpha:
 #               break
 #
