@@ -138,18 +138,18 @@ def available_moves(piece):
                 return maxMovement(4, 0, piece.pos, piece.pos, piece.type.value)
 
 #generates a list of moves for each piece
-def generate_moves(comm, c_board):
+def generate_moves(comm, board):
     moves = []
     for troop in comm.troops:
         temp_list = available_moves(troop)
         if temp_list is not None:
             for pos in available_moves(troop):
                 #adds additional check so that moves are only appended if the position is an empty square or has an enemy piece
-                if c_board[pos[0]][pos[1]].piece is None:
+                if board[pos[0]][pos[1]].piece is None:
                     moves.append(Move(troop, troop.pos, (pos[0], pos[1])))
 
-                if c_board[pos[0]][pos[1]].piece is not None:
-                    if c_board[pos[0]][pos[1]].piece in enemies[troop.team]: 
+                if board[pos[0]][pos[1]].piece is not None:
+                    if board[pos[0]][pos[1]].piece in enemies[troop.team]: 
                         moves.append(Move(troop, troop.pos, (pos[0], pos[1])))
         
     return moves
@@ -162,74 +162,86 @@ def move_copy_piece(curr_pos: Square, new_pos: Square, c_board):
     c_board[new_pos.row][new_pos.col].piece = c_board[curr_pos.row][curr_pos.col].piece
     c_board[curr_pos.row][curr_pos.col].piece = None
     
-    
+def greedy_search(comm):
+    moves = generate_moves(comm, board)
+    max_score = -inf
+    best_move = None
+    for m in moves:
+        curr_score = evaluation(m.piece, m.end_position, board)
+        if curr_score > max_score:
+            best_move = m
+            max_score = curr_score
+        #elif curr_score == max_score:
+
+    return best_move
+
 
 
 # alpha-beta search
-def search(comm, alpha, beta, maxPlayer, depth, copied_board, best_move = None):
-    # returns static evaluation of best move found
-    score = 0
-    
-    if depth == 0:
-        score = evaluation(best_move.piece, best_move.end_position, copied_board)
-        return best_move, score
-
-    # if it is the maximizing player(ai)
-    if maxPlayer == True:
-        max_score = -inf
-        
-        moves = []
-        #generates moves for a given commander
-        moves.extend(generate_moves(comm, copied_board))
-        best_move = moves[0]
-        # search through all moves available for that corp
-        for m in moves:
-            #performs move on simulated board
-            move_copy_piece(copied_board[m.start_position[0]][m.start_position[1]], copied_board[m.end_position[0]][m.end_position[1]], copied_board)
-            #calls search on simulated board state
-            best_move, curr_score = search(comm, alpha, beta, False, depth - 1, copied_board, best_move)
-            curr_score *= -1
-            #undos move
-            move_copy_piece(copied_board[m.end_position[0]][m.end_position[1]], copied_board[m.start_position[0]][m.start_position[1]], copied_board)
-            # if the current move is better than the current highest score, replace it
-            if curr_score > max_score:
-                max_score = curr_score
-                best_move = m
-            # if the highest score is higher than beta, break out of the loop and return the value at that position?
-            if max_score >= beta:
-                break
-            alpha = max(alpha, max_score)
-            
-            #print("Piece: " + str(best_move.piece.type) +"\n"+ 
-            #    "Start position: " + str(best_move.start_position) +"\n"+ 
-            #    "End position: " + str(best_move.end_position) +"\n"+ 
-            #    "Team: "+ str(best_move.piece.team) +"\n" + 
-            #    "eval value: " + str(evaluation(best_move.piece, best_move.end_position, copied_board)) + "\n")
-            
-        return best_move, max_score
-    elif maxPlayer == False:
-        # inverse process for opposing(human) player
-        min_score = inf
-        moves = []
-        
-        for c in player_commanders:
-            moves.extend(generate_moves(c, copied_board))
-        #best_move = moves[0]
-        for m in moves:
-            move_copy_piece(copied_board[m.start_position[0]][m.start_position[1]], copied_board[m.end_position[0]][m.end_position[1]], copied_board)
-            best_move, curr_score = search(comm, alpha, beta, True, depth - 1, copied_board, best_move)
-            move_copy_piece(copied_board[m.end_position[0]][m.end_position[1]], copied_board[m.start_position[0]][m.start_position[1]], copied_board)
-            if curr_score < min_score:
-                min_score = curr_score
-                best_move = m
-
-            if min_score <= alpha:
-               break
-            
-            beta = min(beta, min_score)
-        return best_move, min_score
-
-
+#def search_minimax(comm, alpha, beta, maxPlayer, depth, copied_board, best_move = None):
+#    # returns static evaluation of best move found
+#    score = 0
+#    
+#    if depth == 0:
+#        score = evaluation(best_move.piece, best_move.end_position, copied_board)
+#        return best_move, score
+#
+#    # if it is the maximizing player(ai)
+#    if maxPlayer == True:
+#        max_score = -inf
+#        
+#        moves = []
+#        #generates moves for a given commander
+#        moves.extend(generate_moves(comm, copied_board))
+#        best_move = moves[0]
+#        # search through all moves available for that corp
+#        for m in moves:
+#            #performs move on simulated board
+#            move_copy_piece(copied_board[m.start_position[0]][m.start_position[1]], copied_board[m.end_position[0]][m.end_position[1]], copied_board)
+#            #calls search on simulated board state
+#            best_move, curr_score = search(comm, alpha, beta, False, depth - 1, copied_board, best_move)
+#            curr_score *= -1
+#            #undos move
+#            move_copy_piece(copied_board[m.end_position[0]][m.end_position[1]], copied_board[m.start_position[0]][m.start_position[1]], copied_board)
+#            # if the current move is better than the current highest score, replace it
+#            if curr_score > max_score:
+#                max_score = curr_score
+#                best_move = m
+#            # if the highest score is higher than beta, break out of the loop and return the value at that position?
+#            if max_score >= beta:
+#                break
+#            alpha = max(alpha, max_score)
+#            
+#            #print("Piece: " + str(best_move.piece.type) +"\n"+ 
+#            #    "Start position: " + str(best_move.start_position) +"\n"+ 
+#            #    "End position: " + str(best_move.end_position) +"\n"+ 
+#            #    "Team: "+ str(best_move.piece.team) +"\n" + 
+#            #    "eval value: " + str(evaluation(best_move.piece, best_move.end_position, copied_board)) + "\n")
+#            
+#        return best_move, max_score
+#    elif maxPlayer == False:
+#        # inverse process for opposing(human) player
+#        min_score = inf
+#        moves = []
+#        
+#        for c in player_commanders:
+#            moves.extend(generate_moves(c, copied_board))
+#        #best_move = moves[0]
+#        for m in moves:
+#            move_copy_piece(copied_board[m.start_position[0]][m.start_position[1]], copied_board[m.end_position[0]][m.end_position[1]], copied_board)
+#            best_move, curr_score = search(comm, alpha, beta, True, depth - 1, copied_board, best_move)
+#            move_copy_piece(copied_board[m.end_position[0]][m.end_position[1]], copied_board[m.start_position[0]][m.start_position[1]], copied_board)
+#            if curr_score < min_score:
+#                min_score = curr_score
+#                best_move = m
+#
+#            if min_score <= alpha:
+#               break
+#            
+#            beta = min(beta, min_score)
+#        return best_move, min_score
+#
+#
 ###############################################
 # Modes: Easy, Medium, and Hard
 ###############################################
