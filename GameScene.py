@@ -999,8 +999,8 @@ def playgame(screen):
             for c in ai_commanders:
                 moves = []
                 pieces = []
-                
-                temp = search(c, -inf, inf, True, 3, board)
+                copied_board = copy_board(board)
+                temp = search(c, -inf, inf, True, 3, copied_board)
                 moves.append(temp)
                 chosen_piece = temp[0].piece #acceses piece attribute of move object from temp
                 pieces.append(chosen_piece)
@@ -1010,8 +1010,8 @@ def playgame(screen):
                 finalMove = chosen_move[0].end_position
                 
                     
-                for move in chosen_move:
-                    print(move)
+                #for move in chosen_move:
+                    #print(move)
                 update_display(screen)
                 highlight_move(finalMove, team)
                 update_display(screen)

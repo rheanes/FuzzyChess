@@ -35,6 +35,8 @@ def copy_board(board):
     copy_board = [[Square(None) for _ in range(8)] for _ in range(8)]
     for row in range(8):
         for col in range(8):
+            copy_board[row][col].row = row
+            copy_board[row][col].col = col
             if board[row][col].piece is not None:
                 copy_board[row][col] = Square(copy_piece(board[row][col].piece))
     return copy_board
