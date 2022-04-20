@@ -1016,7 +1016,7 @@ def playgame(screen):
                           "Start position: " + str(temp.start_position) + "\n" +
                           "End position: " + str(temp.end_position) + "\n" +
                           "Team: " + str(temp.piece.team) + "\n" +
-                          "eval value: " + str(evaluation(temp.piece, temp.end_position, board)) + "\n")
+                          "eval value: " + str(evaluation(temp.piece,temp.start_position ,temp.end_position, board)) + "\n")
                     highlight_move(finalMove, team)
                     if (board[finalMove[0]][finalMove[1]].color is BLUE):
                         board[pieceSq[0]][pieceSq[1]].piece.pos = [finalMove[0], finalMove[1]]
@@ -1030,7 +1030,15 @@ def playgame(screen):
                             if adjacent_enemies((finalSquare.row, finalSquare.col), finalSquare.piece.team):
                                 knightAttacks = knightAttackPieces((finalSquare.row, finalSquare.col),
                                                                    (finalSquare.row, finalSquare.col))
-                                chosenAttack = knightAttacks[random.randint(0, len(knightAttacks) - 1)]
+
+                                chosenAttack = None
+                                maxScore = -inf
+                                for move in knightAttacks:
+                                    score = evaluation(chosen_piece,pieceSq ,move, board)
+                                    if score > maxScore:
+                                        chosenAttack = move
+                                        maxScore = score
+
                                 attackSquare = board[chosenAttack[0]][chosenAttack[1]]
                                 knightAttack(finalSquare)
                                 if attack(screen, finalSquare.piece.type.value, attackSquare.piece.type.value, True):

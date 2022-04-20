@@ -66,38 +66,41 @@ class AiAction:
         self.team = team
 
 # returns numerical evaluation of a particular position that a piece wishes to move to
-def evaluation(piece, position, board):
+def evaluation(piece,start_position, end_position, board):
     total_value = 0
-    row, col = position[0], position[1]
+    currRow, currCol = start_position[0], start_position[1]
+    row, col = end_position[0], end_position[1]
+    #highlight_move(end_position, piece.team)
     # reference piece table values based on piece type
     if (board[row][col].piece is None) or (board[row][col].piece in enemies[piece.team]):
         if piece.type == Type.PAWN:
-            total_value += pawn_pos_table[row][col]
+            total_value += pawn_pos_table[row][col] - pawn_pos_table[currRow][currCol]
         elif piece.type == Type.ROOK:
-            total_value += rook_pos_table[row][col]
+            total_value += rook_pos_table[row][col] - rook_pos_table[currRow][currCol]
         elif piece.type == Type.BISHOP:
-            total_value += bishop_pos_table[row][col]
+            total_value += bishop_pos_table[row][col] - bishop_pos_table[currRow][currCol]
         elif piece.type == Type.KNIGHT:
-            total_value += knight_pos_table[row][col]
+            total_value += knight_pos_table[row][col] - knight_pos_table[currRow][currCol]
         elif piece.type == Type.QUEEN:
-            total_value += queen_pos_table[row][col]
+            total_value += queen_pos_table[row][col] - queen_pos_table[currRow][currCol]
         elif piece.type == Type.KING:
-            total_value += king_pos_table[row][col]
+            total_value += king_pos_table[row][col] - rook_pos_table[currRow][currCol]
     # if a particular position to move to has an enemy piece, add the enemy pieces' value to the evaluation times the chance of successful capture
     if (board[row][col].piece is not None) and (board[row][col].piece.team in enemies[piece.team]):
         enemy = board[row][col].piece
         if piece.type == Type.PAWN:
-            total_value += (enemy.value * pawn_atk_chnc[enemy.type])
+            total_value += (enemy.value.value * pawn_atk_chnc[enemy.type]) 
         elif piece.type == Type.KING:
-            total_value += (enemy.value * king_atk_chnc[enemy.type])
+            total_value += (enemy.value.value * king_atk_chnc[enemy.type]) 
         elif piece.type == Type.QUEEN:
-            total_value += (enemy.value * queen_atk_chnc[enemy.type])
+            total_value += (enemy.value.value * queen_atk_chnc[enemy.type]) 
         elif piece.type == Type.BISHOP:
-            total_value += (enemy.value * bishop_atk_chnc[enemy.type])
+            total_value += (enemy.value.value * bishop_atk_chnc[enemy.type]) 
         elif piece.type == Type.KNIGHT:
-            total_value += (enemy.value * knight_atk_chnc[enemy.type])
+            total_value += (enemy.value.value * knight_atk_chnc[enemy.type]) 
         elif piece.type == Type.ROOK:
-            total_value += (enemy.value * rook_atk_chnc[enemy.type])
+            total_value += (enemy.value.value * rook_atk_chnc[enemy.type]) 
+    #remove_highlights()
     return total_value
 
 
@@ -145,12 +148,9 @@ def generate_moves(comm, board):
         if temp_list is not None:
             for pos in available_moves(troop):
                 #adds additional check so that moves are only appended if the position is an empty square or has an enemy piece
-                if board[pos[0]][pos[1]].piece is None:
-                    moves.append(Move(troop, troop.pos, (pos[0], pos[1])))
+                
+                moves.append(Move(troop, troop.pos, (pos[0], pos[1])))
 
-                if board[pos[0]][pos[1]].piece is not None:
-                    if board[pos[0]][pos[1]].piece in enemies[troop.team]:
-                        moves.append(Move(troop, troop.pos, (pos[0], pos[1])))
         
     return moves
 
@@ -167,16 +167,15 @@ def greedy_search(comm):
     max_score = -inf
     best_move = None
     for m in moves:
-        curr_score = evaluation(m.piece, m.end_position, board)
+        curr_score = evaluation(m.piece,m.start_position ,m.end_position, board)
         piece = m.piece
         if curr_score > max_score:
             best_move = m
             max_score = curr_score
         elif curr_score == max_score:
             if moveVal[m.piece.type] > moveVal[piece.type]:
-                piece = m.piece.type
+                piece = m.piece
                 best_move = m
-
     return best_move
 
 
