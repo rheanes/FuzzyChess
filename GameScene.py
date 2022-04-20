@@ -1009,7 +1009,6 @@ def playgame(screen):
                 action_count = 0
 
             for c in ai_commanders:
-                pygame.time.delay(1000)
                 if c.action is not False:
 
                     moves = []
