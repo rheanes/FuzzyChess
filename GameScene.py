@@ -996,7 +996,20 @@ def playgame(screen):
                 else:
                     pass
         elif not turn:  # AI starts
+            if(board[1][2].piece is not None) and (board[1][2].piece.type == Type.PAWN):
+                '''
+            ) and (board[1][6] is not None and board[1][6].piece.type == Type.PAWN)\
+                    and (board[1][2] is not None and board[0][3].piece.type == Type.QUEEN):
+                '''
+                move_piece(board[1][2], board[2][2])
+                move_piece(board[1][6], board[2][6])
+                move_piece(board[0][3], board[2][3])
+                for c in ai_commanders:
+                    c.action = False
+                action_count = 0
+
             for c in ai_commanders:
+                pygame.time.delay(1000)
                 if c.action is not False:
 
                     moves = []
@@ -1012,11 +1025,13 @@ def playgame(screen):
                     chosen_move = moves[0]
                     finalMove = chosen_move.end_position
 
+                    '''
                     print("Piece: " + str(temp.piece.type) + "\n" +
                           "Start position: " + str(temp.start_position) + "\n" +
                           "End position: " + str(temp.end_position) + "\n" +
                           "Team: " + str(temp.piece.team) + "\n" +
                           "eval value: " + str(evaluation(temp.piece,temp.start_position ,temp.end_position, board)) + "\n")
+                    '''
                     highlight_move(finalMove, team)
                     if (board[finalMove[0]][finalMove[1]].color is BLUE):
                         board[pieceSq[0]][pieceSq[1]].piece.pos = [finalMove[0], finalMove[1]]
