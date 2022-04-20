@@ -83,10 +83,10 @@ class PieceAction:
         self.square = square
 
 class Value(enum.Enum):
-    KING = 2000
-    QUEEN = 200
-    BISHOP = 400
-    KNIGHT = 200
+    KING = 1000000
+    QUEEN = 300
+    BISHOP = 800
+    KNIGHT = 500
     ROOK = 200
     PAWN = 50
 

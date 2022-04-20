@@ -87,17 +87,17 @@ def evaluation(piece, position, board):
     if (board[row][col].piece is not None) and (board[row][col].piece.team in enemies[piece.team]):
         enemy = board[row][col].piece
         if piece.type == Type.PAWN:
-            total_value += (enemy.value * pawn_atk_chnc[enemy.type])
+            total_value += (enemy.value.value * pawn_atk_chnc[enemy.type])
         elif piece.type == Type.KING:
-            total_value += (enemy.value * king_atk_chnc[enemy.type])
+            total_value += (enemy.value.value * king_atk_chnc[enemy.type])
         elif piece.type == Type.QUEEN:
-            total_value += (enemy.value * queen_atk_chnc[enemy.type])
+            total_value += (enemy.value.value * queen_atk_chnc[enemy.type])
         elif piece.type == Type.BISHOP:
-            total_value += (enemy.value * bishop_atk_chnc[enemy.type])
+            total_value += (enemy.value.value * bishop_atk_chnc[enemy.type])
         elif piece.type == Type.KNIGHT:
-            total_value += (enemy.value * knight_atk_chnc[enemy.type])
+            total_value += (enemy.value.value * knight_atk_chnc[enemy.type])
         elif piece.type == Type.ROOK:
-            total_value += (enemy.value * rook_atk_chnc[enemy.type])
+            total_value += (enemy.value.value * rook_atk_chnc[enemy.type])
     return total_value
 
 
@@ -174,9 +174,8 @@ def greedy_search(comm):
             max_score = curr_score
         elif curr_score == max_score:
             if moveVal[m.piece.type] > moveVal[piece.type]:
-                piece = m.piece.type
+                piece = m.piece
                 best_move = m
-
     return best_move
 
 
