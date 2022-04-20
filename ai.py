@@ -149,7 +149,7 @@ def generate_moves(comm, board):
                     moves.append(Move(troop, troop.pos, (pos[0], pos[1])))
 
                 if board[pos[0]][pos[1]].piece is not None:
-                    if board[pos[0]][pos[1]].piece in enemies[troop.team]: 
+                    if board[pos[0]][pos[1]].piece in enemies[troop.team]:
                         moves.append(Move(troop, troop.pos, (pos[0], pos[1])))
         
     return moves
@@ -168,10 +168,14 @@ def greedy_search(comm):
     best_move = None
     for m in moves:
         curr_score = evaluation(m.piece, m.end_position, board)
+        piece = m.piece
         if curr_score > max_score:
             best_move = m
             max_score = curr_score
-        #elif curr_score == max_score:
+        elif curr_score == max_score:
+            if moveVal[m.piece.type] > moveVal[piece.type]:
+                piece = m.piece.type
+                best_move = m
 
     return best_move
 
@@ -181,7 +185,7 @@ def greedy_search(comm):
 #def search_minimax(comm, alpha, beta, maxPlayer, depth, copied_board, best_move = None):
 #    # returns static evaluation of best move found
 #    score = 0
-#    
+#
 #    if depth == 0:
 #        score = evaluation(best_move.piece, best_move.end_position, copied_board)
 #        return best_move, score
@@ -189,7 +193,7 @@ def greedy_search(comm):
 #    # if it is the maximizing player(ai)
 #    if maxPlayer == True:
 #        max_score = -inf
-#        
+#
 #        moves = []
 #        #generates moves for a given commander
 #        moves.extend(generate_moves(comm, copied_board))
@@ -211,19 +215,19 @@ def greedy_search(comm):
 #            if max_score >= beta:
 #                break
 #            alpha = max(alpha, max_score)
-#            
-#            #print("Piece: " + str(best_move.piece.type) +"\n"+ 
-#            #    "Start position: " + str(best_move.start_position) +"\n"+ 
-#            #    "End position: " + str(best_move.end_position) +"\n"+ 
-#            #    "Team: "+ str(best_move.piece.team) +"\n" + 
+#
+#            #print("Piece: " + str(best_move.piece.type) +"\n"+
+#            #    "Start position: " + str(best_move.start_position) +"\n"+
+#            #    "End position: " + str(best_move.end_position) +"\n"+
+#            #    "Team: "+ str(best_move.piece.team) +"\n" +
 #            #    "eval value: " + str(evaluation(best_move.piece, best_move.end_position, copied_board)) + "\n")
-#            
+#
 #        return best_move, max_score
 #    elif maxPlayer == False:
 #        # inverse process for opposing(human) player
 #        min_score = inf
 #        moves = []
-#        
+#
 #        for c in player_commanders:
 #            moves.extend(generate_moves(c, copied_board))
 #        #best_move = moves[0]
@@ -237,7 +241,7 @@ def greedy_search(comm):
 #
 #            if min_score <= alpha:
 #               break
-#            
+#
 #            beta = min(beta, min_score)
 #        return best_move, min_score
 #

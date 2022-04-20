@@ -72,8 +72,6 @@ class Action(enum.Enum):
     RECALL = 3
     PASS = 4
 
-
-
 class CommanderMessage:
     def __init__(self, comm, message):
         self.commander = comm
@@ -126,6 +124,14 @@ enemies = {
     Team.YELLOW : [Team.BLUE, Team.GREEN, Team.PURPLE]
 }
 
+moveVal = {
+        Type.KNIGHT:  10,
+        Type.ROOK:   9,
+        Type.QUEEN:   8,
+        Type.PAWN:   5,
+        Type.BISHOP:   4,
+        Type.KING:   3,
+}
 #following dictionaries associate enemy piece type with the probability of successful capture for each piece type
 pawn_atk_chnc = {Type.KING: 0.17,
                 Type.QUEEN: 0.17,
@@ -683,6 +689,8 @@ def on_board(position: tuple[int, int]):
     """
     if (-1 < x < 8) and (-1 < y < 8):
         return True
+    else:
+        return False
 
 #----------_PAWN MOVES HERE--------------
 
