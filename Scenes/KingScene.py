@@ -15,7 +15,7 @@ def KingScene(screen):
         ,"pull pieces from the other corps into his own (this counts as "
         , "this corps action)."]
 
-    img = Element("./Images/blue_queen.png", (4/8*WIDTH, 5/8*HEIGHT))
+    img = Element("./Images/blue_king.png", (4/8*WIDTH, 5/8*HEIGHT))
 
     while True:
         mouse_down = False
