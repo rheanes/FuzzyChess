@@ -76,6 +76,9 @@ def attackAnimation(screen, atk, deff, roll):
                          action=GameState.Play)
 
         pygame.draw.rect(screen, BLACK, pygame.Rect(75, 75, 400, 400))
+        screen.blit(Top_Text, (100, 75))
+        screen.blit(Middle_Text,(100, 125))
+        screen.blit(Botttom_Text, (100, 175))
         while cycles > 0:
             for i in dieImages:
                 screen.blit(i, (225, 265))
@@ -87,9 +90,7 @@ def attackAnimation(screen, atk, deff, roll):
         if ui_action is not None:
             return ui_action
         okButton.draw(screen)
-        screen.blit(Top_Text, (100, 75))
-        screen.blit(Middle_Text,(100, 125))
-        screen.blit(Botttom_Text, (100, 175))
+
         pygame.display.flip()
 
 def attackRoll(screen, atk, deff):
