@@ -68,7 +68,7 @@ def attackAnimation(screen, atk, deff, roll):
             elif event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-        okButton = button(pos=(275, 400),
+        okButton = button(pos=(875, 500),
                          font_size=65,
                          txt_col=BLACK,
                          bg_col=buttoncolor,
@@ -76,17 +76,17 @@ def attackAnimation(screen, atk, deff, roll):
                          bg_hover=buttonhover,
                          action=GameState.Play)
 
-        pygame.draw.rect(screen, BLACK, pygame.Rect(75, 75, 400, 400))
-        screen.blit(Top_Text, (100, 75))
-        screen.blit(Middle_Text,(100, 125))
-        screen.blit(Botttom_Text, (100, 175))
+        pygame.draw.rect(screen, BLACK, pygame.Rect(675, 175, 400, 400))
+        screen.blit(Top_Text, (700, 175))
+        screen.blit(Middle_Text,(700, 225))
+        screen.blit(Botttom_Text, (700, 275))
         while cycles > 0:
             for i in dieImages:
-                screen.blit(i, (225, 265))
+                screen.blit(i, (825, 365))
                 pygame.display.flip()
                 pygame.time.delay(100)
             cycles = cycles - 1
-        screen.blit(dieImage, (225, 265))
+        screen.blit(dieImage, (825, 365))
         ui_action = okButton.moused_over(pygame.mouse.get_pos(), mouse_down)
         if ui_action is not None:
             return ui_action
