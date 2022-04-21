@@ -77,6 +77,8 @@ def evaluation(piece,start_position, end_position, board):
             total_value += pawn_pos_table[row][col] - pawn_pos_table[currRow][currCol]
         elif piece.type == Type.ROOK:
             total_value += rook_pos_table[row][col] - rook_pos_table[currRow][currCol]
+            #if piece.nextToPawn:
+                #total_value += 50
         elif piece.type == Type.BISHOP:
             total_value += bishop_pos_table[row][col] - bishop_pos_table[currRow][currCol]
         elif piece.type == Type.KNIGHT:
@@ -89,17 +91,23 @@ def evaluation(piece,start_position, end_position, board):
     if (board[row][col].piece is not None) and (board[row][col].piece.team in enemies[piece.team]):
         enemy = board[row][col].piece
         if piece.type == Type.PAWN:
-            total_value += (enemy.value.value * pawn_atk_chnc[enemy.type]) 
+            print('I see a pawn')
+            total_value += (enemy.value.value * pawn_atk_chnc[enemy.type])
         elif piece.type == Type.KING:
-            total_value += (enemy.value.value * king_atk_chnc[enemy.type]) + 200
+            print('I see a king')
+            total_value += (enemy.value.value * king_atk_chnc[enemy.type])
         elif piece.type == Type.QUEEN:
-            total_value += (enemy.value.value * queen_atk_chnc[enemy.type]) + 200
+            print('I see the queen')
+            total_value += (enemy.value.value * queen_atk_chnc[enemy.type])
         elif piece.type == Type.BISHOP:
+            print('i see a bishop')
             total_value += (enemy.value.value * bishop_atk_chnc[enemy.type]) 
         elif piece.type == Type.KNIGHT:
-            total_value += (enemy.value.value * knight_atk_chnc[enemy.type]) + 200
+            print('I see a knight')
+            total_value += (enemy.value.value * knight_atk_chnc[enemy.type])
         elif piece.type == Type.ROOK:
-            total_value += (enemy.value.value * rook_atk_chnc[enemy.type]) + 100
+            print('I see a rook')
+            total_value += (enemy.value.value * rook_atk_chnc[enemy.type])
     #remove_highlights()
     return total_value
 
@@ -164,7 +172,7 @@ def move_copy_piece(curr_pos: Square, new_pos: Square, c_board):
     
 def greedy_search(comm):
     moves = generate_moves(comm, board)
-    max_score = -inf
+    max_score = -100
     best_move = None
     for m in moves:
         curr_score = evaluation(m.piece,m.start_position ,m.end_position, board)
@@ -173,8 +181,7 @@ def greedy_search(comm):
             best_move = m
             max_score = curr_score
         elif curr_score == max_score:
-            if moveVal[m.piece.type] > moveVal[piece.type]:
-                piece = m.piece
+            if moveVal[m.piece.type] < moveVal[best_move.piece.type]:
                 best_move = m
     return best_move
 

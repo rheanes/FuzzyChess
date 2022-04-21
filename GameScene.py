@@ -973,7 +973,6 @@ def playgame(screen):
                                             chosen_square.piece.team = Team.RED
                                             ReturnPieceSprite(chosen_square.piece)
                                             end_commander_turn(chosen_square.piece.team)
-
                                             chosen_square.piece = None
                                             if (current_square.piece.type is not Type.ROOK):
                                                 move_piece(current_square, chosen_square)
@@ -1008,6 +1007,8 @@ def playgame(screen):
                     c.action = False
                 action_count = 0
 
+            if yellow_commander in ai_commanders:
+                print('hello from yellow commander')
             for c in ai_commanders:
                 if c.action is not False:
 
@@ -1024,13 +1025,13 @@ def playgame(screen):
                     chosen_move = moves[0]
                     finalMove = chosen_move.end_position
 
-                    '''
+
                     print("Piece: " + str(temp.piece.type) + "\n" +
                           "Start position: " + str(temp.start_position) + "\n" +
                           "End position: " + str(temp.end_position) + "\n" +
                           "Team: " + str(temp.piece.team) + "\n" +
                           "eval value: " + str(evaluation(temp.piece,temp.start_position ,temp.end_position, board)) + "\n")
-                    '''
+
                     highlight_move(finalMove, team)
                     #general movement
                     if (board[finalMove[0]][finalMove[1]].color is BLUE):
@@ -1041,6 +1042,7 @@ def playgame(screen):
                         action_count -= 1
                         end_commander_turn(team)
                         remove_highlights()
+
                         #attacking for knight
                         if (finalSquare.piece.type is Type.KNIGHT):
                             if adjacent_enemies((finalSquare.row, finalSquare.col), finalSquare.piece.team):
@@ -1066,6 +1068,7 @@ def playgame(screen):
                                             attackSquare.piece.team is Team.BLUE):
                                         return GameState.Loss
                                     else:
+                                        print(attackSquare.piece, 'removed by: ' ,finalSquare.piece.type)
                                         remove_piece(attackSquare.piece)
                                     # append to captured pieces
                                     player_captured_pieces.append(attackSquare.piece)
@@ -1076,12 +1079,13 @@ def playgame(screen):
                                     end_commander_turn(attackSquare.piece.team)
                                     finalSquare.piece.pos = [attackSquare.row, attackSquare.col]
                                     move_piece(finalSquare, attackSquare)
+                                    board[finalMove[0]][finalMove[1]].piece = None
                                     remove_highlights()
                                 else:
                                     remove_highlights()
                     #attacking for non knight pieces
                     elif (board[finalMove[0]][finalMove[1]].color is BLACK):
-                        if (attack(screen, board[pieceSq[0]][pieceSq[1]].piece,
+                        if(attack(screen, board[pieceSq[0]][pieceSq[1]].piece,
                                    board[finalMove[0]][finalMove[1]].piece)):
                             if board[finalMove[0]][finalMove[1]].piece.type is Type.BISHOP:
                                 # We decrement the counter to ensure the actions done by a human are limited based on the number of commanders we have
@@ -1099,6 +1103,7 @@ def playgame(screen):
                             board[finalMove[0]][finalMove[1]].piece.team = Team.BLUE
                             ReturnPieceSprite(board[finalMove[0]][finalMove[1]].piece)
                             end_commander_turn(board[finalMove[0]][finalMove[1]].piece.team)
+                            board[finalMove[0]][finalMove[1]].piece = None
                             if (board[pieceSq[0]][pieceSq[1]].piece.type is not Type.ROOK):
                                 board[pieceSq[0]][pieceSq[1]].piece.pos = [finalMove[0], finalMove[1]]
                                 move_piece(board[pieceSq[0]][pieceSq[1]], board[finalMove[0]][finalMove[1]])
