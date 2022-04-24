@@ -6,43 +6,6 @@ from board import *
 from pieces import *
 #Team, Type, orange_commander, red_commander, yellow_commander
 
-class Pos:
-    def __init__(self, pos):
-        self.row = pos[0]
-        self.col = pos[1]
-
-'''
-# for ai, scans entire board for enemies
-def board_scan(targets, leader, board):
-    for square in board:
-        # scan enemies
-        if square.piece is not None:
-            if enemies[square.piece.team] is Team.RED or \
-                    enemies[square.piece.team] is Team.ORANGE or \
-                    enemies[square.piece.team] is Team.YELLOW:
-                square[:].piece.pos = (square.row, square.col)
-                targets.append(square[:].piece)
-
-            if square.piece.team is leader.team:
-                square[:].piece.pos = ()
-    return targets
-'''
-
-"""
-def find_troop_position(self, board):
-    for square in board:
-        if square.piece.team is self.leader.
-"""
-
-"""
-how to define move/attack?
-needs to check if an action is valid (maybe already defined?)
-maybe encapsulate action as an object? (action class) -> 
-stores piece that is doing action, position that it is moving to. Doing so allows for a list of moves to be stored
-
-"""
-
-
 
 def assign_piece_pos():
     for row in range(8):
@@ -65,11 +28,25 @@ class AiAction:
         self.square = square
         self.team = team
 
+#rewards ai for moving its pieces to squares that have adjacent allied pieces
+def adjacent_allies(pos: tuple[int, int]):
+    row, col = pos[0], pos[1]
+    val = 0
+    end_pos_list = [(row-1, col - 1), (row-1, col), (row-1,col+1),
+                    (row, col-1), (row, col), (row,col+1),
+                    (row+1, col-1), (row+1,col), (row+1, col+1)]
+    for p in end_pos_list:
+        if on_board(p):
+            if board[p[0]][p[1]].piece is not None and board[p[0]][p[1]] in enemies[Team.BLUE]:
+                val += 10
+    return val
+
 # returns numerical evaluation of a particular position that a piece wishes to move to
 def evaluation(piece,start_position, end_position, board):
     total_value = 0
     currRow, currCol = start_position[0], start_position[1]
     row, col = end_position[0], end_position[1]
+    total_value += adjacent_allies(end_position) - adjacent_allies(start_position)
     #highlight_move(end_position, piece.team)
     # reference piece table values based on piece type
     if (board[row][col].piece is None) or (board[row][col].piece in enemies[piece.team]):
@@ -77,8 +54,6 @@ def evaluation(piece,start_position, end_position, board):
             total_value += pawn_pos_table[row][col] - pawn_pos_table[currRow][currCol]
         elif piece.type == Type.ROOK:
             total_value += rook_pos_table[row][col] - rook_pos_table[currRow][currCol]
-            #if piece.nextToPawn:
-                #total_value += 50
         elif piece.type == Type.BISHOP:
             total_value += bishop_pos_table[row][col] - bishop_pos_table[currRow][currCol]
         elif piece.type == Type.KNIGHT:
@@ -87,6 +62,7 @@ def evaluation(piece,start_position, end_position, board):
             total_value += queen_pos_table[row][col] - queen_pos_table[currRow][currCol]
         elif piece.type == Type.KING:
             total_value += king_pos_table[row][col] - rook_pos_table[currRow][currCol]
+    
     # if a particular position to move to has an enemy piece, add the enemy pieces' value to the evaluation times the chance of successful capture
     if (board[row][col].piece is not None) and (board[row][col].piece.team in enemies[piece.team]):
         enemy = board[row][col].piece
@@ -112,21 +88,7 @@ def evaluation(piece,start_position, end_position, board):
     return total_value
 
 
-"""
-Alpha beta search needs to acquire all possible moves from current board state for the ai side
-needs to do same process for enemy side during minimizing step(board_scan might be able to get a 
-list of enemy pieces)
 
-We can consider each board state as a node and the opposing player's responses to that move to be the 
-children of our move. We then repeat the process until we reach max depth of the search.
-
-how do we represent board state as a node?
-1. Encapsulate each move as an object storing the piece to move and the coordinates it is moving to
-2. have a backend representation of the board and moving pieces on that board, and then matching 
-that move on the board when the best move is found.
-
-need to generate list of moves
-"""
 
 #for a given piece, returns all possible positions for the piece to traverse to
 def available_moves(piece):
