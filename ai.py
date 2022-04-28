@@ -66,22 +66,26 @@ def adjacent_allies(pos: tuple[int, int]):
                 p_type = board[p[0]][p[1]].piece.type
 
                 # value based on value of piece
-                if p_type is Type.KNIGHT:
-                    val += 500
+                if p_type is Type.QUEEN:
+                    val += 12
                 elif p_type is Type.BISHOP:
-                    val += 800
+                    val += 10
+                elif p_type is Type.KNIGHT:
+                    val += 8
                 elif p_type is Type.ROOK:
-                    val += 200
+                    val += 6
                 elif p_type is Type.PAWN:
-                    val += 50
+                    val += 2
 
     return val
+
+#def adjacent_enemies(pos: tuple[int, int]):
+
+
 '''
     Evaluation:
         
 '''
-
-
 # returns numerical evaluation of a particular position that a piece wishes to move to
 def evaluation(piece,start_position, end_position, board):
     total_value = 0
