@@ -165,8 +165,6 @@ class DelegatedPiece:
         self.team = team
 
 
-# TODO: don't allow delegated pieces to be delegated
-# TODO: currently pieces that have been moved cannot be delegated(i.e causes a bug where the piece activates the movement functions even when the delegation button has been pressed)
 def delegate(chosen_square):
     global delegated_piece
     global delegated_commander
@@ -544,7 +542,6 @@ def message_box(text):
     print(text)
 
 
-# TODO:
 def adjacent_enemies(pos: tuple[int, int], team: Team):
     row = pos[0]
     col = pos[1]
@@ -1010,6 +1007,8 @@ def playgame(screen):
             if yellow_commander in ai_commanders:
                 print('hello from yellow commander')
             for c in ai_commanders:
+                update_display(screen)
+                pygame.display.flip()
                 if c.action is not False:
 
                     moves = []
