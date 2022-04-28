@@ -437,6 +437,7 @@ def aigame(screen):
             # after AI is done enable next line
             action_count -= 1
         """
+    turnChange()
     update_display(screen)
     for b in buttons:
         ui_action = b.moused_over(pygame.mouse.get_pos(), mouse_down)

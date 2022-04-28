@@ -141,4 +141,3 @@ def main():
             game_state = playgame(screen)
 
 main()
-
