@@ -5,7 +5,7 @@ import time
 from GameFunctions import attack
 from common import *
 from board import *
-from ai import evaluation, available_moves, generate_moves, greedy_search
+from ai import evaluation, available_moves, generate_moves, greedy_search, generateRandomMove
 from guielements import *
 #from ai import *
 
@@ -1004,8 +1004,6 @@ def playgame(screen):
                     c.action = False
                 action_count = 0
 
-            if yellow_commander in ai_commanders:
-                print('hello from yellow commander')
             for c in ai_commanders:
                 update_display(screen)
                 pygame.display.flip()
@@ -1016,6 +1014,11 @@ def playgame(screen):
                     #copied_board = copy_board(board)
                     #temp = search(c, -inf, inf, True, 3, copied_board)
                     temp = greedy_search(c)
+
+                    if temp.piece is None:
+                        while temp.piece is None:
+                            temp = generateRandomMove(c)
+
                     moves.append(temp)
                     chosen_piece = temp.piece  # acceses piece attribute of move object from temp
                     pieces.append(chosen_piece)
@@ -1116,6 +1119,9 @@ def playgame(screen):
                             action_count -= 1
                             current_square = None
                             remove_highlights()
+                else:
+                    action_count -= 1
+                    remove_highlights()
             if action_count <= 0:
                 turnChange()
                 reset_turn()

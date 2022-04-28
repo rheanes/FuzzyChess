@@ -567,6 +567,38 @@ def commAuthMovement(maxSpeed: int, iterations: int, position: tuple[int, int], 
         positions.append(position)
     return positions
 
+#----------_PAWN MOVES HERE--------------
+# check pawn moves seperatly from other pieces. If space free then x to move.
+# otherwise, the piece in front of it is targetable.
+def pawn_moves_bottom(position: tuple[int, int]): # team on the bottom
+    row, col = position
+
+    positions = []
+    for i in range(3):
+        curr_col = i + col - 1
+        curr_row = row - 1
+        if on_board((curr_col, curr_row)):
+            # print('row', curr_row, 'col', curr_col)
+            positions.append((curr_row, curr_col))
+
+    return positions
+
+def pawn_moves_top(position: tuple[int, int]): # team on the top
+    row, col = position
+    myTeam = board[row][col].piece.team
+    positions = []
+    for i in range(3):
+        curr_col = i + col - 1
+        curr_row = row + 1
+        if on_board((curr_col, curr_row)):
+            if board[curr_row][curr_col].piece is not None and board[curr_row][curr_col].piece.team in enemies[myTeam]:
+                # print('row', curr_row, 'col', curr_col)
+                positions.append((curr_row, curr_col))
+            elif board[curr_row][curr_col].piece is None:
+                positions.append((curr_row, curr_col))
+
+    return positions
+
 #----------START LOAD AND SAVE PROCESSING HERE---------------
 
 #This removes all the sprites from the pieces, because they cant be pickled.

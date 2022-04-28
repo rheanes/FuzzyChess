@@ -694,37 +694,6 @@ def on_board(position: tuple[int, int]):
     else:
         return False
 
-#----------_PAWN MOVES HERE--------------
-
-def pawn_moves_top(position: tuple[int, int]): # team on the top
-    row, col = position
-
-    positions = []
-    for i in range(3):
-        curr_col = i + col - 1
-        curr_row = row + 1
-        if on_board((curr_col, curr_row)):
-            # print('row', curr_row, 'col', curr_col)
-            positions.append((curr_row, curr_col))
-
-    return positions
-
-
-# check pawn moves seperatly from other pieces. If space free then x to move.
-# otherwise, the piece in front of it is targetable.
-def pawn_moves_bottom(position: tuple[int, int]): # team on the bottom
-    row, col = position
-
-    positions = []
-    for i in range(3):
-        curr_col = i + col - 1
-        curr_row = row - 1
-        if on_board((curr_col, curr_row)):
-            # print('row', curr_row, 'col', curr_col)
-            positions.append((curr_row, curr_col))
-
-    return positions
-
 def nextToAlly():
 
 

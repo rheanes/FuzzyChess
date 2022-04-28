@@ -54,9 +54,13 @@ def enemy_material_count():
 def adjacent_allies(pos: tuple[int, int]):
     row, col = pos
     val = 0
-    end_pos_list = [(row-1, col - 1), (row-1, col), (row-1,col+1),
-                    (row, col-1), (row, col), (row,col+1),
-                    (row+1, col-1), (row+1,col), (row+1, col+1)]
+    end_pos_list = [
+        (row - 2, col - 2)(row - 2, col - 1), (row - 2, col), (row - 2, col + 1), (row - 2, col + 2),
+        (row-1, col-2)(row-1, col-1), (row-1, col), (row-1, col+1),(row-1, col+2),
+        (row, col-2),(row, col-1), (row, col), (row,col+1),(row,col+2),
+        (row+1, col-2),(row+1, col-1), (row+1,col), (row+1, col+1),(row+1, col+2),
+        (row + 2, col - 2), (row + 2, col - 1), (row + 2, col), (row + 2, col + 1), (row + 2, col + 2)
+    ]
 
     for p in end_pos_list:
         if on_board(p):
@@ -82,15 +86,18 @@ def adjacent_allies(pos: tuple[int, int]):
 
 def adjacent_enemies(pos: tuple[int, int]):
     row, col = pos
-    value = 0
-    end_pos_list = [(row-1, col - 1), (row-1, col), (row-1,col+1),
-                    (row, col-1), (row, col), (row,col+1),
-                    (row+1, col-1), (row+1,col), (row+1, col+1)]
+    val = 0
+    end_pos_list = [
+        (row - 2, col - 2)(row - 2, col - 1), (row - 2, col), (row - 2, col + 1), (row - 2, col + 2),
+        (row-1, col-2)(row-1, col-1), (row-1, col), (row-1, col+1),(row-1, col+2),
+        (row, col-2),(row, col-1), (row, col), (row,col+1),(row,col+2),
+        (row+1, col-2),(row+1, col-1), (row+1,col), (row+1, col+1),(row+1, col+2),
+        (row + 2, col - 2), (row + 2, col - 1), (row + 2, col), (row + 2, col + 1), (row + 2, col + 2)
+    ]
 
     for p in end_pos_list:
         if on_board(p):
             if board[p[0]][p[1]].piece is not None and board[p[0]][p[1]].piece.team in enemies[Team.RED]:
-                val += 10
                 p_type = board[p[0]][p[1]].piece.type
 
                 # value based on value of piece
@@ -105,7 +112,14 @@ def adjacent_enemies(pos: tuple[int, int]):
                 elif p_type is Type.PAWN:
                     val -= 2
 
-    return value
+    return val
+
+'''
+
+def delegate():
+    
+
+'''
 
 '''
     Evaluation:
@@ -208,7 +222,7 @@ def greedy_search(comm):
     max_score = -100
     best_move = None
     for m in moves:
-        curr_score = evaluation(m.piece,m.start_position ,m.end_position, board)
+        curr_score = evaluation(m.piece, m.start_position, m.end_position, board)
         piece = m.piece
         if curr_score > max_score:
             best_move = m
@@ -218,6 +232,10 @@ def greedy_search(comm):
                 best_move = m
     return best_move
 
+def generateRandomMove(comm):
+    moves = generate_moves(comm, board)
+    chosen_move = moves[random.randint(0, len(moves) - 1)]
+    return chosen_move
 
 
 # alpha-beta search

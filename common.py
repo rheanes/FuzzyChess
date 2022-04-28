@@ -30,6 +30,7 @@ GREY = (128, 128, 128)
 YELLOW = (204, 204, 0) # highlight pieces controlled by a commanders' pieces
 BROWN = (222, 184, 135)
 LIGHT_GRAY = (211, 211, 211)
+ORANGE = (255, 165, 0)
 BACKGROUND = (128, 0, 32)
 
 #load images
