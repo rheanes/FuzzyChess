@@ -63,6 +63,7 @@ def adjacent_allies(pos: tuple[int, int]):
 
                 p_type = board[p[0]][p[1]].piece.type
 
+                # value based on value of piece
                 if p_type is Type.KNIGHT:
                     val += 500
                 elif p_type is Type.BISHOP:
