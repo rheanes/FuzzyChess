@@ -41,6 +41,7 @@ def checkCommanderTurn(team: Team):
         return yellow_commander.action
     elif (team is Team.ORANGE):
         return orange_commander.action
+
 '''
 def enemy_material_count():
     count = 0
@@ -59,27 +60,35 @@ def adjacent_allies(pos: tuple[int, int]):
 
     for p in end_pos_list:
         if on_board(p):
-            if board[p[0]][p[1]].piece is not None and board[p[0]][p[1]] in enemies[Team.BLUE]:
+            if board[p[0]][p[1]].piece is not None and \
+                    board[p[0]][p[1]] in enemies[Team.BLUE]:
                 val += 10
 
                 p_type = board[p[0]][p[1]].piece.type
 
                 # value based on value of piece
                 if p_type is Type.KNIGHT:
-                    val += 500
+                    val += 10
                 elif p_type is Type.BISHOP:
-                    val += 800
+                    val += 8
                 elif p_type is Type.ROOK:
-                    val += 200
+                    val += 4
                 elif p_type is Type.PAWN:
-                    val += 50
+                    val += 2
 
     return val
+
+def adjacent_enemies(pos: tuple[int, int]):
+    row, col = pos
+
+
 '''
     Evaluation:
+        @TODO: consider mobility of enemy pieces to square
+                factor the value of a piece
+        @TODO: 
         
 '''
-
 
 # returns numerical evaluation of a particular position that a piece wishes to move to
 def evaluation(piece,start_position, end_position, board):
