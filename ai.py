@@ -59,7 +59,7 @@ def adjacent_allies(pos: tuple[int, int]):
 
     for p in end_pos_list:
         if on_board(p):
-            if board[p[0]][p[1]].piece is not None and board[p[0]][p[1]].piece.team in enemies[Team.BLUE]:
+            if board[p[0]][p[1]].piece is not None and board[p[0]][p[1]] in enemies[Team.BLUE]:
                 val += 10
 
                 p_type = board[p[0]][p[1]].piece.type
