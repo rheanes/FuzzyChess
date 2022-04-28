@@ -664,7 +664,7 @@ def playgame(screen):
                             bg_col=buttoncolor,
                             text="Current Turn: Human",
                             bg_hover=buttonhover,
-                            action=GameState.Play)
+                            action=None)
 
     Special_Text = Action_Counttxt(pos=(WIDTH - 975, 625),
                             font_size=25,
@@ -672,7 +672,7 @@ def playgame(screen):
                             bg_col=buttoncolor,
                             text="",
                             bg_hover=buttonhover,
-                            action=GameState.Play)
+                            action=None)
 
     Bone_Pile = BoneP(pos=(WIDTH - 1075, 700),
                             font_size=50,
@@ -992,28 +992,34 @@ def playgame(screen):
                 else:
                     pass
         elif not turn:  # AI starts
-            if(board[1][2].piece is not None) and (board[1][2].piece.type == Type.PAWN):
-                '''
-            ) and (board[1][6] is not None and board[1][6].piece.type == Type.PAWN)\
-                    and (board[1][2] is not None and board[0][3].piece.type == Type.QUEEN):
-                '''
-                move_piece(board[1][2], board[2][2])
-                update_display(screen)
-                pygame.display.flip()
-                pygame.time.delay(1000)
-                move_piece(board[1][6], board[2][6])
-                update_display(screen)
-                pygame.display.flip()
-                pygame.time.delay(1000)
-                move_piece(board[0][3], board[2][1])
-                update_display(screen)
-                pygame.display.flip()
-                pygame.time.delay(1000)
-                for c in ai_commanders:
-                    c.action = False
-                action_count = 0
-
             for c in ai_commanders:
+                if (board[1][2].piece is not None) and (board[1][2].piece.type == Type.PAWN):
+                    first_ai_moves = (
+                    (board[1][2], board[2][2]),
+                    (board[1][6], board[2][6]),
+                    (board[0][3], board[2][1]),
+                    (board[0][2], board[0][3])
+                    )
+                    Special_Text.text = 'AI selecting opening moves'
+
+                    for m,n in first_ai_moves:
+                        move_piece(m, n)
+                        update_display(screen)
+                        Current_turn.text = ''
+                        Current_turn.draw(screen)
+                        Special_Text.draw(screen)
+                        Action_Counter.text = 'Action Count: ' + str(action_count)
+                        action_count -= 1
+                        Action_Counter.draw(screen)
+                        screen.blit(pygame.transform.scale(captureTableImage, CAPTURE_TABLE_SIZE),
+                                    (WIDTH * .5, HEIGHT * .665))
+                        pygame.display.flip()
+                        pygame.time.delay(1000)
+
+                    for c in ai_commanders:
+                        c.action = False
+                    action_count = 0
+
                 if c.action is not False:
                     moves = []
                     pieces = []
@@ -1024,14 +1030,38 @@ def playgame(screen):
                     if temp is None:
                         c.action = False
                         color = c.troops[0].team
-                        Special_Text.text = 'No good move found for: ' +str(color)
+                        if color == Team.RED:
+                            color = 'Red'
+                        if color == Team.YELLOW:
+                            color = 'Yellow'
+                        if color == Team.ORANGE:
+                            color = 'Orange'
+                        Special_Text.text = 'No good move found for: ' + color
                         Special_Text.draw(screen)
+                        pygame.display.flip()
                         pygame.time.delay(1000)
-                        #color = spe
                         break
+                    else:
+                        color = c.troops[0].team
+                        if color == Team.RED:
+                            color = 'Red'
+                        if color == Team.YELLOW:
+                            color = 'Yellow'
+                        if color == Team.ORANGE:
+                            color = 'Orange'
+                        Special_Text.text = 'AI selecting move for: ' + color
+
                     update_display(screen)
+                    Current_turn.text = ''
+                    Current_turn.draw(screen)
+                    Special_Text.draw(screen)
+                    Action_Counter.text = 'Action Count: ' + str(action_count)
+                    Action_Counter.draw(screen)
+                    screen.blit(pygame.transform.scale(captureTableImage, CAPTURE_TABLE_SIZE),
+                                (WIDTH * .5, HEIGHT * .665))
                     pygame.display.flip()
-                    pygame.time.delay(1000)
+                    pygame.time.delay(2000)
+
 
                     moves.append(temp)
                     chosen_piece = temp.piece  # acceses piece attribute of move object from temp
@@ -1133,14 +1163,27 @@ def playgame(screen):
                             action_count -= 1
                             current_square = None
                             remove_highlights()
+
                 else:
                     action_count -= 1
                     remove_highlights()
+
             if action_count <= 0:
+                update_display(screen)
+                Current_turn.text = ''
+                Current_turn.draw(screen)
+                Action_Counter.draw(screen)
+                screen.blit(pygame.transform.scale(captureTableImage, CAPTURE_TABLE_SIZE),
+                            (WIDTH * .5, HEIGHT * .665))
+                Special_Text.text = 'Ending AI_Turn'
+                Special_Text.draw(screen)
+                pygame.display.flip()
+                pygame.time.delay(1000)
                 turnChange()
                 reset_turn()
             remove_highlights()
             update_display(screen)
+
 
 
 
