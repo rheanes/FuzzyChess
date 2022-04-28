@@ -998,8 +998,17 @@ def playgame(screen):
                     and (board[1][2] is not None and board[0][3].piece.type == Type.QUEEN):
                 '''
                 move_piece(board[1][2], board[2][2])
+                update_display(screen)
+                pygame.display.flip()
+                pygame.time.delay(1000)
                 move_piece(board[1][6], board[2][6])
-                move_piece(board[0][3], board[2][3])
+                update_display(screen)
+                pygame.display.flip()
+                pygame.time.delay(1000)
+                move_piece(board[0][3], board[2][1])
+                update_display(screen)
+                pygame.display.flip()
+                pygame.time.delay(1000)
                 for c in ai_commanders:
                     c.action = False
                 action_count = 0
@@ -1007,6 +1016,7 @@ def playgame(screen):
             for c in ai_commanders:
                 update_display(screen)
                 pygame.display.flip()
+                pygame.time.delay(1000)
                 if c.action is not False:
 
                     moves = []
