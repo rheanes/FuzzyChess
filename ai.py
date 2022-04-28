@@ -41,12 +41,13 @@ def checkCommanderTurn(team: Team):
         return yellow_commander.action
     elif (team is Team.ORANGE):
         return orange_commander.action
-
+'''
 def enemy_material_count():
     count = 0
 
     for square in board:
         if square.piece.team
+'''
 
 # rewards ai for moving its pieces to squares that have adjacent allied pieces
 def adjacent_allies(pos: tuple[int, int]):
