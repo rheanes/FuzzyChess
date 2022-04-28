@@ -1014,20 +1014,24 @@ def playgame(screen):
                 action_count = 0
 
             for c in ai_commanders:
-                update_display(screen)
-                pygame.display.flip()
-                pygame.time.delay(1000)
                 if c.action is not False:
-
                     moves = []
                     pieces = []
                     #copied_board = copy_board(board)
                     #temp = search(c, -inf, inf, True, 3, copied_board)
                     temp = greedy_search(c)
 
-                    if temp.piece is None:
-                        while temp.piece is None:
-                            temp = generateRandomMove(c)
+                    if temp is None:
+                        c.action = False
+                        color = c.troops[0].team
+                        Special_Text.text = 'No good move found for: ' +str(color)
+                        Special_Text.draw(screen)
+                        pygame.time.delay(1000)
+                        #color = spe
+                        break
+                    update_display(screen)
+                    pygame.display.flip()
+                    pygame.time.delay(1000)
 
                     moves.append(temp)
                     chosen_piece = temp.piece  # acceses piece attribute of move object from temp
@@ -1135,7 +1139,6 @@ def playgame(screen):
             if action_count <= 0:
                 turnChange()
                 reset_turn()
-
             remove_highlights()
             update_display(screen)
 

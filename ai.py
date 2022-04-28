@@ -230,7 +230,10 @@ def greedy_search(comm):
         elif curr_score == max_score:
             if moveVal[m.piece.type] < moveVal[best_move.piece.type]:
                 best_move = m
-    return best_move
+    if max_score > 0:
+        return best_move
+    else:
+        return None
 
 def generateRandomMove(comm):
     moves = generate_moves(comm, board)
