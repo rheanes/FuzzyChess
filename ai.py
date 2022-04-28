@@ -82,7 +82,7 @@ def adjacent_allies(pos: tuple[int, int]):
 
 def adjacent_enemies(pos: tuple[int, int]):
     row, col = pos
-    value = 0
+    val = 0
     end_pos_list = [(row-1, col - 1), (row-1, col), (row-1,col+1),
                     (row, col-1), (row, col), (row,col+1),
                     (row+1, col-1), (row+1,col), (row+1, col+1)]
@@ -106,6 +106,13 @@ def adjacent_enemies(pos: tuple[int, int]):
                     val -= 2
 
     return value
+
+'''
+
+def delegate():
+    
+
+'''
 
 '''
     Evaluation:
