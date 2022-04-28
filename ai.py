@@ -41,6 +41,7 @@ def checkCommanderTurn(team: Team):
         return yellow_commander.action
     elif (team is Team.ORANGE):
         return orange_commander.action
+# commented following code
 '''
 def enemy_material_count():
     count = 0
