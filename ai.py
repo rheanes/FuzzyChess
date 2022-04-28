@@ -105,7 +105,7 @@ def adjacent_enemies(pos: tuple[int, int]):
                 elif p_type is Type.PAWN:
                     val -= 2
 
-    return value
+    return val
 
 '''
 
@@ -215,7 +215,7 @@ def greedy_search(comm):
     max_score = -100
     best_move = None
     for m in moves:
-        curr_score = evaluation(m.piece,m.start_position ,m.end_position, board)
+        curr_score = evaluation(m.piece, m.start_position, m.end_position, board)
         piece = m.piece
         if curr_score > max_score:
             best_move = m
@@ -225,6 +225,10 @@ def greedy_search(comm):
                 best_move = m
     return best_move
 
+def generateRandomMove(comm):
+    moves = generate_moves(comm, board)
+    chosen_move = moves[random.randint(0, len(moves) - 1)]
+    return chosen_move
 
 
 # alpha-beta search
