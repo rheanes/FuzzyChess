@@ -55,8 +55,8 @@ def adjacent_allies(pos: tuple[int, int]):
     row, col = pos
     val = 0
     end_pos_list = [
-        (row - 2, col - 2)(row - 2, col - 1), (row - 2, col), (row - 2, col + 1), (row - 2, col + 2),
-        (row-1, col-2)(row-1, col-1), (row-1, col), (row-1, col+1),(row-1, col+2),
+        (row - 2, col - 2),(row - 2, col - 1), (row - 2, col), (row - 2, col + 1), (row - 2, col + 2),
+        (row-1, col-2),(row-1, col-1), (row-1, col), (row-1, col+1),(row-1, col+2),
         (row, col-2),(row, col-1), (row, col), (row,col+1),(row,col+2),
         (row+1, col-2),(row+1, col-1), (row+1,col), (row+1, col+1),(row+1, col+2),
         (row + 2, col - 2), (row + 2, col - 1), (row + 2, col), (row + 2, col + 1), (row + 2, col + 2)
@@ -88,8 +88,8 @@ def adjacent_enemies(pos: tuple[int, int]):
     row, col = pos
     val = 0
     end_pos_list = [
-        (row - 2, col - 2)(row - 2, col - 1), (row - 2, col), (row - 2, col + 1), (row - 2, col + 2),
-        (row-1, col-2)(row-1, col-1), (row-1, col), (row-1, col+1),(row-1, col+2),
+        (row - 2, col - 2),(row - 2, col - 1), (row - 2, col), (row - 2, col + 1), (row - 2, col + 2),
+        (row-1, col-2),(row-1, col-1), (row-1, col), (row-1, col+1),(row-1, col+2),
         (row, col-2),(row, col-1), (row, col), (row,col+1),(row,col+2),
         (row+1, col-2),(row+1, col-1), (row+1,col), (row+1, col+1),(row+1, col+2),
         (row + 2, col - 2), (row + 2, col - 1), (row + 2, col), (row + 2, col + 1), (row + 2, col + 2)
