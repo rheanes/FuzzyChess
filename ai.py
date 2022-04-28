@@ -28,18 +28,58 @@ class AiAction:
         self.square = square
         self.team = team
 
-#rewards ai for moving its pieces to squares that have adjacent allied pieces
+def checkCommanderTurn(team: Team):
+    if (team is Team.BLUE):
+        return blue_commander.action
+    elif (team is Team.GREEN):
+        return green_commander.action
+    elif (team is Team.PURPLE):
+        return purple_commander.action
+    elif (team is Team.RED):
+        return red_commander.action
+    elif (team is Team.YELLOW):
+        return yellow_commander.action
+    elif (team is Team.ORANGE):
+        return orange_commander.action
+'''
+def enemy_material_count():
+    count = 0
+
+    for square in board:
+        if square.piece.team
+'''
+
+# rewards ai for moving its pieces to squares that have adjacent allied pieces
 def adjacent_allies(pos: tuple[int, int]):
-    row, col = pos[0], pos[1]
+    row, col = pos
     val = 0
     end_pos_list = [(row-1, col - 1), (row-1, col), (row-1,col+1),
                     (row, col-1), (row, col), (row,col+1),
                     (row+1, col-1), (row+1,col), (row+1, col+1)]
+
     for p in end_pos_list:
         if on_board(p):
             if board[p[0]][p[1]].piece is not None and board[p[0]][p[1]].piece.team in enemies[Team.BLUE]:
                 val += 10
+
+                p_type = board[p[0]][p[1]].piece.type
+
+                # value based on value of piece
+                if p_type is Type.KNIGHT:
+                    val += 500
+                elif p_type is Type.BISHOP:
+                    val += 800
+                elif p_type is Type.ROOK:
+                    val += 200
+                elif p_type is Type.PAWN:
+                    val += 50
+
     return val
+'''
+    Evaluation:
+        
+'''
+
 
 # returns numerical evaluation of a particular position that a piece wishes to move to
 def evaluation(piece,start_position, end_position, board):
@@ -47,6 +87,7 @@ def evaluation(piece,start_position, end_position, board):
     currRow, currCol = start_position[0], start_position[1]
     row, col = end_position[0], end_position[1]
     total_value += adjacent_allies(end_position) - adjacent_allies(start_position)
+
     #highlight_move(end_position, piece.team)
     # reference piece table values based on piece type
     if (board[row][col].piece is None) or (board[row][col].piece in enemies[piece.team]):
