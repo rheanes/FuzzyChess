@@ -83,6 +83,17 @@ def adjacent_allies(pos: tuple[int, int]):
 
     return val
 
+def adjacent_king(pos: tuple[int, int]):
+    row, col = pos
+    end_pos_list = [(row - 1, col - 1), (row - 1, col), (row - 1, col + 1),
+                    (row, col - 1), (row, col), (row, col + 1),
+                    (row + 1, col - 1), (row + 1, col), (row + 1, col + 1)]
+
+    for p in end_pos_list:
+        if(on_board(p)):
+            if board[p[0]][p[1]].piece is not None and board[p[0]][p[1]].piece.type is Type.KING and board[p[0]][p[1]].piece.team in enemies[Team.RED]:
+                return True
+    return False
 
 def adjacent_enemies(pos: tuple[int, int]):
     row, col = pos
@@ -98,6 +109,7 @@ def adjacent_enemies(pos: tuple[int, int]):
     for p in end_pos_list:
         if on_board(p):
             if board[p[0]][p[1]].piece is not None and board[p[0]][p[1]].piece.team in enemies[Team.RED]:
+                val += 10
                 p_type = board[p[0]][p[1]].piece.type
 
                 # value based on value of piece
@@ -143,6 +155,12 @@ def evaluation(piece,start_position, end_position, board):
             total_value += bishop_pos_table[row][col] - bishop_pos_table[currRow][currCol]
         elif piece.type == Type.KNIGHT:
             total_value += knight_pos_table[row][col] - knight_pos_table[currRow][currCol]
+            if adjacent_enemies((row, col)):
+                #Add some value if we can move and attack
+                total_value += 100
+                #if king is adjacent, add some large amount
+                if adjacent_king((row, col)):
+                    total_value += 50000
         elif piece.type == Type.QUEEN:
             total_value += queen_pos_table[row][col] - queen_pos_table[currRow][currCol]
         elif piece.type == Type.KING:
@@ -667,3 +685,123 @@ class AI:
                         remove_highlights()
                         return
 '''
+
+# OLD RANDOM AI
+"""if c.action is not False:
+                    for troop in c.troops:
+                        if troop.type is Type.PAWN:
+                            pawn_moves = pawn_moves_top(troop.pos)
+                            if pawn_moves is not None:
+                                moves.append(pawn_moves)
+                                pieces.append(troop.pos)
+                        elif troop.type is Type.KING or Type.QUEEN:
+                            kqmoves = maxMovement(3, 0, troop.pos, troop.pos, troop.type.value)
+                            if kqmoves is not None:
+                                moves.append(kqmoves)
+                                pieces.append(troop.pos)
+                        elif troop.type is Type.KNIGHT:
+                            kmoves = maxMovement(4, 0, troop.pos, troop.pos, troop.type.value)
+                            if kmoves is not None:
+                                moves.append(kmoves)
+                                pieces.append(troop.pos)
+                        elif troop.type is Type.BISHOP:
+                            bmoves = maxMovement(2, 0, troop.pos, troop.pos, troop.type.value)
+                            if bmoves is not None:
+                                moves.append(bmoves)
+                                pieces.append(troop.pos)
+                        elif troop.type is Type.ROOK:
+                            rmoves = maxMovement(2, 0, troop.pos, troop.pos, troop.type.value)
+                            if rmoves is not None:
+                                moves.append(rmoves)
+                                pieces.append(troop.pos)
+
+                    chosen_piece = 0
+                    while True:
+                        chosen_piece = random.randint(0, len(pieces) - 1)
+                        if (len(moves[chosen_piece]) > 0):
+                            break
+                    pieceSq = pieces[chosen_piece]
+                    print(pieces[chosen_piece])
+                    team = board[pieceSq[0]][pieceSq[1]].piece.team
+                    chosen_move = moves[chosen_piece]
+                    for move in chosen_move:
+                        print(move)
+                    update_display(screen)
+                    highlight_moves(chosen_move, team)
+                    update_display(screen)
+                    finalMove = chosen_move[random.randint(0, len(chosen_move) - 1)]
+                    if(board[finalMove[0]][finalMove[1]].color is BLUE):
+                        board[pieceSq[0]][pieceSq[1]].piece.pos = [finalMove[0], finalMove[1]]
+                        tempSquare = board[pieceSq[0]][pieceSq[1]]
+                        finalSquare = board[finalMove[0]][finalMove[1]]
+                        move_piece(tempSquare, finalSquare)
+                        action_count -= 1
+                        end_commander_turn(team)
+                        remove_highlights()
+                        if(finalSquare.piece.type is Type.KNIGHT):
+                            if adjacent_enemies((finalSquare.row, finalSquare.col), finalSquare.piece.team):
+                                knightAttacks = knightAttackPieces((finalSquare.row, finalSquare.col), (finalSquare.row, finalSquare.col))
+                                if(len(knightAttacks) == 0):
+                                    break
+                                chosenAttack = knightAttacks[random.randint(0, len(knightAttacks) - 1)]
+                                attackSquare = board[chosenAttack[0]][chosenAttack[1]]
+                                knightAttack(finalSquare)
+                                if attack(screen, finalSquare.piece.type.value, attackSquare.piece.type.value, True):
+                                    if attackSquare.piece.type is Type.BISHOP:
+                                        # We decrement the counter to ensure the actions done by a human are limited based on the number of commanders we have
+                                        removeCommander(attackSquare.piece.team)
+                                        remove_team(attackSquare.piece.team)
+                                    elif (attackSquare.piece.type is Type.KING) and (
+                                            attackSquare.piece.team is Team.BLUE):
+                                        return GameState.Loss
+                                    else:
+                                        remove_piece(attackSquare.piece)
+                                    # append to captured pieces
+                                    player_captured_pieces.append(attackSquare.piece)
+                                    # remove from commander array
+                                    # Recoloring must be done after remove piece or that function gets killed
+                                    attackSquare.piece.team = Team.BLUE
+                                    ReturnPieceSprite(attackSquare.piece)
+                                    end_commander_turn(attackSquare.piece.team)
+
+                                    finalSquare.piece.pos = [attackSquare.row, attackSquare.col]
+                                    move_piece(finalSquare, attackSquare)
+                                    remove_highlights()
+                                else:
+                                    remove_highlights()
+
+                    elif(board[finalMove[0]][finalMove[1]].color is BLACK):
+                        if(attack(screen, board[pieceSq[0]][pieceSq[1]].piece.type.value, board[finalMove[0]][finalMove[1]].piece.type.value)):
+                            if board[finalMove[0]][finalMove[1]].piece.type is Type.BISHOP:
+                                # We decrement the counter to ensure the actions done by a human are limited based on the number of commanders we have
+                                removeCommander(board[finalMove[0]][finalMove[1]].piece.team)
+                                remove_team(board[finalMove[0]][finalMove[1]].piece.team)
+                            elif (board[finalMove[0]][finalMove[1]].piece.type is Type.KING) and (
+                                    board[finalMove[0]][finalMove[1]].piece.team is Team.BLUE):
+                                return GameState.Loss
+                            else:
+                                remove_piece(board[finalMove[0]][finalMove[1]].piece)
+                            # append to captured pieces
+                            player_captured_pieces.append(board[finalMove[0]][finalMove[1]].piece)
+                            # remove from commander array
+                            # Recoloring must be done after remove piece or that function gets killed
+                            board[finalMove[0]][finalMove[1]].piece.team = Team.BLUE
+                            ReturnPieceSprite(board[finalMove[0]][finalMove[1]].piece)
+                            end_commander_turn(board[finalMove[0]][finalMove[1]].piece.team)
+
+                            if (board[pieceSq[0]][pieceSq[1]].piece.type is not Type.ROOK):
+                                board[pieceSq[0]][pieceSq[1]].piece.pos = [finalMove[0], finalMove[1]]
+                                move_piece(board[pieceSq[0]][pieceSq[1]], board[finalMove[0]][finalMove[1]])
+                                end_commander_turn(board[finalMove[0]][finalMove[1]].piece.team)
+                            else:
+                                end_commander_turn(board[pieceSq[0]][pieceSq[1]].piece.team)
+                            action_count -= 1
+                            remove_highlights()
+                        else:
+                            end_commander_turn(board[pieceSq[0]][pieceSq[1]].piece.team)
+                            action_count -= 1
+                            current_square = None
+                            remove_highlights()
+            if action_count <= 0:
+                turnChange()
+                reset_turn()"""
