@@ -229,7 +229,7 @@ def clearBonepile():
 def remove_team(team):
     if team == team.YELLOW:
         for troop in yellow_commander.troops:
-            troop.Team = Team.RED
+            troop.team = Team.RED
             red_commander.troops.append(troop)
             if troop.type == Type.PAWN:
                 troop.switch_sprite(color_matrix_pawn[Team.RED])
