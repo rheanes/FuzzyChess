@@ -998,7 +998,6 @@ def playgame(screen):
                     (board[1][2], board[2][2]),
                     (board[1][6], board[2][6]),
                     (board[0][3], board[2][1]),
-                    (board[0][2], board[0][3])
                     )
                     Special_Text.text = 'AI selecting opening moves'
 
