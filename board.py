@@ -227,9 +227,11 @@ def clearBonepile():
 #removes all the pieces from the team that is passed in and appends them to the king.
 #this is called when a bishop is captured.
 def remove_team(team):
-    if team == team.YELLOW:
+    if team == Team.YELLOW:
         for troop in yellow_commander.troops:
-            troop.Team = Team.RED
+            if troop.type is Type.BISHOP:
+                continue
+            troop.team = Team.RED
             red_commander.troops.append(troop)
             if troop.type == Type.PAWN:
                 troop.switch_sprite(color_matrix_pawn[Team.RED])
@@ -243,9 +245,11 @@ def remove_team(team):
                 pass
         yellow_commander.troops.clear()
 
-    elif team == team.ORANGE:
+    elif team == Team.ORANGE:
         print("removing orange team")
         for troop in orange_commander.troops:
+            if troop.type is Type.BISHOP:
+                continue
             print(troop.type)
             troop.team = Team.RED
             red_commander.troops.append(troop)
@@ -262,8 +266,10 @@ def remove_team(team):
                 pass
         orange_commander.troops.clear()
 
-    elif team == team.GREEN:
+    elif team == Team.GREEN:
         for troop in green_commander.troops:
+            if troop.type is Type.BISHOP:
+                continue
             troop.team = Team.BLUE
             blue_commander.troops.append(troop)
             if troop.type == Type.PAWN:
@@ -277,8 +283,10 @@ def remove_team(team):
             else:
                 pass
         green_commander.troops.clear()
-    elif team == team.PURPLE:
+    elif team == Team.PURPLE:
         for troop in purple_commander.troops:
+            if troop.type is Type.BISHOP:
+                continue
             troop.team = Team.BLUE
             blue_commander.troops.append(troop)
             if troop.type == Type.PAWN:
