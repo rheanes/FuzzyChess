@@ -71,11 +71,11 @@ def adjacent_allies(pos: tuple[int, int]):
 
                 # value based on value of piece
                 if p_type is Type.QUEEN:
-                    val += 12
+                    val += 15
                 elif p_type is Type.BISHOP:
                     val += 10
                 elif p_type is Type.KNIGHT:
-                    val += 8
+                    val += 15
                 elif p_type is Type.ROOK:
                     val += 6
                 elif p_type is Type.PAWN:
@@ -109,20 +109,20 @@ def adjacent_enemies(pos: tuple[int, int]):
     for p in end_pos_list:
         if on_board(p):
             if board[p[0]][p[1]].piece is not None and board[p[0]][p[1]].piece.team in enemies[Team.RED]:
-                val += 10
+                val -= 2
                 p_type = board[p[0]][p[1]].piece.type
 
                 # value based on value of piece
                 if p_type is Type.QUEEN:
-                    val -= 12
+                    val += 12
                 elif p_type is Type.BISHOP:
-                    val -= 10
+                    val += 10
                 elif p_type is Type.KNIGHT:
-                    val -= 8
+                    val += 8
                 elif p_type is Type.ROOK:
-                    val -= 6
+                    val += 6
                 elif p_type is Type.PAWN:
-                    val -= 2
+                    val += 2
 
     return val
 
@@ -142,7 +142,7 @@ def evaluation(piece,start_position, end_position, board):
     total_value = 0
     currRow, currCol = start_position[0], start_position[1]
     row, col = end_position[0], end_position[1]
-    total_value += adjacent_allies(end_position) - adjacent_allies(start_position) + adjacent_enemies(end_position)
+    total_value += adjacent_allies(end_position) - adjacent_allies(start_position) - adjacent_enemies(end_position)
 
     #highlight_move(end_position, piece.team)
     # reference piece table values based on piece type
