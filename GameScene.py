@@ -992,12 +992,14 @@ def playgame(screen):
                 else:
                     pass
         elif not turn:  # AI starts
+            action_count = len(ai_commanders)
             for c in ai_commanders:
                 if (board[1][2].piece is not None) and (board[1][2].piece.type == Type.PAWN):
                     first_ai_moves = (
                     (board[1][2], board[2][2]),
                     (board[1][6], board[2][6]),
                     (board[0][3], board[2][1]),
+                    (board[0][2], board[0][3])
                     )
                     Special_Text.text = 'AI selecting opening moves'
 
