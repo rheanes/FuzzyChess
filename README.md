@@ -5,6 +5,8 @@ main.py tracks the current gamestate and executes functions and switched to scen
 
 Images Folder contains all of the images that we are using in our project.
 
+The FuzzyChess folder contains the main executable of the game. In order to play, both the images and scenes subfolders must be within.
+
 --------------SCENES--------------------------------
 
 GameScene.py -
