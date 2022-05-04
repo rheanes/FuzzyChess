@@ -992,7 +992,7 @@ def playgame(screen):
                 else:
                     pass
         elif not turn:  # AI starts
-            action_count = len(ai_commanders)
+            #action_count = len(ai_commanders)
             for c in ai_commanders:
                 if (board[1][2].piece is not None) and (board[1][2].piece.type == Type.PAWN):
                     first_ai_moves = (
@@ -1041,7 +1041,7 @@ def playgame(screen):
                         Special_Text.draw(screen)
                         pygame.display.flip()
                         pygame.time.delay(1000)
-                        break
+                        continue
                     else:
                         color = c.troops[0].team
                         if color == Team.RED:

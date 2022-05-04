@@ -54,13 +54,9 @@ def enemy_material_count():
 def adjacent_allies(pos: tuple[int, int]):
     row, col = pos
     val = 0
-    end_pos_list = [
-        (row - 2, col - 2),(row - 2, col - 1), (row - 2, col), (row - 2, col + 1), (row - 2, col + 2),
-        (row-1, col-2),(row-1, col-1), (row-1, col), (row-1, col+1),(row-1, col+2),
-        (row, col-2),(row, col-1), (row, col), (row,col+1),(row,col+2),
-        (row+1, col-2),(row+1, col-1), (row+1,col), (row+1, col+1),(row+1, col+2),
-        (row + 2, col - 2), (row + 2, col - 1), (row + 2, col), (row + 2, col + 1), (row + 2, col + 2)
-    ]
+    end_pos_list = [(row - 1, col - 1), (row - 1, col), (row - 1, col + 1),
+                    (row, col - 1), (row, col), (row, col + 1),
+                    (row + 1, col - 1), (row + 1, col), (row + 1, col + 1)]
 
     for p in end_pos_list:
         if on_board(p):
@@ -98,31 +94,34 @@ def adjacent_king(pos: tuple[int, int]):
 def adjacent_enemies(pos: tuple[int, int]):
     row, col = pos
     val = 0
-    end_pos_list = [
-        (row - 2, col - 2),(row - 2, col - 1), (row - 2, col), (row - 2, col + 1), (row - 2, col + 2),
-        (row-1, col-2),(row-1, col-1), (row-1, col), (row-1, col+1),(row-1, col+2),
-        (row, col-2),(row, col-1), (row, col), (row,col+1),(row,col+2),
-        (row+1, col-2),(row+1, col-1), (row+1,col), (row+1, col+1),(row+1, col+2),
-        (row + 2, col - 2), (row + 2, col - 1), (row + 2, col), (row + 2, col + 1), (row + 2, col + 2)
-    ]
+    end_pos_list = [(row - 1, col - 1), (row - 1, col), (row - 1, col + 1),
+                    (row, col - 1), (row, col), (row, col + 1),
+                    (row + 1, col - 1), (row + 1, col), (row + 1, col + 1)]
+    #end_pos_list = [
+    #    (row - 2, col - 2),(row - 2, col - 1), (row - 2, col), (row - 2, col + 1), (row - 2, col + 2),
+    #    (row-1, col-2),(row-1, col-1), (row-1, col), (row-1, col+1),(row-1, col+2),
+    #    (row, col-2),(row, col-1), (row, col), (row,col+1),(row,col+2),
+    #    (row+1, col-2),(row+1, col-1), (row+1,col), (row+1, col+1),(row+1, col+2),
+    #    (row + 2, col - 2), (row + 2, col - 1), (row + 2, col), (row + 2, col + 1), (row + 2, col + 2)
+    #]
 
     for p in end_pos_list:
         if on_board(p):
             if board[p[0]][p[1]].piece is not None and board[p[0]][p[1]].piece.team in enemies[Team.RED]:
-                val -= 2
+                val += 10
                 p_type = board[p[0]][p[1]].piece.type
 
                 # value based on value of piece
                 if p_type is Type.QUEEN:
-                    val += 12
+                    val -= 12
                 elif p_type is Type.BISHOP:
-                    val += 10
+                    val -= 10
                 elif p_type is Type.KNIGHT:
-                    val += 8
+                    val -= 8
                 elif p_type is Type.ROOK:
-                    val += 6
+                    val -= 6
                 elif p_type is Type.PAWN:
-                    val += 2
+                    val -= 2
 
     return val
 
