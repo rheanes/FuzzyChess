@@ -665,6 +665,14 @@ def playgame(screen):
                             text="Current Turn: Human",
                             bg_hover=buttonhover,
                             action=None)
+    Current_turn_AI = WhosTurn(pos=(WIDTH - 300, 50),
+                            font_size=50,
+                            txt_col=BLACK,
+                            bg_col=buttoncolor,
+                            text="Current Turn: AI",
+                            bg_hover=buttonhover,
+                            action=None)
+
 
     Special_Text = Action_Counttxt(pos=(WIDTH - 975, 625),
                             font_size=25,
@@ -992,7 +1000,7 @@ def playgame(screen):
                 else:
                     pass
         elif not turn:  # AI starts
-            #action_count = len(ai_commanders)
+            ai_action_count = len(ai_commanders)
             for c in ai_commanders:
                 if (board[1][2].piece is not None) and (board[1][2].piece.type == Type.PAWN):
                     first_ai_moves = (
@@ -1006,11 +1014,10 @@ def playgame(screen):
                     for m,n in first_ai_moves:
                         move_piece(m, n)
                         update_display(screen)
-                        Current_turn.text = ''
-                        Current_turn.draw(screen)
+                        Current_turn_AI.draw(screen)
                         Special_Text.draw(screen)
-                        Action_Counter.text = 'Action Count: ' + str(action_count)
-                        action_count -= 1
+                        Action_Counter.text = 'Action Count: ' + str(ai_action_count)
+                        ai_action_count -= 1
                         Action_Counter.draw(screen)
                         screen.blit(pygame.transform.scale(captureTableImage, CAPTURE_TABLE_SIZE),
                                     (WIDTH * .5, HEIGHT * .665))
@@ -1040,7 +1047,7 @@ def playgame(screen):
                         Special_Text.text = 'No good move found for: ' + color
                         Special_Text.draw(screen)
                         pygame.display.flip()
-                        pygame.time.delay(1000)
+                        pygame.time.delay(1500)
                         continue
                     else:
                         color = c.troops[0].team
@@ -1053,10 +1060,9 @@ def playgame(screen):
                         Special_Text.text = 'AI selecting move for: ' + color
 
                     update_display(screen)
-                    Current_turn.text = ''
-                    Current_turn.draw(screen)
+                    Current_turn_AI.draw(screen)
                     Special_Text.draw(screen)
-                    Action_Counter.text = 'Action Count: ' + str(action_count)
+                    Action_Counter.text = 'Action Count: ' + str(ai_action_count)
                     Action_Counter.draw(screen)
                     screen.blit(pygame.transform.scale(captureTableImage, CAPTURE_TABLE_SIZE),
                                 (WIDTH * .5, HEIGHT * .665))
@@ -1087,6 +1093,7 @@ def playgame(screen):
                         finalSquare = board[finalMove[0]][finalMove[1]]
                         move_piece(tempSquare, finalSquare)
                         action_count -= 1
+                        ai_action_count -=1
                         end_commander_turn(team)
                         remove_highlights()
 
@@ -1158,22 +1165,24 @@ def playgame(screen):
                             else:
                                 end_commander_turn(board[pieceSq[0]][pieceSq[1]].piece.team)
                             action_count -= 1
+                            ai_action_count -= 1
                             remove_highlights()
                         else:
                             end_commander_turn(board[pieceSq[0]][pieceSq[1]].piece.team)
                             action_count -= 1
+                            ai_action_count -= 1
                             current_square = None
                             remove_highlights()
 
                     else:
                         action_count -= 1
+                        ai_action_count -= 1
                         end_commander_turn(board[pieceSq[0]][pieceSq[1]].piece.team)
                         remove_highlights()
 
             if action_count <= 0:
                 update_display(screen)
-                Current_turn.text = ''
-                Current_turn.draw(screen)
+                Current_turn_AI.draw(screen)
                 Action_Counter.draw(screen)
                 screen.blit(pygame.transform.scale(captureTableImage, CAPTURE_TABLE_SIZE),
                             (WIDTH * .5, HEIGHT * .665))
@@ -1185,6 +1194,7 @@ def playgame(screen):
                 reset_turn()
             remove_highlights()
             update_display(screen)
+            pygame.display.flip()
 
 
 
