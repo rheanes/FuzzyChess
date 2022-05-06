@@ -88,29 +88,30 @@ def default_sprites():
 
 #takes in a piece and returns the sprite that is the same as the color
 def ReturnPieceSprite(t):
-    #If it's not delegated do this
-    if not t.delegated:
-        if t.type == Type.PAWN:
-            t.switch_sprite(color_matrix_pawn[t.team])
-        elif t.type == Type.ROOK:
-            t.switch_sprite(color_matrix_rook[t.team])
-        elif t.type == Type.KNIGHT:
-            t.switch_sprite(color_matrix_knight[t.team])
-        elif t.type == Type.QUEEN:
-            t.switch_sprite(color_matrix_queen[t.team])
-        elif t.type == Type.BISHOP:
-            t.switch_sprite(color_matrix_bishop[t.team])
-        elif t.type == Type.KING:
-            t.switch_sprite(color_matrix_king[t.team])
-    else:
-        if t.type == Type.PAWN:
-            t.switch_sprite(del_matrix_pawn[t.team])
-        elif t.type == Type.ROOK:
-            t.switch_sprite(del_matrix_rook[t.team])
-        elif t.type == Type.KNIGHT:
-            t.switch_sprite(del_matrix_knight[t.team])
-        elif t.type == Type.QUEEN:
-            t.switch_sprite(del_matrix_queen[t.team])
+    if t is not None:
+        #If it's not delegated do this
+        if not t.delegated:
+            if t.type == Type.PAWN:
+                t.switch_sprite(color_matrix_pawn[t.team])
+            elif t.type == Type.ROOK:
+                t.switch_sprite(color_matrix_rook[t.team])
+            elif t.type == Type.KNIGHT:
+                t.switch_sprite(color_matrix_knight[t.team])
+            elif t.type == Type.QUEEN:
+                t.switch_sprite(color_matrix_queen[t.team])
+            elif t.type == Type.BISHOP:
+                t.switch_sprite(color_matrix_bishop[t.team])
+            elif t.type == Type.KING:
+                t.switch_sprite(color_matrix_king[t.team])
+        else:
+            if t.type == Type.PAWN:
+                t.switch_sprite(del_matrix_pawn[t.team])
+            elif t.type == Type.ROOK:
+                t.switch_sprite(del_matrix_rook[t.team])
+            elif t.type == Type.KNIGHT:
+                t.switch_sprite(del_matrix_knight[t.team])
+            elif t.type == Type.QUEEN:
+                t.switch_sprite(del_matrix_queen[t.team])
 
 def create_board():
     print(len(ai_commanders))
